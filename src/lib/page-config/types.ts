@@ -12,6 +12,9 @@ export type GridLayoutItem = {
   minH?: number;
   maxW?: number;
   maxH?: number;
+  static?: boolean;
+  isDraggable?: boolean;
+  isResizable?: boolean;
 };
 
 export type PageTheme = {
@@ -21,6 +24,19 @@ export type PageTheme = {
   accent: string;
   radius: "soft" | "round" | "pill";
   shadow: "none" | "soft" | "float";
+};
+
+export type PageContact = {
+  label: string;
+  href: string;
+};
+
+export type PageProfile = {
+  name: string;
+  bio: string;
+  location: string;
+  avatarUrl?: string;
+  contacts?: PageContact[];
 };
 
 export type WidgetInstance<TProps = Record<string, unknown>> = {
@@ -33,6 +49,7 @@ export type PageConfig = {
   username: string;
   title: string;
   description?: string;
+  profile: PageProfile;
   theme: PageTheme;
   layout: GridLayoutItem[];
   widgets: WidgetInstance[];

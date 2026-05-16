@@ -7,8 +7,10 @@
 .item {
   grid-column: 1 / -1;
   grid-row: auto;
+  isolation: isolate;
   min-height: 0;
   min-width: 0;
+  position: relative;
 }
 
 @media (min-width: 1024px) {

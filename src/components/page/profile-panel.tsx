@@ -1,6 +1,6 @@
-import type { ProfileWidgetProps } from "@/widgets/profile";
+import type { PageProfile } from "@/lib/page-config/types";
 
-export function ProfilePanel({ props }: { props: ProfileWidgetProps }) {
+export function ProfilePanel({ props }: { props: PageProfile }) {
   return (
     <section className="text-left">
       <div

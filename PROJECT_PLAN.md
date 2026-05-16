@@ -10,7 +10,7 @@ MellowGrid 是一个个人自用、开源、Bento 风格的个人主页项目。
 
 - 支持 `/:username` 公开个人主页。
 - 支持 `/editor` 可视化编辑页面。
-- 支持模块拖拽、调整大小、编辑内容。
+- 支持模块添加、位置调整、尺寸调整、编辑内容。
 - 支持多种部署模式：静态部署、文件存储部署、未来远程存储部署。
 - 支持未来 Docker 一键部署。
 - 模块系统要易维护，新增模块时尽量只新增 widget 文件并注册。
@@ -28,7 +28,7 @@ MellowGrid 是一个个人自用、开源、Bento 风格的个人主页项目。
 计划引入：
 
 - Zustand：编辑器状态管理
-- React Grid Layout：拖拽和 resize 网格
+- 共享 CSS Grid：公开页和编辑器共用同一套 8 列布局解释
 - Framer Motion：轻微 hover、入场和浮动动画
 - MapLibre / react-map-gl：地图模块
 - Spotify Embed / HTML audio：音乐模块
@@ -110,13 +110,14 @@ src/lib/page-config/types.ts
 ```txt
 username
 标题和描述
+profile
 theme
 layout
 widgets
 updatedAt
 ```
 
-`layout` 保存网格位置和尺寸，`widgets` 保存模块实例和 props。
+`profile` 保存左侧个人资料区，独立于 widget 系统；`layout` 保存右侧 Bento 网格位置和尺寸，`widgets` 保存右侧模块实例和 props。
 
 ### Widget 模块系统
 
@@ -191,7 +192,7 @@ MELLOWGRID_EDITOR_PASSWORD=
 - 添加 storage adapter 基础结构。
 - 添加 file/static 两种 storage 实现。
 - 添加 API 路由 `/api/pages/[username]`。
-- 添加初始 widgets：Profile、Links、Text、Stats。
+- 添加初始右侧 widgets：Links、Text、Stats、Social；profile 作为独立页面资料区。
 - 添加 Bento 卡片基础样式。
 - 添加 Dockerfile、docker-compose.yml、.env.example。
 - 配置 `output: "standalone"` 以支持 Docker 部署。
@@ -205,14 +206,14 @@ MELLOWGRID_EDITOR_PASSWORD=
 
 任务：
 
-- 安装并接入 Zustand。
-- 安装并接入 React Grid Layout。
+- 接入 Zustand。
+- 抽出公开页和 editor 共用的 Bento CSS Grid 渲染组件。
 - 创建 editor store。
 - 实现模块选择状态。
-- 实现拖动模块。
-- 实现调整模块大小。
+- 实现通过布局按钮调整模块位置。
+- 实现通过布局按钮调整模块大小。
 - 实现模块添加和删除。
-- 实现属性面板基础表单。
+- 实现卡片局部属性编辑表单。
 - 实现导入 / 导出 JSON。
 - 在 static mode 下保存到 localStorage。
 - 在 file mode 下 POST 到 `/api/pages/[username]`。
@@ -298,17 +299,18 @@ src/lib/storage/index.ts
 - 不要把编辑器依赖塞进公开页面。
 - 不要把存储逻辑写死在 UI 组件里。
 - 不要为了一个模块修改整个渲染器。
-- 新模块优先走 widget registry。
+- Profile 是独立页面资料区，不走 widget registry。
+- 新增右侧 Bento 模块优先走 widget registry。
 - 新部署方式优先走 storage adapter。
 - 首版保持个人自用，不做多人 SaaS。
 - 任何保存到公开页面的数据都要考虑后续校验和鉴权。
 
 ## 推荐下一步
 
-下一步优先做编辑器基础能力：
+下一步优先继续打磨编辑器基础能力：
 
 ```txt
-Zustand store + React Grid Layout canvas + 右侧属性面板 + 保存按钮
+Zustand store + shared Bento CSS Grid + 卡片局部编辑浮层 + 保存按钮
 ```
 
 这一步完成后，MellowGrid 就会从静态展示骨架变成真正可编辑的个人主页系统。

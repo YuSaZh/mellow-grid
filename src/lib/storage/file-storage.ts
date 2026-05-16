@@ -1,6 +1,7 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { defaultPageConfig } from "@/lib/page-config/defaults";
+import { normalizePageConfig } from "@/lib/page-config/normalize";
 import type { PageConfig } from "@/lib/page-config/types";
 import type { PageStorage } from "./types";
 
@@ -15,18 +16,18 @@ export const fileStorage: PageStorage = {
   async getPage(username) {
     try {
       const raw = await readFile(pagePath(username), "utf8");
-      return JSON.parse(raw) as PageConfig;
+      return normalizePageConfig(JSON.parse(raw) as PageConfig);
     } catch {
-      return { ...defaultPageConfig, username };
+      return normalizePageConfig({ ...defaultPageConfig, username });
     }
   },
 
   async savePage(username, config) {
-    const nextConfig: PageConfig = {
+    const nextConfig = normalizePageConfig({
       ...config,
       username,
       updatedAt: new Date().toISOString(),
-    };
+    });
 
     await mkdir(pagesDir, { recursive: true });
     await writeFile(pagePath(username), `${JSON.stringify(nextConfig, null, 2)}\n`, "utf8");

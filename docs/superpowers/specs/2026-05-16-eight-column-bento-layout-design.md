@@ -2,7 +2,7 @@
 
 ## Goal
 
-Rebuild the public page and editor around one shared 8-column Bento layout protocol. The profile stays outside the grid on the left. The right content area uses `layout: { x, y, w, h }` as the single source of truth for both `/username` and `/editor`.
+Rebuild the public page and editor around one shared 8-column Bento layout protocol. `PageConfig.profile` stays outside the grid on the left and is not a widget. The right content area uses `layout: { x, y, w, h }` as the single source of truth for both `/username` and `/editor`.
 
 ## Layout rules
 
@@ -35,7 +35,7 @@ The public page must stay lightweight and must not import React Grid Layout. It 
 - each item uses `gridColumn: "x + 1 / span w"`
 - each item uses `gridRow: "y + 1 / span h"`
 
-The public page should filter profile out of the grid and render it in the left profile column.
+The public page should render `config.profile` in the left profile column and render only right-side widgets in the grid.
 
 ## Editor renderer
 
@@ -43,21 +43,21 @@ The editor page should look like the public page plus editing affordances:
 
 - keep the top toolbar
 - keep the same left profile / right grid layout
-- use React Grid Layout only for the right Bento grid
-- configure RGL with 8 columns and shared row height/gap
-- each RGL child key must match its layout item `i`
+- edit profile directly from the left profile area
+- reuse the public Bento CSS Grid renderer for the right grid
 - click card selects it
-- drag handle moves the card
-- visible resize handle resizes the card
-- inspector remains a floating/collapsible panel and does not become a third page column
+- selected cards show a local popover for content editing and layout controls
+- layout controls move cards by changing `x`/`y`
+- layout controls resize cards by changing `w`/`h`
+- render add-module as a virtual 2x2 grid item that opens a floating picker
+- widget inspectors are local popovers, not a right sidebar
 
-## Resize and drag UX
+## Layout control UX
 
-- Dragging should start only from a visible handle.
-- Resize handle should be visible on selected or hovered cards.
-- Resize target should be larger than the default 20px handle.
+- Layout actions should use visible buttons with 44px+ targets.
 - Selection outline must not change card size.
 - Links inside preview cards should not navigate in the editor.
+- Moving and resizing should update the same `layout` data used by the public page.
 
 ## Persistence
 
@@ -69,5 +69,5 @@ Local development uses file mode so save writes `data/pages/username.json`; refr
 - Run `npm run build`.
 - Start dev server on 3001 with webpack.
 - Check `/username` and `/editor` visually.
-- In editor, drag and resize cards to 1x1, 2x2, 2x4, 4x2, and 4x4.
+- In editor, use layout controls to move and resize cards to 1x1, 2x2, 2x4, 4x2, and 4x4.
 - Save and refresh `/username` to confirm layout persistence.

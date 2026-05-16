@@ -1,4 +1,4 @@
-import type { PageConfig, PageTheme } from "./types";
+import type { PageConfig, PageProfile, PageTheme } from "./types";
 
 export const defaultTheme: PageTheme = {
   background: "#f7f4ef",
@@ -9,10 +9,19 @@ export const defaultTheme: PageTheme = {
   shadow: "soft",
 };
 
+export const defaultProfile: PageProfile = {
+  name: "Your Name",
+  bio: "A short introduction for your personal homepage.",
+  location: "Based in Your City",
+  avatarUrl: "",
+  contacts: [{ label: "Recommendations", href: "#" }],
+};
+
 export const defaultPageConfig: PageConfig = {
   username: "username",
   title: "MellowGrid",
   description: "A soft, modular personal homepage.",
+  profile: defaultProfile,
   theme: defaultTheme,
   updatedAt: new Date(0).toISOString(),
   layout: [
@@ -26,17 +35,6 @@ export const defaultPageConfig: PageConfig = {
     { i: "about", x: 2, y: 2, w: 4, h: 2, minW: 2, minH: 2 },
   ],
   widgets: [
-    {
-      id: "profile",
-      type: "profile",
-      props: {
-        name: "Your Name",
-        bio: "A short introduction for your personal homepage.",
-        location: "Based in Your City",
-        avatarUrl: "",
-        contacts: [{ label: "Recommendations", href: "#" }],
-      },
-    },
     {
       id: "links",
       type: "links",

@@ -2,6 +2,18 @@
   "username": "username",
   "title": "MellowGrid",
   "description": "A soft, modular personal homepage.",
+  "profile": {
+    "name": "Your Name",
+    "bio": "A short introduction for your personal homepage.",
+    "location": "Based in Your City",
+    "avatarUrl": "",
+    "contacts": [
+      {
+        "label": "Recommendations",
+        "href": "#"
+      }
+    ]
+  },
   "theme": {
     "background": "#f7f4ef",
     "foreground": "#191714",
@@ -16,7 +28,7 @@
       "x": 0,
       "y": 0,
       "w": 2,
-      "h": 4,
+      "h": 2,
       "minW": 1,
       "minH": 1
     },
@@ -84,7 +96,7 @@
     },
     {
       "i": "about",
-      "x": 2,
+      "x": 4,
       "y": 2,
       "w": 4,
       "h": 2,
@@ -94,7 +106,7 @@
     {
       "i": "text-mp8aw2ab",
       "x": 0,
-      "y": 4,
+      "y": 2,
       "w": 4,
       "h": 2,
       "minW": 3,
@@ -102,22 +114,6 @@
     }
   ],
   "widgets": [
-    {
-      "id": "profile",
-      "type": "profile",
-      "props": {
-        "name": "Your Name",
-        "bio": "A short introduction for your personal homepage.",
-        "location": "Based in Your City",
-        "avatarUrl": "",
-        "contacts": [
-          {
-            "label": "Recommendations",
-            "href": "#"
-          }
-        ]
-      }
-    },
     {
       "id": "links",
       "type": "links",
@@ -206,5 +202,5 @@
       }
     }
   ],
-  "updatedAt": "2026-05-16T13:28:37.811Z"
+  "updatedAt": "2026-05-16T17:46:55.316Z"
 }

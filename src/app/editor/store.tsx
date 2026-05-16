@@ -2,31 +2,34 @@
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { createStore, useStore } from "zustand";
-import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, clampBentoLayoutItem } from "@/lib/page-config/bento-layout";
-import type { DeploymentMode, GridLayoutItem, PageConfig, WidgetInstance } from "@/lib/page-config/types";
+import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_MIN_ITEM_SIZE, arrangeBentoLayout, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
+import { getGridWidgets, normalizePageConfig } from "@/lib/page-config/normalize";
+import type { DeploymentMode, GridLayoutItem, PageConfig, PageProfile, WidgetInstance } from "@/lib/page-config/types";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 
-export type SelectedTarget =
-  | { type: "profile"; id: string }
-  | { type: "widget"; id: string }
-  | null;
+export type SelectedTarget = { type: "widget"; id: string } | null;
+
+type AddWidgetPlacement = {
+  x: number;
+  y: number;
+};
 
 type EditorState = {
   config: PageConfig;
   mode: DeploymentMode;
   selectedTarget: SelectedTarget;
   status: string;
-  addWidget: (type: string) => void;
+  addWidget: (type: string, placement?: AddWidgetPlacement) => void;
   clearSelection: () => void;
   deleteWidget: (id: string) => void;
   exportConfig: () => void;
   importConfig: (file: File) => Promise<void>;
   loadLocalDraft: () => void;
   saveDraft: () => Promise<void>;
-  selectProfile: (id: string) => void;
   selectWidget: (id: string) => void;
   updateLayout: (layout: GridLayoutItem[]) => void;
-  updateProfileProps: (id: string, props: Record<string, unknown>) => void;
+  updateLayoutItem: (id: string, patch: Partial<Omit<GridLayoutItem, "i">>) => void;
+  updateProfile: (props: Partial<PageProfile>) => void;
   updateWidgetProps: (id: string, props: Record<string, unknown>) => void;
 };
 
@@ -56,15 +59,15 @@ export function useEditorStore<T>(selector: (state: EditorState) => T) {
 
 function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
   return createStore<EditorState>((set, get) => ({
-    config: normalizeConfigLayout(initialConfig),
+    config: normalizePageConfig(initialConfig),
     mode,
     selectedTarget: null,
     status: "Ready",
 
-    addWidget(type) {
+    addWidget(type, placement) {
       const definition = getWidgetDefinition(type);
 
-      if (!definition || definition.type === "profile") {
+      if (!definition) {
         return;
       }
 
@@ -79,8 +82,8 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
         };
         const layout = clampBentoLayoutItem({
           i: id,
-          x: findNextColumn(gridLayout),
-          y: maxY,
+          x: placement?.x ?? findNextColumn(gridLayout),
+          y: placement?.y ?? maxY,
           w: definition.defaultLayout.w ?? BENTO_DEFAULT_ITEM_SIZE,
           h: definition.defaultLayout.h ?? BENTO_DEFAULT_ITEM_SIZE,
           minW: definition.defaultLayout.minW,
@@ -90,11 +93,13 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
         });
 
         return {
-          config: touchConfig({
-            ...state.config,
-            widgets: [...state.config.widgets, widget],
-            layout: [...state.config.layout, layout],
-          }),
+          config: touchConfig(
+            normalizePageConfig({
+              ...state.config,
+              widgets: [...state.config.widgets, widget],
+              layout: arrangeBentoLayout([...state.config.layout, layout], id),
+            }),
+          ),
           selectedTarget: { type: "widget", id },
           status: `${definition.name} added`,
         };
@@ -109,16 +114,18 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
       set((state) => {
         const widget = state.config.widgets.find((item) => item.id === id);
 
-        if (!widget || widget.type === "profile") {
+        if (!widget) {
           return state;
         }
 
         return {
-          config: touchConfig({
-            ...state.config,
-            widgets: state.config.widgets.filter((item) => item.id !== id),
-            layout: state.config.layout.filter((item) => item.i !== id),
-          }),
+          config: touchConfig(
+            normalizePageConfig({
+              ...state.config,
+              widgets: state.config.widgets.filter((item) => item.id !== id),
+              layout: state.config.layout.filter((item) => item.i !== id),
+            }),
+          ),
           selectedTarget: null,
           status: "Deleted",
         };
@@ -127,7 +134,7 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
 
     exportConfig() {
       const { config } = get();
-      const blob = new Blob([JSON.stringify(config, null, 2)], { type: "application/json" });
+      const blob = new Blob([JSON.stringify(normalizePageConfig(config), null, 2)], { type: "application/json" });
       const href = URL.createObjectURL(blob);
       const link = document.createElement("a");
 
@@ -143,7 +150,7 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
     async importConfig(file) {
       try {
         const nextConfig = JSON.parse(await file.text()) as PageConfig;
-        set({ config: normalizeConfigLayout(nextConfig), selectedTarget: null, status: "Imported" });
+        set({ config: normalizePageConfig(nextConfig), selectedTarget: null, status: "Imported" });
       } catch {
         set({ status: "Import failed" });
       }
@@ -163,7 +170,7 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
       }
 
       try {
-        set({ config: normalizeConfigLayout(JSON.parse(draft) as PageConfig), selectedTarget: null, status: "Draft loaded" });
+        set({ config: normalizePageConfig(JSON.parse(draft) as PageConfig), selectedTarget: null, status: "Draft loaded" });
       } catch {
         set({ status: "Ready" });
       }
@@ -171,10 +178,11 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
 
     async saveDraft() {
       const { config, mode } = get();
+      const normalizedConfig = normalizePageConfig(config);
 
       if (mode === "static") {
-        localStorage.setItem(getDraftKey(config.username), JSON.stringify(config, null, 2));
-        set({ status: "Saved locally" });
+        localStorage.setItem(getDraftKey(config.username), JSON.stringify(normalizedConfig, null, 2));
+        set({ config: normalizedConfig, status: "Saved locally" });
         return;
       }
 
@@ -182,7 +190,7 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
         const response = await fetch(`/api/pages/${encodeURIComponent(config.username)}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(normalizeConfigLayout(config)),
+          body: JSON.stringify(normalizedConfig),
         });
 
         if (!response.ok) {
@@ -190,14 +198,10 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
           return;
         }
 
-        set({ config: (await response.json()) as PageConfig, status: "Saved" });
+        set({ config: normalizePageConfig((await response.json()) as PageConfig), status: "Saved" });
       } catch {
         set({ status: "Save failed" });
       }
-    },
-
-    selectProfile(id) {
-      set({ selectedTarget: { type: "profile", id } });
     },
 
     selectWidget(id) {
@@ -207,30 +211,68 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
     updateLayout(layout) {
       set((state) => {
         const gridIds = new Set(getGridWidgets(state.config).map((widget) => widget.id));
-        const preservedLayout = state.config.layout.filter((item) => !gridIds.has(item.i));
+        const nextLayout = arrangeBentoLayout(layout.filter((item) => gridIds.has(item.i)).map(normalizeLayoutItem));
 
         return {
-          config: touchConfig({
-            ...state.config,
-            layout: [...preservedLayout, ...layout.map(normalizeLayoutItem)],
-          }),
+          config: touchConfig(
+            normalizePageConfig({
+              ...state.config,
+              layout: nextLayout,
+            }),
+          ),
           status: "Layout changed",
         };
       });
     },
 
-    updateProfileProps(id, props) {
-      get().updateWidgetProps(id, props);
+    updateLayoutItem(id, patch) {
+      set((state) => {
+        const widgetIds = new Set(getGridWidgets(state.config).map((widget) => widget.id));
+
+        if (!widgetIds.has(id)) {
+          return state;
+        }
+
+        const layoutItem = state.config.layout.find((item) => item.i === id);
+
+        if (!layoutItem) {
+          return state;
+        }
+
+        return {
+          config: touchConfig(
+            normalizePageConfig({
+              ...state.config,
+              layout: updateBentoLayoutItem(state.config.layout, id, normalizeLayoutPatch(layoutItem, patch)),
+            }),
+          ),
+          status: "Layout changed",
+        };
+      });
+    },
+
+    updateProfile(props) {
+      set((state) => ({
+        config: touchConfig(
+          normalizePageConfig({
+            ...state.config,
+            profile: { ...state.config.profile, ...props },
+          }),
+        ),
+        status: "Changed",
+      }));
     },
 
     updateWidgetProps(id, props) {
       set((state) => ({
-        config: touchConfig({
-          ...state.config,
-          widgets: state.config.widgets.map((widget) =>
-            widget.id === id ? { ...widget, props: { ...(widget.props as Record<string, unknown>), ...props } } : widget,
-          ),
-        }),
+        config: touchConfig(
+          normalizePageConfig({
+            ...state.config,
+            widgets: state.config.widgets.map((widget) =>
+              widget.id === id ? { ...widget, props: { ...(widget.props as Record<string, unknown>), ...props } } : widget,
+            ),
+          }),
+        ),
         status: "Changed",
       }));
     },
@@ -269,19 +311,36 @@ function getGridLayout(config: PageConfig) {
   return config.layout.filter((item) => gridIds.has(item.i));
 }
 
-function getGridWidgets(config: PageConfig) {
-  return config.widgets.filter((widget) => widget.type !== "profile");
-}
-
-function normalizeConfigLayout(config: PageConfig): PageConfig {
-  return {
-    ...config,
-    layout: config.layout.map(normalizeLayoutItem),
-  };
-}
-
 function normalizeLayoutItem(item: GridLayoutItem): GridLayoutItem {
   return clampBentoLayoutItem(item);
+}
+
+function normalizeLayoutPatch(item: GridLayoutItem, patch: Partial<Omit<GridLayoutItem, "i">>): GridLayoutItem {
+  const nextW = patch.w ?? item.w;
+  const nextH = patch.h ?? item.h;
+  const minW = patch.minW ?? item.minW;
+  const minH = patch.minH ?? item.minH;
+  const maxW = patch.maxW ?? item.maxW;
+  const maxH = patch.maxH ?? item.maxH;
+  const w = clamp(Math.round(nextW), Math.max(BENTO_MIN_ITEM_SIZE, minW ?? BENTO_MIN_ITEM_SIZE), Math.min(BENTO_COLS, maxW ?? BENTO_COLS));
+  const h = clamp(Math.round(nextH), Math.max(BENTO_MIN_ITEM_SIZE, minH ?? BENTO_MIN_ITEM_SIZE), maxH ?? Number.MAX_SAFE_INTEGER);
+
+  return clampBentoLayoutItem({
+    ...item,
+    ...patch,
+    x: patch.x ?? item.x,
+    y: patch.y ?? item.y,
+    w,
+    h,
+    minW,
+    minH,
+    maxW,
+    maxH,
+  });
+}
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
 }
 
 function findNextColumn(layout: GridLayoutItem[]) {
