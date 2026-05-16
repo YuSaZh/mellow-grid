@@ -5,7 +5,7 @@ services:
       - "3000:3000"
     environment:
       MELLOWGRID_MODE: file
-      MELLOWGRID_DEFAULT_USER: hanam
+      MELLOWGRID_DEFAULT_USER: username
       MELLOWGRID_DATA_DIR: /app/data
       MELLOWGRID_EDITOR_PASSWORD: ""
     volumes:

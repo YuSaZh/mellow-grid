@@ -1,0 +1,102 @@
+"use client";
+
+import type { ChangeEvent } from "react";
+
+export type EditableLink = {
+  label: string;
+  href: string;
+};
+
+type TextFieldProps = {
+  label: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  type?: string;
+  value: string;
+};
+
+export function TextField({ label, onChange, placeholder, type = "text", value }: TextFieldProps) {
+  return (
+    <label className="grid gap-1.5 text-sm font-bold capitalize text-zinc-700">
+      {label}
+      <input
+        className="min-h-11 rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-medium text-zinc-950 outline-none transition focus:border-[#7c5cff] focus:ring-2 focus:ring-[#7c5cff]/20"
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        type={type}
+        value={value}
+      />
+    </label>
+  );
+}
+
+export function TextAreaField({ label, onChange, value }: { label: string; onChange: (value: string) => void; value: string }) {
+  return (
+    <label className="grid gap-1.5 text-sm font-bold capitalize text-zinc-700">
+      {label}
+      <textarea
+        className="min-h-32 resize-y rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-medium leading-6 text-zinc-950 outline-none transition focus:border-[#7c5cff] focus:ring-2 focus:ring-[#7c5cff]/20"
+        onChange={(event) => onChange(event.target.value)}
+        value={value}
+      />
+    </label>
+  );
+}
+
+export function LinksField({ label, onChange, value }: { label: string; onChange: (value: EditableLink[]) => void; value: unknown[] }) {
+  const links = value.filter(isEditableLink);
+
+  return (
+    <div className="grid gap-3">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm font-bold capitalize text-zinc-700">{label}</span>
+        <button
+          className="min-h-11 rounded-full bg-zinc-950 px-4 text-xs font-bold text-white transition hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-[#7c5cff]/40"
+          onClick={() => onChange([...links, { label: "New link", href: "https://example.com" }])}
+          type="button"
+        >
+          添加
+        </button>
+      </div>
+      <div className="grid gap-3">
+        {links.map((link, index) => (
+          <div className="grid gap-3 rounded-3xl border border-black/5 bg-zinc-50 p-3" key={`${link.label}-${index}`}>
+            <TextField label="Label" onChange={(nextLabel) => onChange(links.map((item, itemIndex) => (itemIndex === index ? { ...item, label: nextLabel } : item)))} value={link.label} />
+            <TextField label="Href" onChange={(nextHref) => onChange(links.map((item, itemIndex) => (itemIndex === index ? { ...item, href: nextHref } : item)))} value={link.href} />
+            <button
+              className="min-h-11 justify-self-start rounded-full bg-red-50 px-4 text-xs font-bold text-red-600 transition hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-200"
+              onClick={() => onChange(links.filter((_, itemIndex) => itemIndex !== index))}
+              type="button"
+            >
+              删除
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function fileToDataUrl(file: File) {
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(String(reader.result ?? "")));
+    reader.addEventListener("error", () => reject(reader.error));
+    reader.readAsDataURL(file);
+  });
+}
+
+export function isEditableLink(value: unknown): value is EditableLink {
+  return typeof value === "object" && value !== null && "label" in value && "href" in value && typeof value.label === "string" && typeof value.href === "string";
+}
+
+export function stringProp(value: unknown, fallback: string) {
+  return typeof value === "string" ? value : fallback;
+}
+
+export function uploadFile(event: ChangeEvent<HTMLInputElement>) {
+  const file = event.target.files?.[0] ?? null;
+  event.target.value = "";
+
+  return file;
+}

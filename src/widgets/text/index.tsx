@@ -9,9 +9,9 @@ export type TextWidgetProps = {
 export function TextWidget({ props }: { props: TextWidgetProps }) {
   return (
     <BentoCard>
-      {props.eyebrow ? <p className="text-sm font-semibold uppercase tracking-[0.2em] text-zinc-400">{props.eyebrow}</p> : null}
-      <h2 className="mt-4 text-3xl font-bold tracking-tight text-zinc-950">{props.title}</h2>
-      <p className="mt-4 text-base leading-7 text-zinc-600">{props.body}</p>
+      {props.eyebrow ? <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400 sm:text-sm">{props.eyebrow}</p> : null}
+      <h2 className="mt-3 text-2xl font-bold tracking-tight text-zinc-950 sm:text-3xl">{props.title}</h2>
+      <p className="mt-3 text-sm leading-6 text-zinc-600 sm:text-base sm:leading-7">{props.body}</p>
     </BentoCard>
   );
 }
@@ -20,7 +20,7 @@ export const textWidget = {
   type: "text",
   name: "Text",
   description: "Heading, body copy, or quote content.",
-  defaultLayout: { w: 4, h: 2, minW: 3, minH: 2 },
+  defaultLayout: { w: 2, h: 2, minW: 1, minH: 1 },
   defaultProps: {
     eyebrow: "Snapshot",
     title: "Simple, rounded, customizable.",

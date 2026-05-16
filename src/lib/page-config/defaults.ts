@@ -10,26 +10,31 @@ export const defaultTheme: PageTheme = {
 };
 
 export const defaultPageConfig: PageConfig = {
-  username: "hanam",
+  username: "username",
   title: "MellowGrid",
   description: "A soft, modular personal homepage.",
   theme: defaultTheme,
   updatedAt: new Date(0).toISOString(),
   layout: [
-    { i: "profile", x: 0, y: 0, w: 4, h: 3, minW: 3, minH: 2 },
-    { i: "links", x: 4, y: 0, w: 3, h: 2, minW: 2, minH: 2 },
-    { i: "intro", x: 7, y: 0, w: 5, h: 2, minW: 3, minH: 2 },
-    { i: "stats", x: 4, y: 2, w: 3, h: 2, minW: 2, minH: 2 },
+    { i: "links", x: 0, y: 0, w: 2, h: 4, minW: 1, minH: 1 },
+    { i: "social-linkedin", x: 2, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-github", x: 3, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "intro", x: 4, y: 0, w: 2, h: 2, minW: 2, minH: 2 },
+    { i: "stats", x: 6, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
+    { i: "social-blog", x: 2, y: 1, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-mail", x: 3, y: 1, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "about", x: 2, y: 2, w: 4, h: 2, minW: 2, minH: 2 },
   ],
   widgets: [
     {
       id: "profile",
       type: "profile",
       props: {
-        name: "Hanam",
-        bio: "Developer building a mellow corner of the web.",
-        location: "Based on Earth",
+        name: "Your Name",
+        bio: "A short introduction for your personal homepage.",
+        location: "Based in Your City",
         avatarUrl: "",
+        contacts: [{ label: "Recommendations", href: "#" }],
       },
     },
     {
@@ -40,6 +45,24 @@ export const defaultPageConfig: PageConfig = {
           { label: "GitHub", href: "https://github.com/" },
           { label: "Blog", href: "https://example.com" },
         ],
+      },
+    },
+    {
+      id: "social-linkedin",
+      type: "social",
+      props: {
+        label: "LinkedIn",
+        href: "https://www.linkedin.com/",
+        initials: "in",
+      },
+    },
+    {
+      id: "social-github",
+      type: "social",
+      props: {
+        label: "GitHub",
+        href: "https://github.com/",
+        initials: "GH",
       },
     },
     {
@@ -57,6 +80,33 @@ export const defaultPageConfig: PageConfig = {
       props: {
         value: "24",
         label: "Modules ready",
+      },
+    },
+    {
+      id: "social-blog",
+      type: "social",
+      props: {
+        label: "Blog",
+        href: "https://example.com",
+        initials: "BL",
+      },
+    },
+    {
+      id: "social-mail",
+      type: "social",
+      props: {
+        label: "Email",
+        href: "mailto:hello@example.com",
+        initials: "@",
+      },
+    },
+    {
+      id: "about",
+      type: "text",
+      props: {
+        eyebrow: "About Me",
+        title: "Fluent in quiet launches and playful grids.",
+        body: "Use larger Bento cards for images, maps, playlists, writing, and anything that needs more room.",
       },
     },
   ],

@@ -10,6 +10,10 @@ export function getDeploymentMode(): DeploymentMode {
     return mode;
   }
 
+  if (process.env.NODE_ENV === "development") {
+    return "file";
+  }
+
   return "static";
 }
 

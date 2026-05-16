@@ -1,0 +1,22 @@
+.mg-editor-grid .react-grid-item > .react-resizable-handle {
+  bottom: 0;
+  right: 0;
+  height: 42px;
+  width: 42px;
+  opacity: 0;
+  z-index: 30;
+}
+
+.mg-editor-grid .react-grid-item:hover > .react-resizable-handle,
+.mg-editor-grid .react-grid-item:focus-within > .react-resizable-handle {
+  opacity: 1;
+}
+
+.mg-editor-grid .react-grid-item > .react-resizable-handle::after {
+  bottom: 12px;
+  right: 12px;
+  height: 10px;
+  width: 10px;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.95);
+  border-right: 3px solid rgba(255, 255, 255, 0.95);
+}

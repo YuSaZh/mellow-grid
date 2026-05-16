@@ -30,7 +30,7 @@ export const linksWidget = {
   type: "links",
   name: "Links",
   description: "A compact list of social and action links.",
-  defaultLayout: { w: 3, h: 2, minW: 2, minH: 2 },
+  defaultLayout: { w: 2, h: 2, minW: 1, minH: 1 },
   defaultProps: {
     links: [
       { label: "GitHub", href: "https://github.com/" },
