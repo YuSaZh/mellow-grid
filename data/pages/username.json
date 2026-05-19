@@ -18,41 +18,323 @@
     "shadow": "soft"
   },
   "layout": [
-    { "i": "social-twitter", "x": 0, "y": 0, "w": 2, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "social-figma", "x": 2, "y": 0, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "social-dribbble", "x": 3, "y": 0, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "links", "x": 0, "y": 1, "w": 2, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "about", "x": 2, "y": 1, "w": 1, "h": 2, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "social-mail", "x": 3, "y": 1, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "stats", "x": 0, "y": 2, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "social-github", "x": 1, "y": 2, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "social-linkedin", "x": 3, "y": 2, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "social-blog", "x": 0, "y": 3, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "intro", "x": 1, "y": 3, "w": 2, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
-    { "i": "social-coffee", "x": 3, "y": 3, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 }
+    {
+      "i": "social-twitter",
+      "x": 0,
+      "y": 0,
+      "w": 2,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-figma",
+      "x": 2,
+      "y": 0,
+      "w": 2,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-dribbble",
+      "x": 3,
+      "y": 1,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "links",
+      "x": 0,
+      "y": 1,
+      "w": 2,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "about",
+      "x": 2,
+      "y": 1,
+      "w": 1,
+      "h": 2,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-mail",
+      "x": 3,
+      "y": 3,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "stats",
+      "x": 0,
+      "y": 2,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-github",
+      "x": 1,
+      "y": 2,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-linkedin",
+      "x": 3,
+      "y": 4,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-blog",
+      "x": 0,
+      "y": 3,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "intro",
+      "x": 1,
+      "y": 3,
+      "w": 2,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-coffee",
+      "x": 3,
+      "y": 2,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    }
   ],
   "widgets": [
-    { "id": "social-twitter", "type": "social", "props": { "label": "Twitter", "href": "https://twitter.com/", "handle": "@handle or address", "initials": "X" } },
-    { "id": "social-figma", "type": "social", "props": { "label": "Figma", "href": "https://figma.com/", "handle": "@handle or address", "initials": "Fi" } },
-    { "id": "social-dribbble", "type": "social", "props": { "label": "Dribbble", "href": "https://dribbble.com/", "handle": "@handle or address", "initials": "Dr" } },
+    {
+      "id": "social-twitter",
+      "type": "link",
+      "props": {
+        "title": "Twitter",
+        "href": "https://twitter.com/",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "x"
+        },
+        "color": "#f5f5f5",
+        "background": {
+          "type": "solid",
+          "value": "#252222"
+        }
+      }
+    },
+    {
+      "id": "social-figma",
+      "type": "link",
+      "props": {
+        "title": "Figma",
+        "href": "https://figma.com/",
+        "description": "@Web Design",
+        "logo": {
+          "type": "builtin",
+          "key": "figma"
+        },
+        "color": "#8f4be7",
+        "background": {
+          "type": "solid",
+          "value": "#b77dde"
+        }
+      }
+    },
+    {
+      "id": "social-dribbble",
+      "type": "link",
+      "props": {
+        "title": "Dribbble",
+        "href": "https://dribbble.com/",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "dribbble"
+        },
+        "color": "#EA4C89",
+        "background": {
+          "type": "solid",
+          "value": "#f37cdd"
+        }
+      }
+    },
     {
       "id": "links",
       "type": "links",
       "props": {
         "links": [
-          { "label": "Buy me a coffee", "href": "https://example.com" },
-          { "label": "Portfolio", "href": "https://example.com" }
+          {
+            "label": "Buy me a coffee",
+            "href": "https://example.com"
+          },
+          {
+            "label": "Portfolio",
+            "href": "https://example.com"
+          }
         ]
       }
     },
-    { "id": "social-linkedin", "type": "social", "props": { "label": "LinkedIn", "href": "https://www.linkedin.com/", "handle": "@handle or address", "initials": "in" } },
-    { "id": "social-github", "type": "social", "props": { "label": "GitHub", "href": "https://github.com/", "handle": "@handle or address", "initials": "GH" } },
-    { "id": "intro", "type": "text", "props": { "eyebrow": "Playground", "title": "2.5D widgets for ordinary tools.", "body": "Rounded cards, subtle highlights, and a crisp bento layout." } },
-    { "id": "stats", "type": "stats", "props": { "value": "12", "label": "Playground widgets" } },
-    { "id": "social-blog", "type": "social", "props": { "label": "Blog", "href": "https://example.com", "handle": "@handle or address", "initials": "BL" } },
-    { "id": "social-mail", "type": "social", "props": { "label": "Email", "href": "mailto:hello@example.com", "handle": "@handle or address", "initials": "@" } },
-    { "id": "about", "type": "text", "props": { "eyebrow": "Notes", "title": "Designed as a compact visual playground.", "body": "Each tile follows the current Pencil widget template with icon shadows disabled." } },
-    { "id": "social-coffee", "type": "social", "props": { "label": "Coffee", "href": "https://example.com", "handle": "@handle or address", "initials": "Cf" } }
+    {
+      "id": "social-linkedin",
+      "type": "link",
+      "props": {
+        "title": "LinkedIn",
+        "href": "https://www.linkedin.com/",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "linkedin"
+        },
+        "color": "#0A66C2",
+        "background": {
+          "type": "theme"
+        }
+      }
+    },
+    {
+      "id": "social-github",
+      "type": "link",
+      "props": {
+        "title": "GitHub",
+        "href": "https://github.com/",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "github"
+        },
+        "color": "#f0f6fc",
+        "background": {
+          "type": "theme"
+        }
+      }
+    },
+    {
+      "id": "intro",
+      "type": "text",
+      "props": {
+        "eyebrow": "Playground",
+        "title": "2.5D widgets for ordinary tools.",
+        "body": "Rounded cards, subtle highlights, and a crisp bento layout."
+      }
+    },
+    {
+      "id": "stats",
+      "type": "stats",
+      "props": {
+        "value": "12",
+        "label": "Playground widgets"
+      }
+    },
+    {
+      "id": "social-blog",
+      "type": "link",
+      "props": {
+        "title": "Blog",
+        "href": "https://example.com",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "blog"
+        },
+        "color": "#ade0ff",
+        "background": {
+          "type": "theme"
+        }
+      }
+    },
+    {
+      "id": "social-mail",
+      "type": "link",
+      "props": {
+        "title": "Email",
+        "href": "mailto:hello@example.com",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "email"
+        },
+        "color": "#ade0ff",
+        "background": {
+          "type": "solid",
+          "value": "#37c5e1"
+        }
+      }
+    },
+    {
+      "id": "about",
+      "type": "text",
+      "props": {
+        "eyebrow": "Notes",
+        "title": "Designed as a compact visual playground.",
+        "body": "Each tile follows the current link widget template with unified logo shadows."
+      }
+    },
+    {
+      "id": "social-coffee",
+      "type": "link",
+      "props": {
+        "title": "Coffee",
+        "href": "https://example.com",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "coffee"
+        },
+        "color": "#ffdd99",
+        "background": {
+          "type": "solid",
+          "value": "#d79d37"
+        }
+      }
+    }
   ],
-  "updatedAt": "2026-05-19T00:00:00.000Z"
+  "updatedAt": "2026-05-19T16:13:09.406Z"
 }

@@ -25,7 +25,7 @@ MellowGrid is a personal, self-hostable, Bento-style homepage project. It combin
 
 - **Bento-style public homepage**: visit `/:username` to render a profile panel with a modular Bento grid.
 - **Visual editor**: use `/editor` to add widgets, move cards, resize cards, edit content, and import/export JSON.
-- **Modular widget system**: built-in widgets include `links`, `text`, `stats`, and `social`.
+- **Modular widget system**: built-in widgets include `link`, `links`, `text`, and `stats`.
 - **Shared Bento Grid**: the public page and editor share the same 8-column layout interpretation.
 - **Flexible deployment modes**: static mode, local/server file mode, and a reserved remote storage adapter path.
 - **Self-hosting with Docker**: includes `Dockerfile` and `docker-compose.yml` for VPS, NAS, or personal server deployments.

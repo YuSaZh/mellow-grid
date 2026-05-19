@@ -25,7 +25,7 @@ MellowGrid 是一个个人自用、可自托管、Bento 风格的个人主页项
 
 - **Bento 风格公开主页**：通过 `/:username` 访问公开页面，左侧个人资料区 + 右侧模块化 Bento 网格。
 - **可视化编辑器**：通过 `/editor` 添加模块、拖拽调整位置、缩放卡片、编辑内容、导入/导出 JSON。
-- **模块化 Widget 系统**：当前内置 `links`、`text`、`stats`、`social`，新增模块时优先新增 widget 文件并注册。
+- **模块化 Widget 系统**：当前内置 `link`、`links`、`text`、`stats`，新增模块时优先新增 widget 文件并注册。
 - **共享 Bento Grid**：公开页和编辑器共用同一套 8 列布局解释，避免展示和编辑结果不一致。
 - **多部署模式设计**：支持静态模式、本地/服务器文件模式，并为后续远程存储 adapter 预留扩展点。
 - **Docker 自托管**：提供 `Dockerfile` 和 `docker-compose.yml`，适合 VPS、NAS 或个人服务器部署。

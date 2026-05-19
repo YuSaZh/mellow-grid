@@ -1,6 +1,6 @@
 import type { CSSProperties, ReactNode } from "react";
 import { BENTO_COLS, BENTO_GAP, BENTO_ROW_HEIGHT, clampBentoLayoutItem } from "@/lib/page-config/bento-layout";
-import type { GridLayoutItem, WidgetInstance } from "@/lib/page-config/types";
+import type { GridLayoutItem, WidgetInstance, WidgetRenderVariant } from "@/lib/page-config/types";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 import styles from "./bento-grid.module.css";
 
@@ -39,6 +39,7 @@ export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout
 
         const Widget = definition.Component;
         const className = getItemClassName?.(item, widget);
+        const variant = getWidgetRenderVariant(item);
 
         return (
           <div
@@ -51,7 +52,7 @@ export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout
               } as CSSProperties
             }
           >
-            <Widget props={widget.props} />
+            <Widget props={widget.props} context={{ layout: item, variant }} />
             {getItemOverlay?.(item, widget)}
           </div>
         );
@@ -59,6 +60,18 @@ export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout
       {afterItems}
     </section>
   );
+}
+
+function getWidgetRenderVariant(item: GridLayoutItem): WidgetRenderVariant {
+  if (item.w >= 2 && item.h >= 2) {
+    return "large";
+  }
+
+  if (item.w >= 2) {
+    return "wide";
+  }
+
+  return "compact";
 }
 
 export function getBentoGridItemStyle(item: GridLayoutItem): CSSProperties {

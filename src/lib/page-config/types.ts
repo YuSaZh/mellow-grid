@@ -45,6 +45,13 @@ export type WidgetInstance<TProps = Record<string, unknown>> = {
   props: TProps;
 };
 
+export type WidgetRenderVariant = "compact" | "wide" | "large";
+
+export type WidgetRenderContext = {
+  layout: GridLayoutItem;
+  variant: WidgetRenderVariant;
+};
+
 export type PageConfig = {
   username: string;
   title: string;
@@ -62,9 +69,9 @@ export type WidgetDefinition<TProps = unknown> = {
   description: string;
   defaultLayout: Omit<GridLayoutItem, "i" | "x" | "y">;
   defaultProps: TProps;
-  Component: ComponentType<{ props: TProps }>;
+  Component: ComponentType<{ props: TProps; context?: WidgetRenderContext }>;
 };
 
 export type AnyWidgetDefinition = Omit<WidgetDefinition<unknown>, "Component"> & {
-  Component: ComponentType<{ props: unknown }>;
+  Component: ComponentType<{ props: unknown; context?: WidgetRenderContext }>;
 };

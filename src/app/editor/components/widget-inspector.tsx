@@ -2,6 +2,7 @@
 
 import { useEditorStore } from "../store";
 import { LinksField, TextAreaField, TextField } from "./inspector-fields";
+import { LinkWidgetInspector } from "./link-widget-inspector";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 
 export function WidgetInspector({ id }: { id: string }) {
@@ -27,11 +28,15 @@ export function WidgetInspector({ id }: { id: string }) {
         </button>
       </div>
 
-      <div className="grid gap-4">
-        {Object.entries(widget.props as Record<string, unknown>).map(([key, value]) => (
-          <PropertyField key={key} label={key} onChange={(nextValue) => updateWidgetProps(widget.id, { [key]: nextValue })} value={value} />
-        ))}
-      </div>
+      {widget.type === "link" ? (
+        <LinkWidgetInspector onChange={(nextProps) => updateWidgetProps(widget.id, nextProps)} props={widget.props} />
+      ) : (
+        <div className="grid gap-4">
+          {Object.entries(widget.props as Record<string, unknown>).map(([key, value]) => (
+            <PropertyField key={key} label={key} onChange={(nextValue) => updateWidgetProps(widget.id, { [key]: nextValue })} value={value} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

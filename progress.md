@@ -41,10 +41,10 @@
 - **状态：** superseded_by_shared_css_grid
 - 执行的操作：
   - 用户确认采用方案 A，并指定右侧展示区为 8 列 Bento grid。
-  - 用户确认 1x1 用于社交连接，2x2 为默认模块，2x4/4x2/4x4 用于大信息模块。
+  - 用户确认 1x1 用于紧凑链接/图标模块，2x2 为默认模块，2x4/4x2/4x4 用于大信息模块。
   - 写入新设计规格文件，准备按统一 `x/y/w/h` 协议复现公开页和 editor。
   - 新增共享 8 列 Bento token。
-  - 将默认配置和示例页面迁移为 8 列布局，补充 1x1 social widget。
+  - 将默认配置和示例页面迁移为 8 列布局，补充 1x1 链接模块雏形。
   - 公开页改为完整解释 `x/y/w/h`。
   - editor 曾改为 8 列 RGL；后续已被共享 CSS Grid editor 重构取代。
 - 创建/修改的文件：
@@ -52,7 +52,7 @@
   - `src/lib/page-config/bento-layout.ts`
   - `src/lib/page-config/defaults.ts`
   - `src/lib/widgets/registry.ts`
-  - `src/widgets/social/index.tsx`
+  - `src/widgets/link/index.tsx`（当前链接模块实现）
   - `src/components/page/page-renderer.tsx`
   - `src/components/ui/bento-card.tsx`
   - `src/app/editor/components/editor-canvas.tsx`
@@ -92,6 +92,32 @@
   - `src/app/editor/components/widget-editor-modal.tsx`
   - `src/lib/page-config/bento-layout.ts`
   - `src/app/editor/editor-grid.css`（已删除）
+
+### 阶段 13：统一外壳与 Link 模板迁移
+
+- **状态：** complete_pending_manual_visual_check
+- 执行的操作：
+  - 新增 `WidgetShell`，集中管理卡片圆角、描边、高光、阴影和自定义背景。
+  - 新增 `IconEffect`，按 Figma `Playground widgets` 的多层偏移/模糊参数实现 2.5D Logo 阴影。
+  - 新增内置/上传 Logo 数据模型与 `LinkLogo` 渲染入口。
+  - 新增 `link` widget，并将默认配置和示例页面从旧链接模块命名切换为 `link`。
+  - 新增 `link` 专用编辑器字段，支持标题、说明、URL、品牌色、内置/上传 Logo、单色/渐变背景。
+  - 移除 `src/widgets/social/index.tsx`。项目仍在开发阶段，没有已发布旧数据，因此不保留 normalize 旧类型迁移逻辑。
+- 创建/修改/删除的文件：
+  - `src/components/widgets/widget-shell.tsx`
+  - `src/components/widgets/icon-effect.tsx`
+  - `src/components/widgets/link-logo.tsx`
+  - `src/lib/widgets/logo-registry.tsx`
+  - `src/widgets/link/index.tsx`
+  - `src/lib/widgets/registry.ts`
+  - `src/lib/page-config/types.ts`
+  - `src/lib/page-config/normalize.ts`
+  - `src/lib/page-config/defaults.ts`
+  - `src/app/editor/components/inspector-fields.tsx`
+  - `src/app/editor/components/link-widget-inspector.tsx`
+  - `src/app/editor/components/widget-inspector.tsx`
+  - `data/pages/username.json`
+  - `src/widgets/social/index.tsx`（已删除）
 
 ## 测试结果
 
