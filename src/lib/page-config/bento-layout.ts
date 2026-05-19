@@ -1,10 +1,10 @@
 import type { GridLayoutItem } from "./types";
 
-export const BENTO_COLS = 8;
-export const BENTO_ROW_HEIGHT = 76;
-export const BENTO_GAP = 18;
+export const BENTO_COLS = 4;
+export const BENTO_ROW_HEIGHT = 175;
+export const BENTO_GAP = 40;
 export const BENTO_MIN_ITEM_SIZE = 1;
-export const BENTO_DEFAULT_ITEM_SIZE = 2;
+export const BENTO_DEFAULT_ITEM_SIZE = 1;
 
 export type BentoLayoutPatch = Partial<Pick<GridLayoutItem, "x" | "y" | "w" | "h">>;
 

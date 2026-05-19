@@ -1,47 +1,81 @@
 import type { PageConfig, PageProfile, PageTheme } from "./types";
 
 export const defaultTheme: PageTheme = {
-  background: "#f7f4ef",
-  foreground: "#191714",
-  card: "#ffffff",
-  accent: "#7c5cff",
+  background: "#ffffff",
+  foreground: "#000000",
+  card: "#121313",
+  accent: "#ade0ff",
   radius: "round",
   shadow: "soft",
 };
 
 export const defaultProfile: PageProfile = {
-  name: "Your Name",
-  bio: "A short introduction for your personal homepage.",
-  location: "Based in Your City",
+  name: "Double Glitch 🇺🇦",
+  bio: "Hey there! My name is Roman, I am a Ukrainian designer. I create unusual stuff with ordinary tools hoping to inspire people to unlock or boost their own creativity.",
+  location: "",
   avatarUrl: "",
-  contacts: [{ label: "Recommendations", href: "#" }],
+  contacts: [],
 };
 
 export const defaultPageConfig: PageConfig = {
   username: "username",
   title: "MellowGrid",
-  description: "A soft, modular personal homepage.",
+  description: "A 2.5D Bento playground inspired personal homepage.",
   profile: defaultProfile,
   theme: defaultTheme,
   updatedAt: new Date(0).toISOString(),
   layout: [
-    { i: "links", x: 0, y: 0, w: 2, h: 4, minW: 1, minH: 1 },
-    { i: "social-linkedin", x: 2, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "social-github", x: 3, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "intro", x: 4, y: 0, w: 2, h: 2, minW: 2, minH: 2 },
-    { i: "stats", x: 6, y: 0, w: 2, h: 2, minW: 1, minH: 1 },
-    { i: "social-blog", x: 2, y: 1, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-twitter", x: 0, y: 0, w: 2, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-figma", x: 2, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-dribbble", x: 3, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "links", x: 0, y: 1, w: 2, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "about", x: 2, y: 1, w: 1, h: 2, minW: 1, minH: 1, maxW: 2, maxH: 2 },
     { i: "social-mail", x: 3, y: 1, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "about", x: 2, y: 2, w: 4, h: 2, minW: 2, minH: 2 },
+    { i: "stats", x: 0, y: 2, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-github", x: 1, y: 2, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-linkedin", x: 3, y: 2, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-blog", x: 0, y: 3, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "intro", x: 1, y: 3, w: 2, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-coffee", x: 3, y: 3, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
   ],
   widgets: [
+    {
+      id: "social-twitter",
+      type: "social",
+      props: {
+        label: "Twitter",
+        href: "https://twitter.com/",
+        handle: "@handle or address",
+        initials: "X",
+      },
+    },
+    {
+      id: "social-figma",
+      type: "social",
+      props: {
+        label: "Figma",
+        href: "https://figma.com/",
+        handle: "@handle or address",
+        initials: "Fi",
+      },
+    },
+    {
+      id: "social-dribbble",
+      type: "social",
+      props: {
+        label: "Dribbble",
+        href: "https://dribbble.com/",
+        handle: "@handle or address",
+        initials: "Dr",
+      },
+    },
     {
       id: "links",
       type: "links",
       props: {
         links: [
-          { label: "GitHub", href: "https://github.com/" },
-          { label: "Blog", href: "https://example.com" },
+          { label: "Buy me a coffee", href: "https://example.com" },
+          { label: "Portfolio", href: "https://example.com" },
         ],
       },
     },
@@ -51,6 +85,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         label: "LinkedIn",
         href: "https://www.linkedin.com/",
+        handle: "@handle or address",
         initials: "in",
       },
     },
@@ -60,6 +95,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         label: "GitHub",
         href: "https://github.com/",
+        handle: "@handle or address",
         initials: "GH",
       },
     },
@@ -67,17 +103,17 @@ export const defaultPageConfig: PageConfig = {
       id: "intro",
       type: "text",
       props: {
-        eyebrow: "Snapshot",
-        title: "Simple, rounded, customizable.",
-        body: "MellowGrid is a Bento-style homepage with visual editing and flexible deployment modes.",
+        eyebrow: "Playground",
+        title: "2.5D widgets for ordinary tools.",
+        body: "Rounded cards, subtle highlights, and a crisp bento layout.",
       },
     },
     {
       id: "stats",
       type: "stats",
       props: {
-        value: "24",
-        label: "Modules ready",
+        value: "12",
+        label: "Playground widgets",
       },
     },
     {
@@ -86,6 +122,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         label: "Blog",
         href: "https://example.com",
+        handle: "@handle or address",
         initials: "BL",
       },
     },
@@ -95,6 +132,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         label: "Email",
         href: "mailto:hello@example.com",
+        handle: "@handle or address",
         initials: "@",
       },
     },
@@ -102,9 +140,19 @@ export const defaultPageConfig: PageConfig = {
       id: "about",
       type: "text",
       props: {
-        eyebrow: "About Me",
-        title: "Fluent in quiet launches and playful grids.",
-        body: "Use larger Bento cards for images, maps, playlists, writing, and anything that needs more room.",
+        eyebrow: "Notes",
+        title: "Designed as a compact visual playground.",
+        body: "Each tile follows the current Pencil widget template with icon shadows disabled.",
+      },
+    },
+    {
+      id: "social-coffee",
+      type: "social",
+      props: {
+        label: "Coffee",
+        href: "https://example.com",
+        handle: "@handle or address",
+        initials: "Cf",
       },
     },
   ],

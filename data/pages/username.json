@@ -7,200 +7,52 @@
     "bio": "A short introduction for your personal homepage.",
     "location": "Based in Your City",
     "avatarUrl": "",
-    "contacts": [
-      {
-        "label": "Recommendations",
-        "href": "#"
-      }
-    ]
+    "contacts": []
   },
   "theme": {
-    "background": "#f7f4ef",
-    "foreground": "#191714",
-    "card": "#ffffff",
-    "accent": "#7c5cff",
+    "background": "#ffffff",
+    "foreground": "#000000",
+    "card": "#121313",
+    "accent": "#ade0ff",
     "radius": "round",
     "shadow": "soft"
   },
   "layout": [
-    {
-      "i": "links",
-      "x": 0,
-      "y": 0,
-      "w": 2,
-      "h": 2,
-      "minW": 1,
-      "minH": 1
-    },
-    {
-      "i": "social-linkedin",
-      "x": 2,
-      "y": 0,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-github",
-      "x": 3,
-      "y": 0,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "intro",
-      "x": 4,
-      "y": 0,
-      "w": 2,
-      "h": 2,
-      "minW": 2,
-      "minH": 2
-    },
-    {
-      "i": "stats",
-      "x": 6,
-      "y": 0,
-      "w": 2,
-      "h": 2,
-      "minW": 1,
-      "minH": 1
-    },
-    {
-      "i": "social-blog",
-      "x": 2,
-      "y": 1,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-mail",
-      "x": 3,
-      "y": 1,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "about",
-      "x": 4,
-      "y": 2,
-      "w": 4,
-      "h": 2,
-      "minW": 2,
-      "minH": 2
-    },
-    {
-      "i": "text-mp8aw2ab",
-      "x": 0,
-      "y": 2,
-      "w": 4,
-      "h": 2,
-      "minW": 3,
-      "minH": 2
-    }
+    { "i": "social-twitter", "x": 0, "y": 0, "w": 2, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "social-figma", "x": 2, "y": 0, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "social-dribbble", "x": 3, "y": 0, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "links", "x": 0, "y": 1, "w": 2, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "about", "x": 2, "y": 1, "w": 1, "h": 2, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "social-mail", "x": 3, "y": 1, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "stats", "x": 0, "y": 2, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "social-github", "x": 1, "y": 2, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "social-linkedin", "x": 3, "y": 2, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "social-blog", "x": 0, "y": 3, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "intro", "x": 1, "y": 3, "w": 2, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 },
+    { "i": "social-coffee", "x": 3, "y": 3, "w": 1, "h": 1, "minW": 1, "minH": 1, "maxW": 2, "maxH": 2 }
   ],
   "widgets": [
+    { "id": "social-twitter", "type": "social", "props": { "label": "Twitter", "href": "https://twitter.com/", "handle": "@handle or address", "initials": "X" } },
+    { "id": "social-figma", "type": "social", "props": { "label": "Figma", "href": "https://figma.com/", "handle": "@handle or address", "initials": "Fi" } },
+    { "id": "social-dribbble", "type": "social", "props": { "label": "Dribbble", "href": "https://dribbble.com/", "handle": "@handle or address", "initials": "Dr" } },
     {
       "id": "links",
       "type": "links",
       "props": {
         "links": [
-          {
-            "label": "GitHub",
-            "href": "https://github.com/"
-          },
-          {
-            "label": "Blog",
-            "href": "https://example.com"
-          }
+          { "label": "Buy me a coffee", "href": "https://example.com" },
+          { "label": "Portfolio", "href": "https://example.com" }
         ]
       }
     },
-    {
-      "id": "intro",
-      "type": "text",
-      "props": {
-        "eyebrow": "Snapshot",
-        "title": "Simple, rounded, customizable.",
-        "body": "MellowGrid is a Bento-style homepage with visual editing and flexible deployment modes."
-      }
-    },
-    {
-      "id": "stats",
-      "type": "stats",
-      "props": {
-        "value": "24",
-        "label": "Modules ready"
-      }
-    },
-    {
-      "id": "text-mp8aw2ab",
-      "type": "text",
-      "props": {
-        "eyebrow": "Snapshot",
-        "title": "Add your story here.",
-        "body": "Use this card as a placeholder for a longer note, quote, or introduction."
-      }
-    },
-    {
-      "id": "social-linkedin",
-      "type": "social",
-      "props": {
-        "label": "LinkedIn",
-        "href": "https://www.linkedin.com/",
-        "initials": "in"
-      }
-    },
-    {
-      "id": "social-github",
-      "type": "social",
-      "props": {
-        "label": "GitHub",
-        "href": "https://github.com/",
-        "initials": "GH"
-      }
-    },
-    {
-      "id": "social-blog",
-      "type": "social",
-      "props": {
-        "label": "Blog",
-        "href": "https://example.com",
-        "initials": "BL"
-      }
-    },
-    {
-      "id": "social-mail",
-      "type": "social",
-      "props": {
-        "label": "Email",
-        "href": "mailto:hello@example.com",
-        "initials": "@"
-      }
-    },
-    {
-      "id": "about",
-      "type": "text",
-      "props": {
-        "eyebrow": "About Me",
-        "title": "Fluent in playful Bento layouts.",
-        "body": "Resize modules into 1x1, 2x2, 2x4, 4x2, or 4x4 blocks to show the right amount of information."
-      }
-    }
+    { "id": "social-linkedin", "type": "social", "props": { "label": "LinkedIn", "href": "https://www.linkedin.com/", "handle": "@handle or address", "initials": "in" } },
+    { "id": "social-github", "type": "social", "props": { "label": "GitHub", "href": "https://github.com/", "handle": "@handle or address", "initials": "GH" } },
+    { "id": "intro", "type": "text", "props": { "eyebrow": "Playground", "title": "2.5D widgets for ordinary tools.", "body": "Rounded cards, subtle highlights, and a crisp bento layout." } },
+    { "id": "stats", "type": "stats", "props": { "value": "12", "label": "Playground widgets" } },
+    { "id": "social-blog", "type": "social", "props": { "label": "Blog", "href": "https://example.com", "handle": "@handle or address", "initials": "BL" } },
+    { "id": "social-mail", "type": "social", "props": { "label": "Email", "href": "mailto:hello@example.com", "handle": "@handle or address", "initials": "@" } },
+    { "id": "about", "type": "text", "props": { "eyebrow": "Notes", "title": "Designed as a compact visual playground.", "body": "Each tile follows the current Pencil widget template with icon shadows disabled." } },
+    { "id": "social-coffee", "type": "social", "props": { "label": "Coffee", "href": "https://example.com", "handle": "@handle or address", "initials": "Cf" } }
   ],
-  "updatedAt": "2026-05-16T17:46:55.316Z"
+  "updatedAt": "2026-05-19T00:00:00.000Z"
 }

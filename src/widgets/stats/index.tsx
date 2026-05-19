@@ -1,4 +1,4 @@
-import { BentoCard } from "@/components/ui/bento-card";
+import { BentoCard, BentoIcon } from "@/components/ui/bento-card";
 
 export type StatsWidgetProps = {
   value: string;
@@ -7,10 +7,13 @@ export type StatsWidgetProps = {
 
 export function StatsWidget({ props }: { props: StatsWidgetProps }) {
   return (
-    <BentoCard className="grid place-items-center text-center">
-      <div>
-        <p className="text-5xl font-black tracking-tight text-zinc-950 sm:text-6xl">{props.value}</p>
-        <p className="mt-2 text-xs font-medium text-zinc-500 sm:text-sm">{props.label}</p>
+    <BentoCard>
+      <div className="relative z-10 flex h-full flex-col justify-between p-6">
+        <BentoIcon>{props.value.slice(0, 2)}</BentoIcon>
+        <div>
+          <p className="text-[32px] font-bold leading-none tracking-[-0.04em] text-[#fbfbfb]">{props.value}</p>
+          <p className="mt-2 text-[12px] leading-4 text-[#fbfbfb]/80">{props.label}</p>
+        </div>
       </div>
     </BentoCard>
   );

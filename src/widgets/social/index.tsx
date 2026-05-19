@@ -1,16 +1,24 @@
-import { BentoCard } from "@/components/ui/bento-card";
+import { BentoCard, BentoIcon } from "@/components/ui/bento-card";
 
 export type SocialWidgetProps = {
   label: string;
   href: string;
+  handle?: string;
   initials?: string;
 };
 
 export function SocialWidget({ props }: { props: SocialWidgetProps }) {
+  const iconLabel = props.initials || props.label.slice(0, 2).toUpperCase();
+
   return (
-    <BentoCard className="grid place-items-center p-0 text-center">
-      <a className="grid h-full w-full place-items-center rounded-[2rem] text-3xl font-black text-zinc-950" href={props.href} aria-label={props.label}>
-        {props.initials || props.label.slice(0, 2).toUpperCase()}
+    <BentoCard className="group">
+      <a className="absolute inset-0 z-10 block rounded-[24px] text-left outline-none transition focus-visible:ring-4 focus-visible:ring-white/25" href={props.href} aria-label={props.label}>
+        <BentoIcon className="absolute left-6 top-6">{iconLabel}</BentoIcon>
+        <span className="absolute inset-x-6 bottom-5 grid gap-[3px]">
+          <span className="[word-break:break-word] text-[16px] font-semibold leading-none text-[#fbfbfb]">{props.label}</span>
+          <span className="[word-break:break-word] text-[12px] leading-4 text-[#fbfbfb]">{props.handle || "@handle or address"}</span>
+        </span>
+        <span className="absolute right-[13px] top-[13px] size-5 rounded-full border-2 border-white/20 bg-black/20 opacity-0 backdrop-blur-[7px]" />
       </a>
     </BentoCard>
   );
@@ -24,6 +32,7 @@ export const socialWidget = {
   defaultProps: {
     label: "Social",
     href: "#",
+    handle: "@handle or address",
     initials: "in",
   } satisfies SocialWidgetProps,
   Component: SocialWidget,
