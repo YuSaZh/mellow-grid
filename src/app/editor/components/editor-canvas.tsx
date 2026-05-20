@@ -2,7 +2,7 @@
 
 import { useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import { BentoGrid, bentoGridStyles, getBentoGridItemStyle } from "@/components/page/bento-grid";
-import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_GAP, BENTO_ROW_HEIGHT, bentoLayoutItemsCollide, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
+import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_GAP, bentoLayoutItemsCollide, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
 import type { GridLayoutItem, WidgetInstance } from "@/lib/page-config/types";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 import { useEditorStore } from "../store";
@@ -255,13 +255,14 @@ function getGridMetrics(element: HTMLElement): GridMetrics | null {
   const rect = grid.getBoundingClientRect();
   const styles = window.getComputedStyle(grid);
   const gap = Number.parseFloat(styles.columnGap) || BENTO_GAP;
+  const rowHeight = Number.parseFloat(styles.gridAutoRows) || (rect.width - gap * (BENTO_COLS - 1)) / BENTO_COLS;
   const columnWidth = (rect.width - gap * (BENTO_COLS - 1)) / BENTO_COLS;
 
   return {
     columnWidth,
     gap,
     left: rect.left,
-    rowHeight: BENTO_ROW_HEIGHT,
+    rowHeight,
     top: rect.top,
   };
 }

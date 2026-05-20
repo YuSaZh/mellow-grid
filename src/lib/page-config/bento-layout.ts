@@ -1,8 +1,10 @@
 import type { GridLayoutItem } from "./types";
 
 export const BENTO_COLS = 4;
-export const BENTO_ROW_HEIGHT = 175;
+export const BENTO_CELL_SIZE = 175;
+export const BENTO_ROW_HEIGHT = BENTO_CELL_SIZE;
 export const BENTO_GAP = 40;
+export const BENTO_GRID_WIDTH = BENTO_COLS * BENTO_CELL_SIZE + (BENTO_COLS - 1) * BENTO_GAP;
 export const BENTO_MIN_ITEM_SIZE = 1;
 export const BENTO_DEFAULT_ITEM_SIZE = 1;
 

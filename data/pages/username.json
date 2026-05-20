@@ -22,7 +22,7 @@
       "i": "social-twitter",
       "x": 0,
       "y": 0,
-      "w": 2,
+      "w": 1,
       "h": 1,
       "minW": 1,
       "minH": 1,
@@ -42,7 +42,7 @@
     },
     {
       "i": "social-dribbble",
-      "x": 3,
+      "x": 2,
       "y": 1,
       "w": 1,
       "h": 1,
@@ -64,7 +64,7 @@
     },
     {
       "i": "about",
-      "x": 2,
+      "x": 3,
       "y": 1,
       "w": 1,
       "h": 2,
@@ -75,8 +75,8 @@
     },
     {
       "i": "social-mail",
-      "x": 3,
-      "y": 3,
+      "x": 1,
+      "y": 2,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -98,7 +98,7 @@
     {
       "i": "social-github",
       "x": 1,
-      "y": 2,
+      "y": 0,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -109,7 +109,7 @@
     {
       "i": "social-linkedin",
       "x": 3,
-      "y": 4,
+      "y": 3,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -141,10 +141,43 @@
     },
     {
       "i": "social-coffee",
-      "x": 3,
+      "x": 2,
       "y": 2,
       "w": 1,
       "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "link-mpdg3yiv",
+      "x": 0,
+      "y": 4,
+      "w": 1,
+      "h": 2,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "link-mpdg42d4",
+      "x": 1,
+      "y": 4,
+      "w": 1,
+      "h": 2,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "link-mpdg457t",
+      "x": 2,
+      "y": 4,
+      "w": 1,
+      "h": 2,
       "minW": 1,
       "minH": 1,
       "maxW": 2,
@@ -334,7 +367,58 @@
           "value": "#d79d37"
         }
       }
+    },
+    {
+      "id": "link-mpdg3yiv",
+      "type": "link",
+      "props": {
+        "title": "Figma",
+        "href": "https://figma.com/",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "figma"
+        },
+        "color": "#A259FF",
+        "background": {
+          "type": "theme"
+        }
+      }
+    },
+    {
+      "id": "link-mpdg42d4",
+      "type": "link",
+      "props": {
+        "title": "Figma",
+        "href": "https://figma.com/",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "figma"
+        },
+        "color": "#A259FF",
+        "background": {
+          "type": "theme"
+        }
+      }
+    },
+    {
+      "id": "link-mpdg457t",
+      "type": "link",
+      "props": {
+        "title": "Figma",
+        "href": "https://figma.com/",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "figma"
+        },
+        "color": "#A259FF",
+        "background": {
+          "type": "theme"
+        }
+      }
     }
   ],
-  "updatedAt": "2026-05-19T16:13:09.406Z"
+  "updatedAt": "2026-05-20T02:31:49.806Z"
 }

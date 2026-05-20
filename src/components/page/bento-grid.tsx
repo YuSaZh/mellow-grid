@@ -1,5 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
-import { BENTO_COLS, BENTO_GAP, BENTO_ROW_HEIGHT, clampBentoLayoutItem } from "@/lib/page-config/bento-layout";
+import { BENTO_CELL_SIZE, BENTO_COLS, BENTO_GAP, BENTO_GRID_WIDTH, BENTO_ROW_HEIGHT, clampBentoLayoutItem } from "@/lib/page-config/bento-layout";
 import type { GridLayoutItem, WidgetInstance, WidgetRenderVariant } from "@/lib/page-config/types";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 import styles from "./bento-grid.module.css";
@@ -23,7 +23,9 @@ export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout
       style={
         {
           "--bento-cols": BENTO_COLS,
+          "--bento-cell-size": `${BENTO_CELL_SIZE}px`,
           "--bento-gap": `${BENTO_GAP}px`,
+          "--bento-grid-width": `${BENTO_GRID_WIDTH}px`,
           "--bento-row-height": `${BENTO_ROW_HEIGHT}px`,
         } as CSSProperties
       }
@@ -49,6 +51,7 @@ export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout
               {
                 "--bento-grid-column": `${item.x + 1} / span ${item.w}`,
                 "--bento-grid-row": `${item.y + 1} / span ${item.h}`,
+                "--bento-item-aspect-ratio": getBentoGridItemAspectRatio(item),
               } as CSSProperties
             }
           >
@@ -80,7 +83,15 @@ export function getBentoGridItemStyle(item: GridLayoutItem): CSSProperties {
   return {
     "--bento-grid-column": `${nextItem.x + 1} / span ${nextItem.w}`,
     "--bento-grid-row": `${nextItem.y + 1} / span ${nextItem.h}`,
+    "--bento-item-aspect-ratio": getBentoGridItemAspectRatio(nextItem),
   } as CSSProperties;
+}
+
+function getBentoGridItemAspectRatio(item: GridLayoutItem) {
+  const width = item.w * BENTO_CELL_SIZE + Math.max(0, item.w - 1) * BENTO_GAP;
+  const height = item.h * BENTO_CELL_SIZE + Math.max(0, item.h - 1) * BENTO_GAP;
+
+  return `${width} / ${height}`;
 }
 
 export { styles as bentoGridStyles };

@@ -19,16 +19,16 @@ export function LinkWidget({ context, props }: { context?: WidgetRenderContext; 
 
   return (
     <WidgetShell ariaLabel={title} background={props.background} className="text-left" href={props.href || "#"} showLinkIndicator>
-      {variant === "large" ? <LargeLinkContent color={props.color} description={description} logo={props.logo} title={title} /> : <CompactLinkContent color={props.color} description={description} logo={props.logo} title={title} />}
+      {variant === "large" ? <LargeLinkContent color={props.color} description={description} logo={props.logo} title={title} /> : <CompactLinkContent color={props.color} description={description} logo={props.logo} title={title} wide={variant === "wide"} />}
     </WidgetShell>
   );
 }
 
-function CompactLinkContent({ color, description, logo, title }: Pick<LinkWidgetProps, "color" | "description" | "logo" | "title">) {
+function CompactLinkContent({ color, description, logo, title, wide = false }: Pick<LinkWidgetProps, "color" | "description" | "logo" | "title"> & { wide?: boolean }) {
   return (
-    <span className="relative z-10 block h-full p-5">
-      <LinkLogo className="absolute left-4 top-4" color={color} logo={logo} title={title} />
-      <span className="absolute inset-x-5 bottom-5 grid gap-[3px]">
+    <span className="relative z-10 flex h-full flex-col justify-between px-6 pb-5 pt-6">
+      <LinkLogo className="shrink-0" color={color} logo={logo} title={title} />
+      <span className={`grid gap-[3px] ${wide ? "absolute bottom-5 left-[6.5rem] right-6" : ""}`}>
         <span className="[word-break:break-word] text-[16px] font-semibold leading-none text-[#fbfbfb]">{title}</span>
         {description ? <span className="[word-break:break-word] text-[12px] leading-4 text-[#fbfbfb]">{description}</span> : null}
       </span>
@@ -38,7 +38,7 @@ function CompactLinkContent({ color, description, logo, title }: Pick<LinkWidget
 
 function LargeLinkContent({ color, description, logo, title }: Pick<LinkWidgetProps, "color" | "description" | "logo" | "title">) {
   return (
-    <span className="relative z-10 flex h-full flex-col justify-between p-5">
+    <span className="relative z-10 flex h-full flex-col justify-between px-6 pb-5 pt-6">
       <LinkLogo color={color} logo={logo} title={title} />
       <span className="grid gap-2">
         <span className="[word-break:break-word] text-[20px] font-semibold leading-tight text-[#fbfbfb]">{title}</span>

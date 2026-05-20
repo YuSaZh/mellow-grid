@@ -1,13 +1,17 @@
 .grid {
   display: grid;
   gap: 1.25rem;
+  margin-inline: auto;
+  max-width: var(--bento-grid-width);
   min-width: 0;
+  width: 100%;
 }
 
 .item {
   grid-column: 1 / -1;
   grid-row: auto;
   isolation: isolate;
+  aspect-ratio: var(--bento-item-aspect-ratio);
   min-height: 0;
   min-width: 0;
   position: relative;
@@ -16,11 +20,14 @@
 @media (min-width: 1024px) {
   .grid {
     gap: var(--bento-gap);
+    grid-auto-columns: var(--bento-cell-size);
     grid-auto-rows: var(--bento-row-height);
-    grid-template-columns: repeat(var(--bento-cols), minmax(0, 1fr));
+    grid-template-columns: repeat(var(--bento-cols), var(--bento-cell-size));
+    width: var(--bento-grid-width);
   }
 
   .item {
+    aspect-ratio: auto;
     grid-column: var(--bento-grid-column);
     grid-row: var(--bento-grid-row);
   }

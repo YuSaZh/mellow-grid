@@ -10,9 +10,9 @@ export const defaultTheme: PageTheme = {
 };
 
 export const defaultProfile: PageProfile = {
-  name: "Double Glitch 🇺🇦",
-  bio: "Hey there! My name is Roman, I am a Ukrainian designer. I create unusual stuff with ordinary tools hoping to inspire people to unlock or boost their own creativity.",
-  location: "",
+  name: "Your Name",
+  bio: "A short introduction for your personal homepage.",
+  location: "Based in Your City",
   avatarUrl: "",
   contacts: [],
 };
@@ -20,23 +20,26 @@ export const defaultProfile: PageProfile = {
 export const defaultPageConfig: PageConfig = {
   username: "username",
   title: "MellowGrid",
-  description: "A 2.5D Bento playground inspired personal homepage.",
+  description: "A soft, modular personal homepage.",
   profile: defaultProfile,
   theme: defaultTheme,
-  updatedAt: new Date(0).toISOString(),
+  updatedAt: "2026-05-20T02:31:49.806Z",
   layout: [
-    { i: "social-twitter", x: 0, y: 0, w: 2, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "social-figma", x: 2, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "social-dribbble", x: 3, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-twitter", x: 0, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-figma", x: 2, y: 0, w: 2, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-dribbble", x: 2, y: 1, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
     { i: "links", x: 0, y: 1, w: 2, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "about", x: 2, y: 1, w: 1, h: 2, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "social-mail", x: 3, y: 1, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "about", x: 3, y: 1, w: 1, h: 2, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-mail", x: 1, y: 2, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
     { i: "stats", x: 0, y: 2, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "social-github", x: 1, y: 2, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "social-linkedin", x: 3, y: 2, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-github", x: 1, y: 0, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-linkedin", x: 3, y: 3, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
     { i: "social-blog", x: 0, y: 3, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
     { i: "intro", x: 1, y: 3, w: 2, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
-    { i: "social-coffee", x: 3, y: 3, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "social-coffee", x: 2, y: 2, w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "link-mpdg3yiv", x: 0, y: 4, w: 1, h: 2, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "link-mpdg42d4", x: 1, y: 4, w: 1, h: 2, minW: 1, minH: 1, maxW: 2, maxH: 2 },
+    { i: "link-mpdg457t", x: 2, y: 4, w: 1, h: 2, minW: 1, minH: 1, maxW: 2, maxH: 2 },
   ],
   widgets: [
     {
@@ -48,7 +51,7 @@ export const defaultPageConfig: PageConfig = {
         description: "@handle or address",
         logo: { type: "builtin", key: "x" },
         color: "#f5f5f5",
-        background: { type: "theme" },
+        background: { type: "solid", value: "#252222" },
       },
     },
     {
@@ -57,10 +60,10 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Figma",
         href: "https://figma.com/",
-        description: "@handle or address",
+        description: "@Web Design",
         logo: { type: "builtin", key: "figma" },
-        color: "#A259FF",
-        background: { type: "theme" },
+        color: "#8f4be7",
+        background: { type: "solid", value: "#b77dde" },
       },
     },
     {
@@ -72,7 +75,7 @@ export const defaultPageConfig: PageConfig = {
         description: "@handle or address",
         logo: { type: "builtin", key: "dribbble" },
         color: "#EA4C89",
-        background: { type: "theme" },
+        background: { type: "solid", value: "#f37cdd" },
       },
     },
     {
@@ -147,7 +150,7 @@ export const defaultPageConfig: PageConfig = {
         description: "@handle or address",
         logo: { type: "builtin", key: "email" },
         color: "#ade0ff",
-        background: { type: "theme" },
+        background: { type: "solid", value: "#37c5e1" },
       },
     },
     {
@@ -168,6 +171,42 @@ export const defaultPageConfig: PageConfig = {
         description: "@handle or address",
         logo: { type: "builtin", key: "coffee" },
         color: "#ffdd99",
+        background: { type: "solid", value: "#d79d37" },
+      },
+    },
+    {
+      id: "link-mpdg3yiv",
+      type: "link",
+      props: {
+        title: "Figma",
+        href: "https://figma.com/",
+        description: "@handle or address",
+        logo: { type: "builtin", key: "figma" },
+        color: "#A259FF",
+        background: { type: "theme" },
+      },
+    },
+    {
+      id: "link-mpdg42d4",
+      type: "link",
+      props: {
+        title: "Figma",
+        href: "https://figma.com/",
+        description: "@handle or address",
+        logo: { type: "builtin", key: "figma" },
+        color: "#A259FF",
+        background: { type: "theme" },
+      },
+    },
+    {
+      id: "link-mpdg457t",
+      type: "link",
+      props: {
+        title: "Figma",
+        href: "https://figma.com/",
+        description: "@handle or address",
+        logo: { type: "builtin", key: "figma" },
+        color: "#A259FF",
         background: { type: "theme" },
       },
     },

@@ -4,24 +4,25 @@ type IconEffectProps = PropsWithChildren<{
   className?: string;
   depth?: "soft" | "figma";
   framed?: boolean;
+  highlight?: boolean;
 }>;
 
 const FIGMA_SHADOW_LAYERS = [
-  { offset: 52, blur: 48, opacity: 0.05 },
-  { offset: 48, blur: 44, opacity: 0.1 },
-  { offset: 44, blur: 40, opacity: 0.15 },
-  { offset: 40, blur: 40, opacity: 0.2 },
-  { offset: 32, blur: 32, opacity: 0.25 },
-  { offset: 24, blur: 28, opacity: 0.3 },
-  { offset: 16, blur: 24, opacity: 0.35 },
-  { offset: 15, blur: 24, opacity: 0.4 },
-  { offset: 11, blur: 16, opacity: 0.45 },
-  { offset: 7, blur: 10, opacity: 0.5 },
-  { offset: 5, blur: 6, opacity: 0.55 },
-  { offset: 3, blur: 4, opacity: 0.6 },
-  { offset: 2, blur: 3, opacity: 0.6 },
-  { offset: 1, blur: 2, opacity: 0.6 },
-  { offset: 0.5, blur: 1, opacity: 0.6 },
+  { offset: 52, blur: 48, opacity: 0.035 },
+  { offset: 48, blur: 44, opacity: 0.07 },
+  { offset: 44, blur: 40, opacity: 0.105 },
+  { offset: 40, blur: 40, opacity: 0.14 },
+  { offset: 32, blur: 32, opacity: 0.175 },
+  { offset: 24, blur: 28, opacity: 0.21 },
+  { offset: 16, blur: 24, opacity: 0.245 },
+  { offset: 15, blur: 24, opacity: 0.28 },
+  { offset: 11, blur: 16, opacity: 0.315 },
+  { offset: 7, blur: 10, opacity: 0.35 },
+  { offset: 5, blur: 6, opacity: 0.385 },
+  { offset: 3, blur: 4, opacity: 0.42 },
+  { offset: 2, blur: 3, opacity: 0.42 },
+  { offset: 1, blur: 2, opacity: 0.42 },
+  { offset: 0.5, blur: 1, opacity: 0.42 },
 ];
 
 const SOFT_SHADOW_LAYERS = [
@@ -30,7 +31,7 @@ const SOFT_SHADOW_LAYERS = [
   { offset: 0.5, blur: 1, opacity: 0.28 },
 ];
 
-export function IconEffect({ children, className = "", depth = "figma", framed = false }: IconEffectProps) {
+export function IconEffect({ children, className = "", depth = "figma", framed = false, highlight = true }: IconEffectProps) {
   const layers = depth === "figma" ? FIGMA_SHADOW_LAYERS : SOFT_SHADOW_LAYERS;
   const contentClassName = framed
     ? "relative z-10 grid size-12 place-items-center overflow-hidden rounded-[14px]"
@@ -57,6 +58,19 @@ export function IconEffect({ children, className = "", depth = "figma", framed =
       ))}
       <span className={contentClassName} style={contentStyle}>
         {children}
+        {highlight ? (
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 grid size-12 place-items-center text-white mix-blend-screen"
+            style={{
+              filter: "brightness(0) invert(1) blur(0.75px)",
+              opacity: 0.36,
+              transform: "translate(-0.65px, -0.65px) scale(0.99)",
+            }}
+          >
+            {children}
+          </span>
+        ) : null}
       </span>
     </span>
   );
