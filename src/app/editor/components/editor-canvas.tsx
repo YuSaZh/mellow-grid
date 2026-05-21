@@ -133,7 +133,7 @@ export function EditorCanvas() {
   }
 
   return (
-    <section className="min-w-0">
+    <section className="min-w-0 rounded-[2.5rem] bg-white/35 p-3 shadow-[inset_1px_1px_0_rgba(255,255,255,0.8),inset_-1px_-1px_0_rgba(0,0,0,0.04)] backdrop-blur">
       <div onPointerCancel={cancelInteraction} onPointerMove={updateInteraction} onPointerUp={commitInteraction}>
         <BentoGrid
           afterItems={<AddModuleSlot layout={addLayout} />}
@@ -171,25 +171,25 @@ function EditorGridOverlay({ item, selected, startInteraction, widget }: { item:
   return (
     <div
       aria-label={`选择 ${definition.name} 模块`}
-      className={`group absolute inset-0 z-20 rounded-[2rem] touch-none transition ${selected ? "ring-4 ring-[#7c5cff]/60 ring-offset-4 ring-offset-[#f7f4ef]" : "ring-1 ring-transparent hover:ring-black/10"}`}
+      className={`group absolute inset-0 z-20 rounded-[38px] touch-none transition ${selected ? "ring-4 ring-[#3FA3EB] ring-offset-4 ring-offset-[#f6f6f9]" : "ring-1 ring-transparent hover:ring-[#3FA3EB]/45"}`}
       onKeyDown={handleKeyDown}
       onPointerDown={(event) => startInteraction(event, item, "move")}
       role="button"
       tabIndex={0}
     >
-      <div className={`pointer-events-none absolute left-3 top-3 rounded-full bg-zinc-950 px-3 py-2 text-[0.65rem] font-black uppercase tracking-[0.16em] text-white shadow-[0_10px_28px_rgba(20,16,10,0.16)] transition ${selected ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus:opacity-100"}`}>
+      <div className={`pointer-events-none absolute left-3 top-3 rounded-full bg-[#17181d]/90 px-3 py-2 text-[0.65rem] font-black uppercase tracking-[0.16em] text-white shadow-[0_10px_28px_rgba(15,17,25,0.20)] backdrop-blur transition ${selected ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus:opacity-100"}`}>
         拖动或点击编辑
       </div>
       <div
         aria-label="拖拽调整模块大小"
-        className={`absolute bottom-3 right-3 z-30 grid size-9 cursor-nwse-resize place-items-center rounded-2xl border border-black/10 bg-white/95 shadow-[0_12px_36px_rgba(20,16,10,0.18)] transition ${selected ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus:opacity-100"}`}
+        className={`absolute bottom-3 right-3 z-30 grid size-8 cursor-nwse-resize place-items-center rounded-2xl border border-[#3FA3EB]/30 bg-white/95 shadow-[0_12px_36px_rgba(63,163,235,0.22)] transition ${selected ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus:opacity-100"}`}
         onPointerDown={(event) => {
           event.stopPropagation();
           startInteraction(event, item, "resize");
         }}
         role="presentation"
       >
-        <span className="block size-3 rounded-br-lg border-b-2 border-r-2 border-zinc-900" />
+        <span className="block size-3 rounded-br-lg border-b-2 border-r-2 border-[#3FA3EB]" />
       </div>
     </div>
   );
@@ -208,13 +208,13 @@ function AddModuleSlot({ layout }: { layout: GridLayoutItem }) {
     <div className={`${bentoGridStyles.item} relative`} style={getBentoGridItemStyle(layout)}>
       <button
         aria-expanded={open}
-        className="mg-no-drag grid h-full min-h-44 w-full place-items-center rounded-[2rem] border-2 border-dashed border-black/10 bg-white/45 p-5 text-center text-zinc-500 transition hover:border-[#7c5cff]/40 hover:bg-white/75 focus:outline-none focus:ring-4 focus:ring-[#7c5cff]/20"
+        className="mg-no-drag grid h-full min-h-44 w-full place-items-center rounded-[38px] border-2 border-dashed border-black/10 bg-white/55 p-5 text-center text-zinc-500 transition hover:border-[#3FA3EB]/55 hover:bg-white/85 focus:outline-none focus:ring-4 focus:ring-[#3FA3EB]/20"
         onClick={() => setOpen((value) => !value)}
         onKeyDown={handleKeyDown}
         type="button"
       >
         <span className="grid gap-3">
-          <span className="mx-auto grid size-14 place-items-center rounded-full bg-zinc-950 text-3xl font-black leading-none text-white shadow-[0_18px_48px_rgba(20,16,10,0.18)]">+</span>
+          <span className="mx-auto grid size-14 place-items-center rounded-full bg-[#17181d] text-3xl font-black leading-none text-white shadow-[0_18px_48px_rgba(15,17,25,0.20)]">+</span>
           <span className="text-sm font-black uppercase tracking-[0.18em] text-zinc-500">添加模块</span>
           <span className="text-xs font-medium leading-5 text-zinc-400">2x2 占位</span>
         </span>

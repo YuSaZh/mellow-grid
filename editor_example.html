@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Bento 级物理碰撞重排生成器</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================
+           1. 个人主页核心 3D 极简艺术拟物样式
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            background-color: #f6f6f9;
+            color: #121214;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem 8rem 2rem;
+            overflow-x: hidden;
+            transition: background-color 0.3s;
+        }
+
+        .page-container {
+            width: 100%;
+            max-width: 1240px;
+            display: flex;
+            gap: 4rem;
+            align-items: flex-start;
+        }
+
+        .sidebar {
+            flex: 0 0 340px;
+            position: sticky;
+            top: 4rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            z-index: 50;
+        }
+
+        .avatar-wrapper {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: #111113;
+            padding: 4px;
+            position: relative;
+            box-shadow: 
+                0 15px 35px rgba(0, 0, 0, 0.15),
+                inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.15),
+                inset -2px -2px 5px rgba(0, 0, 0, 0.4);
+            margin-bottom: 2.2rem;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .avatar-svg {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: block;
+        }
+
+        .profile-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 1rem;
+            color: #111113;
+        }
+
+        .profile-bio {
+            font-size: 1.05rem;
+            line-height: 1.6;
+            color: #5d5d65;
+            font-weight: 400;
+        }
+
+        /* 骨架栅格自动列高 */
+        .bento-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            grid-auto-rows: 188px;
+            position: relative;
+        }
+
+        /* 3D 拟物圆角卡片基础设定 */
+        .bento-card {
+            border-radius: 38px;
+            padding: 1.8rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            position: relative;
+            user-select: none;
+            cursor: pointer;
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.05),
+                inset 1.5px 1.5px 1px rgba(255, 255, 255, 0.4),
+                inset -2px -2px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            will-change: transform, left, top;
+        }
+
+        /* 仅在预览模式下提供卡片整体悬浮，以免影响拖拽数学计算 */
+        body.is-preview-mode .bento-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 22px 45px rgba(0, 0, 0, 0.1),
+                inset 1.8px 1.8px 1.2px rgba(255, 255, 255, 0.45);
+        }
+
+        .light-card {
+            box-shadow: 
+                0 12px 30px rgba(0, 0, 0, 0.03),
+                inset 1.8px 1.8px 1px rgba(255, 255, 255, 0.9),
+                inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        
+        .light-card:hover {
+            box-shadow: 
+                0 18px 40px rgba(0, 0, 0, 0.05),
+                inset 2px 2px 1.5px rgba(255, 255, 255, 0.95),
+                inset -2.5px -2.5px 4px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-top {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            pointer-events: none; /* 让拖放检测直接穿透组件 */
+        }
+
+        .card-bottom {
+            margin-top: auto;
+            pointer-events: none;
+        }
+
+        .card-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 0.15rem;
+        }
+
+        .card-handle {
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.7;
+        }
+
+        .icon-3d {
+            width: 46px;
+            height: 46px;
+            display: block;
+            filter: 
+                drop-shadow(1.5px 2px 1px rgba(0, 0, 0, 0.12))
+                drop-shadow(4px 8px 6px rgba(0, 0, 0, 0.18));
+        }
+
+        /* Span 格栅跨度 */
+        .col-span-1 { grid-column: span 1; }
+        .col-span-2 { grid-column: span 2; }
+        .col-span-3 { grid-column: span 3; }
+        .col-span-4 { grid-column: span 4; }
+        
+        .row-span-1 { grid-row: span 1; }
+        .row-span-2 { grid-row: span 2; }
+        .row-span-3 { grid-row: span 3; }
+
+        /* ==========================================
+           2. 物理重排与流式动画状态样式 (核心)
+           ========================================== */
+        
+        /* 卡片正被选中进行快捷调整 */
+        .bento-card.is-editing {
+            outline: 3.5px solid #3FA3EB !important;
+            outline-offset: 4px;
+            box-shadow: 0 25px 50px rgba(63, 163, 235, 0.15);
+        }
+
+        /* 正在拖拽的那个虚线占位格 (用作视觉缓冲) */
+        .original-placeholder {
+            opacity: 0.15 !important;
+            border: 2px dashed #3FA3EB !important;
+            background: rgba(63, 163, 235, 0.05) !important;
+            box-shadow: none !important;
+            transform: scale(0.96) !important;
+        }
+
+        /* 跟随鼠标移动的 3D 浮空镜像卡片 */
+        .dragging-ghost {
+            position: fixed !important;
+            pointer-events: none !important;
+            z-index: 3000 !important;
+            box-shadow: 
+                0 30px 65px rgba(0, 0, 0, 0.28),
+                0 10px 20px rgba(0, 0, 0, 0.15),
+                inset 1.5px 1.5px 1px rgba(255, 255, 255, 0.4) !important;
+            transform: scale(1.05) rotate(1.8deg) !important;
+            opacity: 0.92 !important;
+            transition: none !important; /* 跟随鼠标不需要延迟 */
+        }
+
+        /* 拖拽控重尺寸拉手 (右下角滑块) */
+        .resizer-handle {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: se-resize;
+            z-index: 99;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        body.is-edit-mode .resizer-handle {
+            display: flex;
+        }
+        .resizer-handle:hover {
+            transform: scale(1.2);
+        }
+        .resizer-handle svg {
+            width: 10px;
+            height: 10px;
+            fill: rgba(255, 255, 255, 0.6);
+            filter: drop-shadow(0 1.5px 2px rgba(0,0,0,0.3));
+        }
+        .light-card .resizer-handle svg {
+            fill: rgba(0, 0, 0, 0.35);
+        }
+
+        /* ==========================================
+           3. 无遮挡边缘智能避让悬浮配置盒
+           ========================================== */
+        .floating-editor {
+            position: absolute;
+            width: 330px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            border-radius: 28px;
+            box-shadow: 
+                0 30px 70px rgba(0, 0, 0, 0.16),
+                0 0 1px rgba(0, 0, 0, 0.1),
+                inset 1px 1px 0 rgba(255,255,255,0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 1.5rem;
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+            gap: 1.1rem;
+            animation: floatingPop 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+            transform-origin: top left;
+        }
+
+        @keyframes floatingPop {
+            0% { opacity: 0; transform: scale(0.92) translateY(12px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .fe-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .fe-header h4 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: #121214;
+        }
+
+        .fe-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            color: #a0a0ab;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .fe-g {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .fe-g label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #72727a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .fe-g input, .fe-g select {
+            padding: 0.7rem 1rem;
+            border-radius: 14px;
+            border: 1.5px solid rgba(0,0,0,0.08);
+            font-family: inherit;
+            font-size: 0.9rem;
+            background: rgba(0,0,0,0.02);
+            outline: none;
+            transition: all 0.25s;
+        }
+
+        .fe-g input:focus, .fe-g select:focus {
+            border-color: #3FA3EB;
+            background: #ffffff;
+            box-shadow: 0 0 0 4px rgba(63, 163, 235, 0.12);
+        }
+
+        .picker-presets {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.1rem;
+        }
+
+        .preset-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 3px 8px rgba(0,0,0,0.05);
+            transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+        }
+
+        .preset-dot:hover { transform: scale(1.15); }
+        .preset-dot.active { border-color: #121214; transform: scale(1.08); }
+
+        /* ==========================================
+           4. 全避让底栏状态条与通用组件
+           ========================================== */
+        
+        [contenteditable="true"] {
+            border-bottom: 2px dashed rgba(63, 163, 235, 0.3);
+            outline: none;
+            transition: all 0.25s;
+        }
+        [contenteditable="true"]:focus {
+            border-bottom-color: rgba(63, 163, 235, 1);
+            background: rgba(63, 163, 235, 0.04);
+            border-radius: 4px;
+        }
+
+        .toast-tips {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translate(-50%, -20px);
+            background: #111113;
+            color: #ffffff;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.7rem 1.6rem;
+            border-radius: 50px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            z-index: 3000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+        }
+        .toast-tips.show {
+            opacity: 1;
+            transform: translate(-50%, 0);
+        }
+
+        .editor-bar {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(18, 18, 20, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            padding: 0.7rem 2rem;
+            border-radius: 100px;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.3), 
+                inset 1px 1px 0 rgba(255,255,255,0.15);
+            z-index: 1000;
+        }
+        
+        .editor-tag {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding-right: 1rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .editor-tag .live-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #0acf83;
+            border-radius: 50%;
+            animation: pulse-dot 1.5s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(10, 207, 131, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(10, 207, 131, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(10, 207, 131, 0); }
+        }
+
+        .editor-btn {
+            background: transparent;
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 0.55rem 1.2rem;
+            border-radius: 50px;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-family: inherit;
+        }
+        .editor-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .editor-btn.primary { background: #ffffff; color: #121214; }
+        .editor-btn.primary:hover { background: #f1f1f5; }
+        .editor-btn.danger { color: #ff5252; }
+        .editor-btn.danger:hover { background: rgba(255, 82, 82, 0.1); }
+
+        /* 卡片库默认品牌渐变色 */
+        .card-twitter { background: linear-gradient(135deg, #6EC2F7 0%, #3FA3EB 100%); color: #ffffff; }
+        .card-medium { background: linear-gradient(135deg, #FCFCFC 0%, #E6E6E6 100%); color: #1a1a1a; }
+        .card-pinterest { background: linear-gradient(135deg, #F23C3F 0%, #C81D24 100%); color: #ffffff; }
+        .card-bmc { background: linear-gradient(135deg, #FFEA79 0%, #F5C13D 100%); color: #2F2F2F; }
+        .card-figma { background: linear-gradient(135deg, #2B2C2E 0%, #17181A 100%); color: #ffffff; }
+        .card-discord { background: linear-gradient(135deg, #7A8CF6 0%, #5462E7 100%); color: #ffffff; }
+        .card-dribbble { background: linear-gradient(135deg, #FF7EBC 0%, #E4437E 100%); color: #ffffff; }
+        .card-linkedin { background: linear-gradient(135deg, #4A89D5 0%, #0B579E 100%); color: #ffffff; }
+        .card-gumroad { background: linear-gradient(135deg, #FCE3FE 0%, #EAA2F0 100%); color: #311634; }
+        .card-stack { background: linear-gradient(135deg, #373A40 0%, #222428 100%); color: #ffffff; }
+        .card-instagram { background: linear-gradient(135deg, #9F2CAC 0%, #EA485C 50%, #F4A751 100%); color: #ffffff; }
+        .card-reddit { background: linear-gradient(135deg, #FF6E43 0%, #E03504 100%); color: #ffffff; }
+
+        .svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+        #importFileInput { display: none; }
+
+        /* ==========================================
+           5. 响应式规则
+           ========================================== */
+        @media (max-width: 1024px) {
+            body { padding: 3rem 1.5rem 8rem 1.5rem; }
+            .page-container { flex-direction: column; gap: 2.5rem; align-items: center; max-width: 760px; }
+            .sidebar { flex: 0 0 auto; width: 100%; align-items: center; text-align: center; position: static; }
+            .avatar-wrapper { margin-bottom: 1.5rem; }
+        }
+        @media (max-width: 700px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .col-span-3, .col-span-4 { grid-column: span 2 !important; }
+            .editor-bar { width: 92%; border-radius: 30px; justify-content: center; flex-wrap: wrap; padding: 0.6rem 1.2rem; bottom: 1rem; }
+            .editor-tag { display: none; }
+        }
+        @media (max-width: 480px) {
+            .bento-grid { grid-template-columns: 1fr; gap: 16px; }
+            .col-span-2, .col-span-3, .col-span-4, .row-span-2, .row-span-3 {
+                grid-column: span 1 !important;
+                grid-row: span 1 !important;
+            }
+            .profile-title { font-size: 2.1rem; }
+        }
+    </style>
+</head>
+<body class="is-edit-mode">
+
+    <div class="toast-tips" id="toastTips">已自动保存更改</div>
+
+    <!-- 原生 SVG 渐变层预设 -->
+    <svg class="svg-defs">
+        <defs>
+            <linearGradient id="white-3d-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="65%" stop-color="#ffffff" />
+                <stop offset="100%" stop-color="#dae3f0" />
+            </linearGradient>
+            <linearGradient id="dark-3d-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3d3e42" />
+                <stop offset="100%" stop-color="#121213" />
+            </linearGradient>
+            <linearGradient id="figma-orange" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFA89F" /><stop offset="100%" stop-color="#F24E1E" /></linearGradient>
+            <linearGradient id="figma-pink" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF97DC" /><stop offset="100%" stop-color="#FF7262" /></linearGradient>
+            <linearGradient id="figma-purple" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D7B5FF" /><stop offset="100%" stop-color="#A259FF" /></linearGradient>
+            <linearGradient id="figma-blue" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8CE0FF" /><stop offset="100%" stop-color="#1ABCFE" /></linearGradient>
+            <linearGradient id="figma-green" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7BFFBF" /><stop offset="100%" stop-color="#0ACF83" /></linearGradient>
+        </defs>
+    </svg>
+
+    <!-- 拉手三角装饰图 -->
+    <svg style="display: none;">
+        <g id="resizer-icon">
+            <path d="M6 0 L8 0 L8 8 L0 8 L0 6 L5 6 L0 1 L1 0 L6 5 Z"/>
+        </g>
+    </svg>
+
+    <div class="page-container">
+        <!-- 左侧文本直接打字即可修改 -->
+        <div class="sidebar">
+            <div class="avatar-wrapper" onclick="showToast('头像已集成防模糊原生代码，点击底栏【发布静态主页】可下载完美离线包！')">
+                <svg class="avatar-svg" viewBox="0 0 100 100">
+                    <rect width="100" height="100" fill="#0c0c0e"/>
+                    <line x1="0" y1="20" x2="100" y2="20" stroke="#1d1d23" stroke-width="0.5"/>
+                    <line x1="0" y1="40" x2="100" y2="40" stroke="#1d1d23" stroke-width="0.5"/>
+                    <line x1="0" y1="60" x2="100" y2="60" stroke="#1d1d23" stroke-width="0.5"/>
+                    <line x1="0" y1="80" x2="100" y2="80" stroke="#1d1d23" stroke-width="0.5"/>
+                    <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#00f0ff" opacity="0.6" transform="translate(-2, 1)"/>
+                    <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#ff007f" opacity="0.6" transform="translate(2, -1)"/>
+                    <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#1b1c21" />
+                    <rect x="15" y="30" width="18" height="4" fill="#00f0ff" opacity="0.8" />
+                    <rect x="68" y="32" width="15" height="3" fill="#ff007f" opacity="0.8" />
+                    <rect x="25" y="55" width="55" height="1.5" fill="#ffffff" opacity="0.9" />
+                    <rect x="40" y="65" width="30" height="2" fill="#00f0ff" opacity="0.7" />
+                    <rect x="20" y="74" width="12" height="3" fill="#ff007f" opacity="0.8" />
+                </svg>
+            </div>
+            
+            <h1 class="profile-title" id="profileTitle" contenteditable="true" placeholder="名称">Double Glitch 🇺🇦</h1>
+            <p class="profile-bio" id="profileBio" contenteditable="true" placeholder="介绍">Hey there! My name is Roman, I'm a Ukrainian designer. I create unusual stuff with ordinary tools hoping to inspire people to unlock or boost their own creativity.</p>
+        </div>
+
+        <!-- 右侧 Bento 纯物理重塑网格区 -->
+        <div class="bento-grid" id="bentoGrid"></div>
+    </div>
+
+    <!-- ==========================================
+       6. 悬浮快捷控制板 (无遮罩、不折断交互，可拖拽不碍事)
+       ========================================== -->
+    <div class="floating-editor" id="floatingEditor">
+        <div class="fe-header">
+            <h4>快速参数配置</h4>
+            <button class="fe-close-btn" onclick="closeFloatingEditor()">×</button>
+        </div>
+        <div class="fe-g">
+            <label>主标题 (Title)</label>
+            <input type="text" id="flTitle" placeholder="Title">
+        </div>
+        <div class="fe-g">
+            <label>副标题 (Handle)</label>
+            <input type="text" id="flHandle" placeholder="Handle">
+        </div>
+        <div class="fe-g">
+            <label>跳转链接 (URL)</label>
+            <input type="text" id="flLink" placeholder="https://...">
+        </div>
+        <div class="fe-g">
+            <label>饰板图标 (Icon)</label>
+            <select id="flIcon">
+                <option value="twitter">🐦 Twitter</option>
+                <option value="medium">⚫ Medium</option>
+                <option value="pinterest">📌 Pinterest</option>
+                <option value="bmc">☕ Buy me a Coffee</option>
+                <option value="figma">🎨 Figma</option>
+                <option value="discord">👾 Discord</option>
+                <option value="dribbble">🏀 Dribbble</option>
+                <option value="linkedin">💼 LinkedIn</option>
+                <option value="gumroad">🛍️ Gumroad</option>
+                <option value="stack">📚 Stack Layers</option>
+                <option value="instagram">📸 Instagram</option>
+                <option value="reddit">🤖 Reddit</option>
+            </select>
+        </div>
+        <div class="fe-g">
+            <label>快速贴底背景色</label>
+            <div class="picker-presets" id="floatingColorPicker"></div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+       7. 编辑状态条控制台
+       ========================================== -->
+    <div class="editor-bar">
+        <div class="editor-tag">
+            <span class="live-dot"></span>
+            <span>流式重排编辑器</span>
+        </div>
+        <button class="editor-btn primary" id="previewBtn" onclick="toggleEditMode()">
+            👁️ 预览效果
+        </button>
+        <button class="editor-btn" onclick="triggerImport()">
+            📥 导入 JSON
+        </button>
+        <button class="editor-btn" onclick="exportJSONConfig()">
+            📦 备份数据
+        </button>
+        <button class="editor-btn" onclick="saveToLocal()">
+            💾 保存更改
+        </button>
+        <button class="editor-btn primary" onclick="exportFinalHTML()" style="background: #0acf83; color: white;">
+            🚀 发布静态主页
+        </button>
+        <button class="editor-btn danger" onclick="resetDefaults()" style="font-size: 0.8rem; margin-left: 20px;">
+            ⚠️ 重置
+        </button>
+    </div>
+
+    <input type="file" id="importFileInput" onchange="importJSONConfig(event)" accept=".json">
+
+    <!-- ==========================================
+       8. 拖曳碰撞碰撞与 FLIP 流重排逻辑芯片
+       ========================================== -->
+    <script>
+        const SVG_ICONS = {
+            twitter: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#white-3d-gradient)" d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>`,
+            medium: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#dark-3d-gradient)" d="M13.54 12a6.8 6.8 0 11-13.54 0 6.8 6.8 0 0113.54 0zM19.98 12c0 3.52-1.5 6.38-3.35 6.38S13.28 15.52 13.28 12s1.5-6.38 3.35-6.38 3.35 2.86 3.35 6.38zM24 12c0 3.23-.42 5.86-.94 5.86s-.94-2.63-.94-5.86.42-5.86.94-5.86S24 8.77 24 12z"/></svg>`,
+            pinterest: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#white-3d-gradient)" d="M12.017_0C5.396_0_.029_5.367_.029_11.987c0_5.079_3.158_9.41_7.61_11.162-.105-.949-.199-2.403.041-3.439.219-.937_1.406-5.957_1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.907_2.17-2.907_1.02_0_1.513.769_1.513_1.686_0_1.026-.653_2.557-.991_3.978-.283_1.192.599_2.161_1.771_2.161_2.128_0_3.768-2.243_3.768-5.474_0-2.861-2.062-4.861-4.99-4.861-3.395_0-5.385_2.541-5.385_5.17_0_1.023.393_2.12.884_2.712.097.118.11.22.081.341-.09.375-.291_1.178-.33_1.339-.053.21-.173.255-.398.151-1.481-.687-2.407-2.846-2.407-4.578_0-3.73_2.716-7.147_7.798-7.147_4.099_0_7.283_2.913_7.283_6.823_0_4.07-2.564_7.346-6.13_7.346-1.198_0-2.325-.623-2.711-1.353l-.74_2.818c-.267_1.018-.991_2.296-1.475_3.076a11.986_11.986_0_003.74.595c6.621_0_11.988-5.369_11.988-11.989C24.005_5.368_18.636_0_12.017_0z"/></svg>`,
+            bmc: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="#2F2F2F" d="M20.2 6h-1.5V5c0-1.1-.9-2-2-2h-10c-1.1 0-2 .9-2 2v8c0 2.2 1.8 4 4 4h5.5c2 0 3.7-1.5 3.9-3.5l.8-5c.2-.9-.5-1.5-1.2-1.5h-.5v-.5c0-.8-.7-1.5-1.5-1.5zm-11.2 9c-1.1 0-2-.9-2-2V5h9v8c0 1.1-.9 2-2 2H9zm10-5.5l-.5 3.5c-.1.5-.5.8-1 .8h-.8V7.5h1.2c.4 0 .7.3.7.7z"/><ellipse cx="11.5" cy="5.5" rx="3.5" ry="1" fill="#FFEA79"/></svg>`,
+            figma: `<svg class="icon-3d" viewBox="0 0 24 36"><path fill="url(#figma-orange)" d="M6 12a6 6 0 110-12h6v12H6z"/><path fill="url(#figma-pink)" d="M12 0h6a6 6 0 11-6 6V0z"/><path fill="url(#figma-purple)" d="M6 24a6 6 0 110-12h6v12H6z"/><path fill="url(#figma-blue)" d="M12 12a6 6 0 116 6h-6v-6z"/><path fill="url(#figma-green)" d="M6 36a6 6 0 116-6v6H6z"/></svg>`,
+            discord: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#white-3d-gradient)" d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.68 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.094 13.094 0 01-1.873-.894.077.077 0 01-.008-.128c.126-.093.252-.19.372-.287a.075.075 0 01.077-.011c3.92 1.793 8.18 1.793 12.061 0a.073.073 0 01.078.009c.12.099.246.195.373.289a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.894.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.156 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.156-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.156 2.418z"/></svg>`,
+            dribbble: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#white-3d-gradient)" d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.118-12.432c-.227-.059-4.584-1.16-6.224-.438 1.042 2.65 1.51 5.174 1.622 5.855 2.879-1.341 4.462-3.87 4.602-5.417zm-6.284 6.782c-.134-.799-.652-3.41-1.745-6.141-.122.04-.251.083-.385.127-3.951 1.298-5.347 5.161-5.518 5.679 1.688 1.077 3.693 1.705 5.845 1.705 1.053 0 2.062-.143 3.016-.39c-.104-.15-.157-.506-.213-.98zm-9.351-1.745c.241-.497 2.502-4.992 5.836-5.83.085-.021.171-.041.258-.06.289-.063.585-.116.886-.157-.15-.357-.31-.715-.478-1.066C9.176 9.387 4.887 9.4 3.125 9.431c-.347 1.838-.073 3.73.658 5.371zm-1.358-6.94c1.644-.029 5.362-.036 8.358-1.52A18.84 18.84 0 007.82 1.486c-3.136 1.41-5.111 4.316-5.132 5.116zm7.228-5.228c.453.766.865 1.656 1.229 2.628 3.08-.85 4.341-2.909 4.463-3.12A10.375 10.375 0 0012 1.615c-.83 0-1.636.096-2.408.277zm6.758 1.493c-.156.241-1.611 2.37-4.8 3.123a17.9 17.9 0 011.666 4.148c2.09-.769 5.875.059 6.222.143a10.376 10.376 0 00-3.088-7.414z"/></svg>`,
+            linkedin: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#white-3d-gradient)" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>`,
+            gumroad: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#dark-3d-gradient)" d="M12 0c-6.617 0-12 5.383-12 12s5.383 12 12 12 12-5.383 12-12-5.383-12-12-12zm3.328 15.021c-.484.828-1.562 1.578-3.047 1.578-2.672 0-3.953-1.891-3.953-4.594 0-2.859 1.578-4.641 4.156-4.641 1.719 0 2.656.984 2.891 1.953l-1.953.516c-.234-.594-.578-.891-1.047-.891-.984 0-1.547.859-1.547 2.594 0 1.703.484 2.5 1.391 2.5.656 0 .969-.359 1.25-.875h-1.688v-1.625h3.484v3.391z"/></svg>`,
+            stack: `<svg class="icon-3d" viewBox="0 0 24 24"><g fill="url(#white-3d-gradient)" opacity="0.45"><rect x="2" y="10" width="14" height="11" rx="3.5" /></g><g fill="url(#white-3d-gradient)" opacity="0.75" transform="translate(3, -3)"><rect x="2" y="10" width="14" height="11" rx="3.5" /></g><g fill="url(#white-3d-gradient)" transform="translate(6, -6)"><rect x="2" y="10" width="14" height="11" rx="3.5" /></g></svg>`,
+            instagram: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#white-3d-gradient)" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>`,
+            reddit: `<svg class="icon-3d" viewBox="0 0 24 24"><path fill="url(#white-3d-gradient)" d="M24 11.5c0-1.65-1.35-3-3-3-.96 0-1.86.48-2.42 1.24-1.64-1-3.85-1.64-6.29-1.72l1.41-4.53 3.84.88c.18 1 .96 1.77 2 1.77 1.1 0 2-.9 2-2s-.9-2-2-2c-.95 0-1.75.67-1.95 1.57l-4.17-.95c-.32-.07-.63.14-.71.46l-1.68 5.4c-2.44.08-4.66.72-6.3 1.72-.56-.76-1.46-1.24-2.42-1.24-1.65 0-3 1.35-3 3 0 1.25.77 2.32 1.86 2.76-.05.25-.08.5-.08.76 0 3.86 4.41 7 9.8 7s9.8-3.14 9.8-7c0-.26-.03-.51-.08-.76 1.09-.44 1.86-1.51 1.86-2.76zm-17.5 1c0-1.1.9-2 2-2s2 .9 2 2-.9 2-2 2-2-.9-2-2zm10.74 4.8c-.85.85-2.45.92-2.74.92s-1.89-.07-2.74-.92c-.2-.2-.2-.5 0-.7.2-.2.5-.2.7 0 .54.54 1.59.62 2.04.62s1.5-.08 2.04-.62c.2-.2.5-.2.7 0 .2.2.2.5 0 .7zm-.26-2.8c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/></svg>`
+        };
+
+        const BG_CLASSES = [
+            'card-twitter', 'card-medium', 'card-pinterest', 'card-bmc', 'card-figma', 
+            'card-discord', 'card-dribbble', 'card-linkedin', 'card-gumroad', 'card-stack', 
+            'card-instagram', 'card-reddit'
+        ];
+
+        const COLOR_PRESETS = [
+            { class: 'card-twitter', color: '#3FA3EB', label: 'Twitter蓝' },
+            { class: 'card-medium', color: '#E6E6E6', label: 'Medium白', isLight: true },
+            { class: 'card-pinterest', color: '#C81D24', label: 'Pinterest红' },
+            { class: 'card-bmc', color: '#F5C13D', label: 'Coffee黄', isLight: true },
+            { class: 'card-figma', color: '#17181A', label: 'Figma黑' },
+            { class: 'card-discord', color: '#5462E7', label: 'Discord紫' },
+            { class: 'card-dribbble', color: '#E4437E', label: 'Dribbble粉' },
+            { class: 'card-linkedin', color: '#0B579E', label: 'LinkedIn蓝' },
+            { class: 'card-gumroad', color: '#EAA2F0', label: 'Gumroad浅紫', isLight: true },
+            { class: 'card-stack', color: '#222428', label: '堆叠深灰' },
+            { class: 'card-instagram', color: 'linear-gradient(135deg, #9F2CAC, #EA485C, #F4A751)', label: 'Sunset' },
+            { class: 'card-reddit', color: '#E03504', label: 'Reddit橙' }
+        ];
+
+        // 面板初始骨骼
+        const DEFAULT_CARDS = [
+            { id: "1", title: "Twitter", handle: "@handle or address", link: "#", colSpan: 2, rowSpan: 1, bgClass: "card-twitter", icon: "twitter" },
+            { id: "2", title: "Medium", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 1, bgClass: "card-medium", icon: "medium", isLight: true },
+            { id: "3", title: "Pinterest", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 1, bgClass: "card-pinterest", icon: "pinterest" },
+            { id: "4", title: "Buy me a Coffee", handle: "@handle or address", link: "#", colSpan: 2, rowSpan: 1, bgClass: "card-bmc", icon: "bmc", isLight: true },
+            { id: "5", title: "Figma", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 2, bgClass: "card-figma", icon: "figma" },
+            { id: "6", title: "Discord", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 1, bgClass: "card-discord", icon: "discord" },
+            { id: "7", title: "Dribbble", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 1, bgClass: "card-dribbble", icon: "dribbble" },
+            { id: "8", title: "LinkedIn", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 1, bgClass: "card-linkedin", icon: "linkedin" },
+            { id: "9", title: "Gumroad", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 1, bgClass: "card-gumroad", icon: "gumroad", isLight: true },
+            { id: "10", title: "More Works", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 1, bgClass: "card-stack", icon: "stack" },
+            { id: "11", title: "Instagram", handle: "@handle or address", link: "#", colSpan: 2, rowSpan: 1, bgClass: "card-instagram", icon: "instagram" },
+            { id: "12", title: "Reddit", handle: "@handle or address", link: "#", colSpan: 1, rowSpan: 1, bgClass: "card-reddit", icon: "reddit" }
+        ];
+
+        let state = {
+            profile: {
+                name: "Double Glitch 🇺🇦",
+                bio: "Hey there! My name is Roman, I'm a Ukrainian designer. I create unusual stuff with ordinary tools hoping to inspire people to unlock or boost their own creativity."
+            },
+            cards: [...DEFAULT_CARDS]
+        };
+
+        let activeCardId = null;
+
+        // 📐 尺寸拉伸控制寄存器
+        let isResizing = false;
+        let resizeCardId = null;
+        let startWidth, startHeight, startX, startY;
+        let startCol, startRow;
+        let colWidth, rowHeight, gapValue;
+
+        // 🌪️ 物理碰撞拖曳控制寄存器 (Drag-to-Shove)
+        let isDraggingCard = false;
+        let dragItem = null;
+        let dragGhostEl = null;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let cursorOffsetX = 0;
+        let cursorOffsetY = 0;
+        let hasTriggeredMove = false; // 判断是单击还是开始拔起拖拽
+
+        window.onload = function() {
+            const cached = localStorage.getItem('yusazh_bento_shove_state');
+            if (cached) {
+                try { state = JSON.parse(cached); } catch(e) { }
+            }
+            renderUI();
+            setupProfileChanges();
+            setupLiveEditorEvents();
+        };
+
+        // ==========================================
+        // 🪄 FLIP 物理补间重排渲染算法 (核心)
+        // ==========================================
+        function renderUI() {
+            renderGridWithDraggedCheck(null);
+        }
+
+        // 以无缝保留拖拽占位的方式渲染 Grid 骨架
+        function renderGridWithDraggedCheck(draggingId) {
+            document.getElementById('profileTitle').innerText = state.profile.name;
+            document.getElementById('profileBio').innerText = state.profile.bio;
+
+            const gridContainer = document.getElementById('bentoGrid');
+            gridContainer.innerHTML = '';
+
+            state.cards.forEach((card, index) => {
+                const isLight = card.isLight ? 'light-card' : '';
+                const aEl = document.createElement('div');
+                aEl.className = `bento-card col-span-${card.colSpan} row-span-${card.rowSpan} ${card.bgClass} ${isLight}`;
+                aEl.dataset.id = card.id;
+
+                // 若此卡片正处于被拖起在鼠标上的状态，本底设为半隐框线占位格
+                if (card.id === draggingId) {
+                    aEl.classList.add('original-placeholder');
+                }
+
+                // 高亮选中编辑中的卡片框
+                if (card.id === activeCardId) {
+                    aEl.classList.add('is-editing');
+                }
+
+                aEl.innerHTML = `
+                    <div class="card-top">
+                        ${SVG_ICONS[card.icon] || ''}
+                    </div>
+                    <div class="card-bottom">
+                        <div class="card-title">${escapeHTML(card.title)}</div>
+                        <div class="card-handle">${escapeHTML(card.handle)}</div>
+                    </div>
+                    <div class="resizer-handle">
+                        <svg viewBox="0 0 8 8"><use href="#resizer-icon"></use></svg>
+                    </div>
+                `;
+
+                // 2. 挂载拉伸滑阻
+                const handle = aEl.querySelector('.resizer-handle');
+                handle.addEventListener('mousedown', function(e) {
+                    startCardResize(e, card.id, aEl);
+                });
+
+                // 3. 挂载物理拖拽碰撞监听
+                aEl.addEventListener('mousedown', function(e) {
+                    if (!document.body.classList.contains('is-edit-mode')) return;
+                    if (e.target.closest('.resizer-handle')) return;
+                    if (e.target.closest('[contenteditable="true"]')) return;
+                    
+                    startCardDrag(e, card, aEl, index);
+                });
+
+                gridContainer.appendChild(aEl);
+            });
+        }
+
+        // FLIP 流机制：计算首尾坐标，生成位置变动动画
+        function flipLayout(updateModelFn) {
+            const gridContainer = document.getElementById('bentoGrid');
+            const cards = Array.from(gridContainer.children);
+            
+            // 1. FIRST: 获悉原卡片们在视窗里的物理绝对坐标
+            const firstPositions = {};
+            cards.forEach(card => {
+                const id = card.dataset.id;
+                if (id) {
+                    firstPositions[id] = card.getBoundingClientRect();
+                }
+            });
+
+            // 2. 更新数据，重新渲染 DOM
+            updateModelFn();
+
+            // 3. LAST: 渲染之后，计算最新物理坐标
+            const newCards = Array.from(gridContainer.children);
+            newCards.forEach(card => {
+                const id = card.dataset.id;
+                if (!id || !firstPositions[id]) return;
+
+                const first = firstPositions[id];
+                const last = card.getBoundingClientRect();
+
+                const deltaX = first.left - last.left;
+                const deltaY = first.top - last.top;
+
+                // 4. INVERT & PLAY: 如果坐标改变，倒放并利用 requestAnimationFrame 产生滑入补间
+                if (deltaX !== 0 || deltaY !== 0) {
+                    card.style.transition = 'none';
+                    card.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+
+                    requestAnimationFrame(() => {
+                        // 产生弹性阻尼卡片挤开滑行过渡
+                        card.style.transition = 'transform 0.45s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                        card.style.transform = 'translate(0, 0)';
+                    });
+                }
+            });
+        }
+
+        // ==========================================
+        // 🌪️ 自控矢量拖拽重排与挤漏碰撞引擎 (Shove Engine)
+        // ==========================================
+        function startCardDrag(e, card, cardEl, index) {
+            e.preventDefault();
+            isDraggingCard = true;
+            dragItem = card;
+            hasTriggeredMove = false;
+
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+
+            // 获取卡片坐标的点击相对位移，防跳抖
+            const rect = cardEl.getBoundingClientRect();
+            cursorOffsetX = e.clientX - rect.left;
+            cursorOffsetY = e.clientY - rect.top;
+
+            // 克隆一份用来做 3D 悬浮镜像 (Ghost)
+            dragGhostEl = cardEl.cloneNode(true);
+            dragGhostEl.style.width = rect.width + 'px';
+            dragGhostEl.style.height = rect.height + 'px';
+            dragGhostEl.style.left = rect.left + 'px';
+            dragGhostEl.style.top = rect.top + 'px';
+            dragGhostEl.classList.add('dragging-ghost');
+
+            document.addEventListener('mousemove', handleCardDrag);
+            document.addEventListener('mouseup', stopCardDrag);
+        }
+
+        function handleCardDrag(e) {
+            if (!isDraggingCard || !dragItem) return;
+
+            const dx = e.clientX - dragStartX;
+            const dy = e.clientY - dragStartY;
+
+            // 设定位移缓冲区：手势移动超过 6px 时，认定启动拖拽挤开模式，而非单击
+            if (!hasTriggeredMove) {
+                if (Math.sqrt(dx*dx + dy*dy) > 6) {
+                    hasTriggeredMove = true;
+                    // 正式将悬浮体追加至 Body 顶层进行游弋
+                    document.body.appendChild(dragGhostEl);
+                    closeFloatingEditor(); // 单纯拖拉时锁闭配置框 
+
+                    // 虚化底部的初始插拔槽
+                    flipLayout(() => {
+                        renderGridWithDraggedCheck(dragItem.id);
+                    });
+                }
+            }
+
+            if (hasTriggeredMove && dragGhostEl) {
+                // 跟随鼠标
+                dragGhostEl.style.left = (e.clientX - cursorOffsetX) + 'px';
+                dragGhostEl.style.top = (e.clientY - cursorOffsetY) + 'px';
+
+                // 物理坐标检测：获得由于 pointer-events: none 穿透取得的底下停留卡片
+                const hoveredEl = document.elementFromPoint(e.clientX, e.clientY);
+                if (!hoveredEl) return;
+
+                const targetCardEl = hoveredEl.closest('.bento-card');
+                if (targetCardEl && !targetCardEl.classList.contains('original-placeholder')) {
+                    const targetId = targetCardEl.dataset.id;
+                    const targetIndex = state.cards.findIndex(c => c.id === targetId);
+                    const currentIndex = state.cards.findIndex(c => c.id === dragItem.id);
+
+                    if (targetIndex !== -1 && currentIndex !== -1 && targetIndex !== currentIndex) {
+                        // 碰撞触发：在底层队列更换两坐标模型，并带上 FLIP 瞬滑挤开排序动效！
+                        flipLayout(() => {
+                            state.cards.splice(currentIndex, 1);
+                            state.cards.splice(targetIndex, 0, dragItem);
+                            renderGridWithDraggedCheck(dragItem.id);
+                        });
+                    }
+                }
+            }
+        }
+
+        function stopCardDrag() {
+            if (!isDraggingCard) return;
+            isDraggingCard = false;
+
+            document.removeEventListener('mousemove', handleCardDrag);
+            document.removeEventListener('mouseup', stopCardDrag);
+
+            // 清毁滑屏镜像
+            if (dragGhostEl) {
+                dragGhostEl.remove();
+                dragGhostEl = null;
+            }
+
+            if (!hasTriggeredMove && dragItem) {
+                // 仅点击判定：原地点击卡片，快速弹出侧调菜单 
+                const originEl = document.querySelector(`[data-id="${dragItem.id}"]`);
+                if (originEl) {
+                    openFloatingEditor(dragItem.id, originEl);
+                }
+            } else {
+                // 放下归位：恢复正常状态
+                flipLayout(() => {
+                    renderGridWithDraggedCheck(null);
+                });
+                saveToLocalSilent();
+            }
+
+            dragItem = null;
+        }
+
+        // ==========================================
+        // 📐 尺寸调节拉拉 (Grid Row/Col Span Modifier)
+        // ==========================================
+        function startCardResize(e, cardId, cardEl) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            isResizing = true;
+            resizeCardId = cardId;
+            startX = e.clientX;
+            startY = e.clientY;
+
+            const rect = cardEl.getBoundingClientRect();
+            startWidth = rect.width;
+            startHeight = rect.height;
+
+            const card = state.cards.find(c => c.id === cardId);
+            startCol = card.colSpan || 1;
+            startRow = card.rowSpan || 1;
+
+            const gridEl = document.getElementById('bentoGrid');
+            gapValue = parseFloat(getComputedStyle(gridEl).gap) || 24;
+            const totalWidth = gridEl.clientWidth;
+            colWidth = (totalWidth - (3 * gapValue)) / 4; 
+            rowHeight = 188; 
+
+            cardEl.style.transition = 'none'; // 滑轨控制期间取消阻尼
+
+            document.addEventListener('mousemove', handleCardResize);
+            document.addEventListener('mouseup', stopCardResize);
+        }
+
+        function handleCardResize(e) {
+            if (!isResizing) return;
+
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+
+            let curWidth = startWidth + dx;
+            let curHeight = startHeight + dy;
+
+            let targetCol = Math.round((curWidth + gapValue) / (colWidth + gapValue));
+            let targetRow = Math.round((curHeight + gapValue) / (rowHeight + gapValue));
+
+            targetCol = Math.max(1, Math.min(4, targetCol));
+            targetRow = Math.max(1, Math.min(3, targetRow));
+
+            const card = state.cards.find(c => c.id === resizeCardId);
+            if (card.colSpan !== targetCol || card.rowSpan !== targetRow) {
+                // 实时重排：在拉格更改时，同步触发碰撞推挤算法，整列自动挤压
+                flipLayout(() => {
+                    card.colSpan = targetCol;
+                    card.rowSpan = targetRow;
+                    renderGridWithDraggedCheck(null);
+                });
+            }
+        }
+
+        function stopCardResize() {
+            isResizing = false;
+            const cardEl = document.querySelector(`[data-id="${resizeCardId}"]`);
+            if (cardEl) cardEl.style.transition = '';
+            
+            document.removeEventListener('mousemove', handleCardResize);
+            document.removeEventListener('mouseup', stopCardResize);
+
+            renderUI();
+            saveToLocalSilent();
+
+            // 如若是当前选中状态，跟随机随调定位
+            if (activeCardId === resizeCardId) {
+                openFloatingEditor(activeCardId, document.querySelector(`[data-id="${activeCardId}"]`));
+            }
+        }
+
+        // ==========================================
+        // 📌 精细悬挂面板与实时录入
+        // ==========================================
+        function openFloatingEditor(cardId, cardEl) {
+            activeCardId = cardId;
+            const card = state.cards.find(c => c.id === cardId);
+            if (!card) return;
+
+            document.getElementById('flTitle').value = card.title;
+            document.getElementById('flHandle').value = card.handle;
+            document.getElementById('flLink').value = card.link;
+            document.getElementById('flIcon').value = card.icon;
+
+            renderFloatingColors(card);
+
+            const panel = document.getElementById('floatingEditor');
+            panel.style.display = 'flex';
+
+            const rect = cardEl.getBoundingClientRect();
+            const panelWidth = panel.offsetWidth || 330;
+            const panelHeight = panel.offsetHeight || 380;
+            const scrollY = window.scrollY;
+
+            // 默认右侧悬浮，偏移 16 像素
+            let xLeft = rect.right + 16 + window.scrollX;
+            let yTop = rect.top + scrollY;
+
+            // 右侧越界保驾：调转至卡片左侧吸附
+            if (xLeft + panelWidth > window.innerWidth) {
+                xLeft = rect.left - panelWidth - 16 + window.scrollX;
+            }
+            // 底部越界保驾：向上顶起校准
+            if (yTop + panelHeight > document.body.scrollHeight) {
+                yTop = document.body.scrollHeight - panelHeight - 20;
+            }
+
+            xLeft = Math.max(16, xLeft);
+            yTop = Math.max(16, yTop);
+
+            panel.style.left = `${xLeft}px`;
+            panel.style.top = `${yTop}px`;
+
+            // 高亮展示底框 
+            document.querySelectorAll('.bento-card').forEach(el => el.classList.remove('is-editing'));
+            cardEl.classList.add('is-editing');
+        }
+
+        function closeFloatingEditor() {
+            document.getElementById('floatingEditor').style.display = 'none';
+            document.querySelectorAll('.bento-card').forEach(el => el.classList.remove('is-editing'));
+            activeCardId = null;
+        }
+
+        function setupLiveEditorEvents() {
+            const flTitle = document.getElementById('flTitle');
+            const flHandle = document.getElementById('flHandle');
+            const flLink = document.getElementById('flLink');
+            const flIcon = document.getElementById('flIcon');
+
+            flTitle.addEventListener('input', (e) => {
+                const card = state.cards.find(c => c.id === activeCardId);
+                if (card) {
+                    card.title = e.target.value;
+                    const cardEl = document.querySelector(`[data-id="${activeCardId}"] .card-title`);
+                    if (cardEl) cardEl.innerText = e.target.value;
+                    saveToLocalSilent();
+                }
+            });
+
+            flHandle.addEventListener('input', (e) => {
+                const card = state.cards.find(c => c.id === activeCardId);
+                if (card) {
+                    card.handle = e.target.value;
+                    const cardEl = document.querySelector(`[data-id="${activeCardId}"] .card-handle`);
+                    if (cardEl) cardEl.innerText = e.target.value;
+                    saveToLocalSilent();
+                }
+            });
+
+            flLink.addEventListener('input', (e) => {
+                const card = state.cards.find(c => c.id === activeCardId);
+                if (card) {
+                    card.link = e.target.value;
+                    saveToLocalSilent();
+                }
+            });
+
+            flIcon.addEventListener('change', (e) => {
+                const card = state.cards.find(c => c.id === activeCardId);
+                if (card) {
+                    card.icon = e.target.value;
+                    const iconBox = document.querySelector(`[data-id="${activeCardId}"] .card-top`);
+                    if (iconBox) iconBox.innerHTML = SVG_ICONS[e.target.value] || '';
+                    saveToLocalSilent();
+                }
+            });
+        }
+
+        function renderFloatingColors(currentCard) {
+            const picker = document.getElementById('floatingColorPicker');
+            picker.innerHTML = '';
+
+            COLOR_PRESETS.forEach(preset => {
+                const dot = document.createElement('div');
+                dot.className = `preset-dot ${preset.class === currentCard.bgClass ? 'active' : ''}`;
+                dot.style.background = preset.color;
+                dot.title = preset.label;
+
+                dot.addEventListener('click', () => {
+                    document.querySelectorAll('.preset-dot').forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+
+                    currentCard.bgClass = preset.class;
+                    currentCard.isLight = !!preset.isLight;
+
+                    const cardEl = document.querySelector(`[data-id="${activeCardId}"]`);
+                    if (cardEl) {
+                        BG_CLASSES.forEach(cls => cardEl.classList.remove(cls));
+                        cardEl.classList.remove('light-card');
+                        cardEl.classList.add(preset.class);
+                        if (preset.isLight) cardEl.classList.add('light-card');
+                    }
+                    saveToLocalSilent();
+                });
+
+                picker.appendChild(dot);
+            });
+        }
+
+        // ==========================================
+        // 9. 左侧文字区失焦固化 
+        // ==========================================
+        function setupProfileChanges() {
+            const pTitle = document.getElementById('profileTitle');
+            const pBio = document.getElementById('profileBio');
+
+            pTitle.addEventListener('blur', () => {
+                state.profile.name = pTitle.innerText;
+                saveToLocalSilent();
+            });
+            pBio.addEventListener('blur', () => {
+                state.profile.bio = pBio.innerText;
+                saveToLocalSilent();
+            });
+        }
+
+        // ==========================================
+        // 10. 文件导入/导出及发布
+        // ==========================================
+        function toggleEditMode() {
+            const isEdit = document.body.classList.contains('is-edit-mode');
+            const previewBtn = document.getElementById('previewBtn');
+
+            closeFloatingEditor();
+
+            if (isEdit) {
+                document.body.classList.remove('is-edit-mode');
+                document.body.classList.add('is-preview-mode');
+                document.getElementById('profileTitle').contentEditable = "false";
+                document.getElementById('profileBio').contentEditable = "false";
+                previewBtn.innerText = "✏️ 返回编辑";
+                previewBtn.style.background = "#FFC107";
+                previewBtn.style.color = "#121214";
+                showToast("进入效果预览模式。卡片链接跳转功能已通畅！");
+            } else {
+                document.body.classList.remove('is-preview-mode');
+                document.body.classList.add('is-edit-mode');
+                document.getElementById('profileTitle').contentEditable = "true";
+                document.getElementById('profileBio').contentEditable = "true";
+                previewBtn.innerText = "👁️ 预览效果";
+                previewBtn.style.background = "#ffffff";
+                previewBtn.style.color = "#121214";
+                showToast("重回编辑面板。按住拖曳可流式换位，拖放角标可尺寸放缩！");
+            }
+            renderUI();
+        }
+
+        function triggerImport() { document.getElementById('importFileInput').click(); }
+
+        function saveToLocal() {
+            localStorage.setItem('yusazh_bento_shove_state', JSON.stringify(state));
+            showToast("💾 页面资产及物理排盘已写入本地磁盘缓存！");
+        }
+
+        function saveToLocalSilent() {
+            localStorage.setItem('yusazh_bento_shove_state', JSON.stringify(state));
+        }
+
+        function exportJSONConfig() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 4));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "micro-bento-shove-config.json");
+            dlAnchorElem.click();
+            showToast("🎉 数据已备份打包，支持在任何平台导入恢复！");
+        }
+
+        function importJSONConfig(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedState = JSON.parse(e.target.result);
+                    if (importedState.profile && Array.isArray(importedState.cards)) {
+                        state = importedState;
+                        renderUI();
+                        saveToLocalSilent();
+                        showToast("📥 库配置已无缝还原吸纳！");
+                    } else {
+                        alert("非法的 Bento 结构 JSON!");
+                    }
+                } catch(err) {
+                    alert("解析失败，请检查文件格式。");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function resetDefaults() {
+            if (confirm("⚠️ 确定要清空全盘的所有卡片排序和尺寸，恢复原始设置吗？")) {
+                localStorage.removeItem('yusazh_bento_shove_state');
+                state = {
+                    profile: {
+                        name: "Double Glitch 🇺🇦",
+                        bio: "Hey there! My name is Roman, I'm a Ukrainian designer. I create unusual stuff with ordinary tools hoping to inspire people to unlock or boost their own creativity."
+                    },
+                    cards: [...DEFAULT_CARDS]
+                };
+                renderUI();
+                closeFloatingEditor();
+                showToast("♻️ 主页排列已被重洗置顶！");
+            }
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastTips');
+            toast.innerText = msg;
+            toast.classList.add('show');
+            setTimeout(() => { toast.classList.remove('show'); }, 3000);
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        // ==========================================
+        // 🚀 脱水编译打包：下载纯一阶静态主页
+        // ==========================================
+        function exportFinalHTML() {
+            let cardsHTML = '';
+            state.cards.forEach(card => {
+                const isLight = card.isLight ? 'light-card' : '';
+                cardsHTML += `
+            <!-- 卡片: ${card.title} -->
+            <a href="${card.link}" class="bento-card col-span-${card.colSpan} row-span-${card.rowSpan} ${card.bgClass} ${isLight}">
+                <div class="card-top">
+                    ${SVG_ICONS[card.icon] || ''}
+                </div>
+                <div class="card-bottom">
+                    <div class="card-title">${escapeHTML(card.title)}</div>
+                    <div class="card-handle">${escapeHTML(card.handle)}</div>
+                </div>
+            </a>\n`;
+            });
+
+            const templateHTML = `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHTML(state.profile.name)} - 个人主页</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: #121214;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            overflow-x: hidden;
+        }
+        .page-container { width: 100%; max-width: 1240px; display: flex; gap: 4rem; align-items: flex-start; }
+        .sidebar { flex: 0 0 340px; position: sticky; top: 4rem; display: flex; flex-direction: column; align-items: flex-start; }
+        .avatar-wrapper {
+            width: 140px; height: 140px; border-radius: 50%; background: #111113; padding: 4px; position: relative;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15), inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.15), inset -2px -2px 5px rgba(0, 0, 0, 0.4);
+            margin-bottom: 2.2rem; overflow: hidden;
+        }
+        .avatar-wrapper::after { content: ''; position: absolute; inset: 0; border-radius: 50%; box-shadow: inset 0px 4px 10px rgba(0,0,0,0.5); pointer-events: none; }
+        .avatar-svg { width: 100%; height: 100%; border-radius: 50%; display: block; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .avatar-wrapper:hover .avatar-svg { transform: scale(1.05); }
+        .profile-title { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 1rem; color: #111113; }
+        .profile-bio { font-size: 1.05rem; line-height: 1.6; color: #5d5d65; font-weight: 400; }
+        
+        .bento-grid { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; grid-auto-rows: 188px; }
+        .bento-card {
+            border-radius: 38px; padding: 1.8rem 2rem; display: flex; flex-direction: column; justify-content: space-between; text-decoration: none; position: relative; overflow: hidden;
+            transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05), inset 1.5px 1.5px 1px rgba(255, 255, 255, 0.4), inset -2px -2px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08); transform-style: preserve-3d; perspective: 1000px;
+        }
+        .bento-card:hover {
+            transform: translateY(-8px) scale(1.015);
+            box-shadow: 0 22px 45px rgba(0, 0, 0, 0.09), inset 2px 2px 1.5px rgba(255, 255, 255, 0.45), inset -2px -2px 3px rgba(0, 0, 0, 0.08);
+        }
+        .light-card {
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.03), inset 1.8px 1.8px 1px rgba(255, 255, 255, 0.9), inset -2px -2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .light-card:hover {
+            box-shadow: 0 22px 45px rgba(0, 0, 0, 0.06), inset 2px 2px 1.5px rgba(255, 255, 255, 0.95), inset -2.5px -2.5px 4px rgba(0, 0, 0, 0.04);
+        }
+        .card-top { display: flex; align-items: flex-start; }
+        .card-bottom { margin-top: auto; }
+        .card-title { font-size: 1.15rem; font-weight: 700; letter-spacing: -0.3px; margin-bottom: 0.15rem; }
+        .card-handle { font-size: 0.85rem; font-weight: 500; opacity: 0.7; }
+        
+        .icon-3d {
+            width: 46px; height: 46px; display: block; transform: translateZ(10px);
+            filter: drop-shadow(1.5px 2px 1.5px rgba(0, 0, 0, 0.15)) drop-shadow(5px 9px 8px rgba(0, 0, 0, 0.22)) drop-shadow(10px 16px 18px rgba(0, 0, 0, 0.14));
+            transition: all 0.45s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .bento-card:hover .icon-3d {
+            transform: scale(1.12) translate(-3px, -5px) translateZ(25px);
+            filter: drop-shadow(2px 3px 2px rgba(0, 0, 0, 0.1)) drop-shadow(8px 15px 12px rgba(0, 0, 0, 0.28)) drop-shadow(15px 24px 22px rgba(0, 0, 0, 0.16));
+        }
+        .light-card .icon-3d { filter: drop-shadow(1.5px 2px 1px rgba(0, 0, 0, 0.1)) drop-shadow(4px 8px 7px rgba(0, 0, 0, 0.15)) drop-shadow(8px 14px 14px rgba(0, 0, 0, 0.08)); }
+        .light-card:hover .icon-3d { filter: drop-shadow(2px 3px 1.5px rgba(0, 0, 0, 0.05)) drop-shadow(6px 14px 10px rgba(0, 0, 0, 0.2)) drop-shadow(12px 22px 18px rgba(0, 0, 0, 0.1)); }
+
+        .col-span-1 { grid-column: span 1; }
+        .col-span-2 { grid-column: span 2; }
+        .col-span-3 { grid-column: span 3; }
+        .col-span-4 { grid-column: span 4; }
+        .row-span-1 { grid-row: span 1; }
+        .row-span-2 { grid-row: span 2; }
+        .row-span-3 { grid-row: span 3; }
+
+        .card-twitter { background: linear-gradient(135deg, #6EC2F7 0%, #3FA3EB 100%); color: #ffffff; }
+        .card-medium { background: linear-gradient(135deg, #FCFCFC 0%, #E6E6E6 100%); color: #1a1a1a; }
+        .card-pinterest { background: linear-gradient(135deg, #F23C3F 0%, #C81D24 100%); color: #ffffff; }
+        .card-bmc { background: linear-gradient(135deg, #FFEA79 0%, #F5C13D 100%); color: #2F2F2F; }
+        .card-figma { background: linear-gradient(135deg, #2B2C2E 0%, #17181A 100%); color: #ffffff; }
+        .card-discord { background: linear-gradient(135deg, #7A8CF6 0%, #5462E7 100%); color: #ffffff; }
+        .card-dribbble { background: linear-gradient(135deg, #FF7EBC 0%, #E4437E 100%); color: #ffffff; }
+        .card-linkedin { background: linear-gradient(135deg, #4A89D5 0%, #0B579E 100%); color: #ffffff; }
+        .card-gumroad { background: linear-gradient(135deg, #FCE3FE 0%, #EAA2F0 100%); color: #311634; }
+        .card-stack { background: linear-gradient(135deg, #373A40 0%, #222428 100%); color: #ffffff; }
+        .card-instagram { background: linear-gradient(135deg, #9F2CAC 0%, #EA485C 50%, #F4A751 100%); color: #ffffff; }
+        .card-reddit { background: linear-gradient(135deg, #FF6E43 0%, #E03504 100%); color: #ffffff; }
+
+        .svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+        @media (max-width: 1024px) {
+            .page-container { flex-direction: column; gap: 2.5rem; align-items: center; max-width: 760px; }
+            .sidebar { flex: 0 0 auto; width: 100%; align-items: center; text-align: center; position: static; }
+            .avatar-wrapper { margin-bottom: 1.5rem; }
+        }
+        @media (max-width: 700px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .col-span-3, .col-span-4 { grid-column: span 2 !important; }
+        }
+        @media (max-width: 480px) {
+            .bento-grid { grid-template-columns: 1fr; gap: 16px; }
+            .col-span-2, .col-span-3, .col-span-4, .row-span-2, .row-span-3 { grid-column: span 1 !important; grid-row: span 1 !important; }
+            .profile-title { font-size: 2.1rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <svg class="svg-defs">
+        <defs>
+            <linearGradient id="white-3d-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="65%" stop-color="#ffffff" />
+                <stop offset="100%" stop-color="#dae3f0" />
+            </linearGradient>
+            <linearGradient id="dark-3d-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#3d3e42" />
+                <stop offset="100%" stop-color="#121213" />
+            </linearGradient>
+            <linearGradient id="figma-orange" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FFA89F" /><stop offset="100%" stop-color="#F24E1E" /></linearGradient>
+            <linearGradient id="figma-pink" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#FF97DC" /><stop offset="100%" stop-color="#FF7262" /></linearGradient>
+            <linearGradient id="figma-purple" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#D7B5FF" /><stop offset="100%" stop-color="#A259FF" /></linearGradient>
+            <linearGradient id="figma-blue" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#8CE0FF" /><stop offset="100%" stop-color="#1ABCFE" /></linearGradient>
+            <linearGradient id="figma-green" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#7BFFBF" /><stop offset="100%" stop-color="#0ACF83" /></linearGradient>
+        </defs>
+    </svg>
+
+    <div class="page-container">
+        
+        <div class="sidebar">
+            <div class="avatar-wrapper">
+                <svg class="avatar-svg" viewBox="0 0 100 100">
+                    <rect width="100" height="100" fill="#0c0c0e"/>
+                    <line x1="0" y1="20" x2="100" y2="20" stroke="#1d1d23" stroke-width="0.5"/>
+                    <line x1="0" y1="40" x2="100" y2="40" stroke="#1d1d23" stroke-width="0.5"/>
+                    <line x1="0" y1="60" x2="100" y2="60" stroke="#1d1d23" stroke-width="0.5"/>
+                    <line x1="0" y1="80" x2="100" y2="80" stroke="#1d1d23" stroke-width="0.5"/>
+                    <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#00f0ff" opacity="0.6" transform="translate(-2, 1)"/>
+                    <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#ff007f" opacity="0.6" transform="translate(2, -1)"/>
+                    <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#1b1c21" />
+                    <rect x="15" y="30" width="18" height="4" fill="#00f0ff" opacity="0.8" />
+                    <rect x="68" y="32" width="15" height="3" fill="#ff007f" opacity="0.8" />
+                    <rect x="25" y="55" width="55" height="1.5" fill="#ffffff" opacity="0.9" />
+                    <rect x="40" y="65" width="30" height="2" fill="#00f0ff" opacity="0.7" />
+                    <rect x="20" y="74" width="12" height="3" fill="#ff007f" opacity="0.8" />
+                </svg>
+            </div>
+            
+            <h1 class="profile-title">${escapeHTML(state.profile.name)}</h1>
+            <p class="profile-bio">${escapeHTML(state.profile.bio)}</p>
+        </div>
+
+        <div class="bento-grid">
+            ${cardsHTML}
+        </div>
+    </div>
+
+</body>
+</html>`;
+
+            const blob = new Blob([templateHTML], { type: 'text/html;charset=utf-8' });
+            const dlLink = document.createElement('a');
+            dlLink.href = URL.createObjectURL(blob);
+            dlLink.download = `${state.profile.name.replace(/\s+/g, '-')}-bento.html`;
+            dlLink.click();
+            showToast("🚀 发布成功！纯原生 HTML 包已开始保存下载！");
+        }
+    </script>
+</body>
+</html>

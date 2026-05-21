@@ -26,11 +26,11 @@ export function LinkWidget({ context, props }: { context?: WidgetRenderContext; 
 
 function CompactLinkContent({ color, description, logo, title, wide = false }: Pick<LinkWidgetProps, "color" | "description" | "logo" | "title"> & { wide?: boolean }) {
   return (
-    <span className="relative z-10 flex h-full flex-col justify-between px-6 pb-5 pt-6">
+    <span className="relative z-10 flex h-full flex-col justify-between px-8 pb-7 pt-7">
       <LinkLogo className="shrink-0" color={color} logo={logo} title={title} />
-      <span className={`grid gap-[3px] ${wide ? "absolute bottom-5 left-[6.5rem] right-6" : ""}`}>
-        <span className="[word-break:break-word] text-[16px] font-semibold leading-none text-[#fbfbfb]">{title}</span>
-        {description ? <span className="[word-break:break-word] text-[12px] leading-4 text-[#fbfbfb]">{description}</span> : null}
+      <span className={`grid gap-1 ${wide ? "absolute bottom-7 left-[7rem] right-8" : ""}`}>
+        <span className="[word-break:break-word] text-[1.15rem] font-bold leading-none tracking-[-0.02em] text-current">{title}</span>
+        {description ? <span className="[word-break:break-word] text-[0.85rem] font-medium leading-4 text-current opacity-70">{description}</span> : null}
       </span>
     </span>
   );
@@ -38,11 +38,11 @@ function CompactLinkContent({ color, description, logo, title, wide = false }: P
 
 function LargeLinkContent({ color, description, logo, title }: Pick<LinkWidgetProps, "color" | "description" | "logo" | "title">) {
   return (
-    <span className="relative z-10 flex h-full flex-col justify-between px-6 pb-5 pt-6">
+    <span className="relative z-10 flex h-full flex-col justify-between px-8 pb-7 pt-7">
       <LinkLogo color={color} logo={logo} title={title} />
       <span className="grid gap-2">
-        <span className="[word-break:break-word] text-[20px] font-semibold leading-tight text-[#fbfbfb]">{title}</span>
-        {description ? <span className="[word-break:break-word] text-[12px] leading-4 text-[#fbfbfb]/80">{description}</span> : null}
+        <span className="[word-break:break-word] text-[1.35rem] font-bold leading-tight tracking-[-0.03em] text-current">{title}</span>
+        {description ? <span className="[word-break:break-word] text-[0.9rem] leading-5 text-current opacity-75">{description}</span> : null}
       </span>
     </span>
   );

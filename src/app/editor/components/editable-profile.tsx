@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { useState } from "react";
 import type { PageContact, PageProfile } from "@/lib/page-config/types";
 import { useEditorStore } from "../store";
@@ -15,7 +14,7 @@ export function EditableProfile({ profile }: { profile: PageProfile }) {
   return (
     <section className="group/profile grid justify-items-start gap-8 rounded-[2.5rem] p-3 transition hover:bg-white/50 focus-within:bg-white/70">
       <label className="relative mx-auto grid size-44 cursor-pointer place-items-center overflow-hidden rounded-full bg-zinc-950 text-6xl font-black text-white shadow-[0_28px_80px_rgba(20,16,10,0.18)] transition hover:scale-[1.02] focus-within:ring-4 focus-within:ring-[#7c5cff]/30 lg:mx-0 xl:size-52">
-        {profile.avatarUrl ? <Image alt="个人头像预览" className="object-cover" fill sizes="13rem" src={profile.avatarUrl} unoptimized /> : initial}
+        {profile.avatarUrl ? <img alt="个人头像预览" className="size-full object-cover" src={profile.avatarUrl} /> : initial}
         <span className="absolute inset-x-5 bottom-5 rounded-full bg-white/95 px-4 py-2 text-center text-xs font-black uppercase tracking-[0.16em] text-zinc-950 opacity-0 shadow-[0_12px_32px_rgba(20,16,10,0.18)] transition group-hover/profile:opacity-100 group-focus-within/profile:opacity-100">
           上传头像
         </span>

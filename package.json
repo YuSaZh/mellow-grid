@@ -3,27 +3,28 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "eslint"
+    "dev": "node node_modules/astro/bin/astro.mjs dev",
+    "build": "node node_modules/astro/bin/astro.mjs build",
+    "start": "node node_modules/astro/bin/astro.mjs preview",
+    "lint": "node node_modules/@astrojs/check/bin/astro-check.js",
+    "test": "node node_modules/vitest/vitest.mjs run"
   },
   "dependencies": {
-    "next": "16.2.6",
+    "@astrojs/react": "latest",
+    "astro": "latest",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "react-grid-layout": "^2.2.3",
-    "react-resizable": "^4.0.1",
     "zustand": "^5.0.13"
   },
   "devDependencies": {
+    "@astrojs/check": "latest",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "latest"
   }
 }

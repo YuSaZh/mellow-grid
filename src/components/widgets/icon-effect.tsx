@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react";
 
 type IconEffectProps = PropsWithChildren<{
   className?: string;
-  depth?: "soft" | "figma";
+  depth?: "soft" | "figma" | "clay";
   framed?: boolean;
   highlight?: boolean;
 }>;
@@ -31,7 +31,15 @@ const SOFT_SHADOW_LAYERS = [
   { offset: 0.5, blur: 1, opacity: 0.28 },
 ];
 
-export function IconEffect({ children, className = "", depth = "figma", framed = false, highlight = true }: IconEffectProps) {
+export function IconEffect({ children, className = "", depth = "clay", framed = false, highlight = true }: IconEffectProps) {
+  if (depth === "clay") {
+    return (
+      <span className={`relative z-10 grid size-[46px] place-items-center overflow-visible transition duration-[450ms] ease-[cubic-bezier(0.165,0.84,0.44,1)] [filter:drop-shadow(1.5px_2px_1.5px_rgba(0,0,0,0.15))_drop-shadow(5px_9px_8px_rgba(0,0,0,0.22))_drop-shadow(10px_16px_18px_rgba(0,0,0,0.14))] group-hover:scale-110 group-hover:-translate-x-1 group-hover:-translate-y-1 ${className}`}>
+        {children}
+      </span>
+    );
+  }
+
   const layers = depth === "figma" ? FIGMA_SHADOW_LAYERS : SOFT_SHADOW_LAYERS;
   const contentClassName = framed
     ? "relative z-10 grid size-12 place-items-center overflow-hidden rounded-[14px]"

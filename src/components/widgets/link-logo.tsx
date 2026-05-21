@@ -12,7 +12,7 @@ export function LinkLogo({ className = "", color, logo, title }: LinkLogoProps) 
   const framed = !isRenderableLogo(logo);
 
   return (
-    <IconEffect className={className} depth="figma" framed={framed}>
+    <IconEffect className={className} depth="clay" framed={framed}>
       <LogoContent color={color} logo={logo} title={title} />
     </IconEffect>
   );

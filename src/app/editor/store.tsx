@@ -5,6 +5,7 @@ import { createStore, useStore } from "zustand";
 import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_MIN_ITEM_SIZE, arrangeBentoLayout, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
 import { getGridWidgets, normalizePageConfig } from "@/lib/page-config/normalize";
 import type { DeploymentMode, GridLayoutItem, PageConfig, PageProfile, WidgetInstance } from "@/lib/page-config/types";
+import { renderStaticPageHtml } from "@/lib/page-export/export-html";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 
 export type SelectedTarget = { type: "widget"; id: string } | null;
@@ -23,6 +24,7 @@ type EditorState = {
   clearSelection: () => void;
   deleteWidget: (id: string) => void;
   exportConfig: () => void;
+  exportStaticHtml: () => void;
   importConfig: (file: File) => Promise<void>;
   loadLocalDraft: () => void;
   saveDraft: () => Promise<void>;
@@ -145,6 +147,22 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
       link.remove();
       URL.revokeObjectURL(href);
       set({ status: "Exported" });
+    },
+
+    exportStaticHtml() {
+      const { config } = get();
+      const normalizedConfig = normalizePageConfig(config);
+      const blob = new Blob([renderStaticPageHtml(normalizedConfig)], { type: "text/html;charset=utf-8" });
+      const href = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+
+      link.href = href;
+      link.download = "index.html";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(href);
+      set({ config: normalizedConfig, status: "Static HTML exported" });
     },
 
     async importConfig(file) {

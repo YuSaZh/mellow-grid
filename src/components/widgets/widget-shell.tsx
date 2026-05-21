@@ -20,20 +20,23 @@ type WidgetShellProps = PropsWithChildren<{
 const DEFAULT_CARD_BACKGROUND = "linear-gradient(180deg,#313030 0%,#121313 100%)";
 
 export function WidgetShell({ ariaLabel, background, children, className = "", href, interactive, showLinkIndicator, style, topRightSlot }: WidgetShellProps) {
+  const backgroundStyle = getWidgetBackgroundStyle(background);
+  const lightCard = isLightBackground(backgroundStyle.background);
   const shellClassName = [
-    "group relative block h-full overflow-hidden rounded-[24px] border border-black/[0.08] shadow-[0_2px_3px_rgba(0,0,0,0.03)]",
-    interactive || href ? "outline-none transition focus-visible:ring-4 focus-visible:ring-white/25" : "",
+    "group relative block h-full overflow-hidden rounded-[38px] border border-white/10 shadow-[0_12px_30px_rgba(0,0,0,0.05),inset_1.5px_1.5px_1px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(0,0,0,0.1)] transition duration-[450ms] ease-[cubic-bezier(0.165,0.84,0.44,1)]",
+    lightCard ? "border-white/50 shadow-[0_12px_30px_rgba(0,0,0,0.03),inset_1.8px_1.8px_1px_rgba(255,255,255,0.9),inset_-2px_-2px_4px_rgba(0,0,0,0.05)]" : "",
+    interactive || href ? "outline-none hover:-translate-y-2 hover:scale-[1.015] hover:shadow-[0_22px_45px_rgba(0,0,0,0.09),inset_2px_2px_1.5px_rgba(255,255,255,0.45),inset_-2px_-2px_3px_rgba(0,0,0,0.08)] focus-visible:ring-4 focus-visible:ring-white/25" : "",
     className,
   ]
     .filter(Boolean)
     .join(" ");
-  const shellStyle = { ...getWidgetBackgroundStyle(background), ...style };
+  const shellStyle = { color: lightCard ? "#1a1a1a" : "#ffffff", ...backgroundStyle, ...style };
   const content = (
     <>
-      <div className="pointer-events-none absolute inset-px rounded-[23px] border border-white/[0.22] [mask-image:linear-gradient(180deg,#000_0%,transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-px rounded-[37px] border border-white/[0.24] [mask-image:linear-gradient(180deg,#000_0%,transparent_100%)]" />
       {showLinkIndicator || topRightSlot ? (
-        <div className="pointer-events-none absolute right-[13px] top-[13px] z-20 grid size-5 place-items-center rounded-full border-2 border-white/20 bg-black/20 opacity-0 backdrop-blur-[7px] transition group-hover:opacity-100 group-focus-visible:opacity-100">
-          {topRightSlot}
+        <div className="pointer-events-none absolute right-4 top-4 z-20 grid size-5 place-items-center rounded-full border-2 border-white/20 bg-black/20 opacity-0 backdrop-blur-[7px] transition group-hover:opacity-100 group-focus-visible:opacity-100">
+          {topRightSlot ?? <span className="text-[10px] font-black text-white">↗</span>}
         </div>
       ) : null}
       {children}
@@ -69,4 +72,8 @@ export function getWidgetBackgroundStyle(background?: WidgetBackground): CSSProp
   const to = background.to || "#121313";
 
   return { background: `linear-gradient(${angle}deg, ${from} 0%, ${to} 100%)` };
+}
+
+function isLightBackground(background: CSSProperties["background"]) {
+  return typeof background === "string" && /#(?:fff|fcfcfc|f7f7f2|e6e6e6|ffea79|ffe181|f5c13d|fce3fe|eaa2f0|ffe8ee|dde2ff|dff0ff|fff1df|ffe0f1|ffd39a|ffe4d8)/i.test(background);
 }

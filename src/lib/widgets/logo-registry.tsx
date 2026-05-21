@@ -1,6 +1,22 @@
 import type { ReactNode } from "react";
 
-export type BuiltinLogoKey = "figma" | "github" | "x" | "linkedin" | "dribbble" | "email" | "blog" | "coffee" | "website";
+export type BuiltinLogoKey =
+  | "figma"
+  | "github"
+  | "x"
+  | "linkedin"
+  | "dribbble"
+  | "email"
+  | "blog"
+  | "coffee"
+  | "website"
+  | "medium"
+  | "pinterest"
+  | "discord"
+  | "gumroad"
+  | "stack"
+  | "instagram"
+  | "reddit";
 
 export type LinkLogo = { type: "builtin"; key: BuiltinLogoKey } | { type: "uploaded"; url: string; alt?: string };
 
@@ -45,6 +61,20 @@ export const builtinLogoRegistry: Record<BuiltinLogoKey, BuiltinLogoDefinition> 
       </svg>
     ),
   },
+  medium: {
+    color: "#1C1C1C",
+    label: "Medium",
+    render: ({ color }) => <TextLogo color={color} text="M" />,
+  },
+  pinterest: {
+    color: "#E60023",
+    label: "Pinterest",
+    render: ({ color }) => (
+      <svg aria-hidden="true" className="size-full" viewBox="0 0 48 48">
+        <path d="M24 5C13.5 5 8 12.1 8 19.8c0 5.1 2.8 9.1 7.2 10.7.8.3 1.2 0 1.4-.8l.5-2.1c.2-.7.1-1-.4-1.6-1.4-1.6-2.3-3.5-2.3-6.4 0-7.4 5.5-12.6 14-12.6 7.6 0 12.4 4.6 12.4 11.5 0 8.4-4.2 14.3-9.8 14.3-3 0-5.2-2.5-4.5-5.5.9-3.6 2.5-7.4 2.5-10 0-2.3-1.2-4.2-3.8-4.2-3 0-5.4 3.1-5.4 7.3 0 2.7.9 4.5.9 4.5l-3.7 15.7c-.6 2.5-.4 5.9-.1 8.2.1.7 1 .9 1.4.3 1.2-1.7 3.1-4.9 3.8-7.4l1.8-7c1 1.9 3.8 3.5 6.8 3.5 9 0 15.5-8.3 15.5-18.6C46 11.8 39.1 5 24 5Z" fill={color || "currentColor"} />
+      </svg>
+    ),
+  },
   linkedin: {
     color: "#0A66C2",
     label: "LinkedIn",
@@ -55,6 +85,15 @@ export const builtinLogoRegistry: Record<BuiltinLogoKey, BuiltinLogoDefinition> 
       </svg>
     ),
   },
+  discord: {
+    color: "#5865F2",
+    label: "Discord",
+    render: ({ color }) => (
+      <svg aria-hidden="true" className="size-full" viewBox="0 0 48 48">
+        <path d="M36.8 12.1A31 31 0 0 0 29 9.7l-.8 1.7a28.9 28.9 0 0 0-8.6 0l-.8-1.7a31 31 0 0 0-7.8 2.4C6.1 19.3 4.8 26.4 5.4 33.4a31.5 31.5 0 0 0 9.6 4.9l2.1-3.4a20 20 0 0 1-3.3-1.6l.8-.6a22.2 22.2 0 0 0 18.8 0l.8.6c-1 .6-2.1 1.1-3.3 1.6l2.1 3.4a31.5 31.5 0 0 0 9.6-4.9c.8-8.2-1.4-15.2-5.8-21.3ZM18.3 29.1c-1.9 0-3.4-1.7-3.4-3.8s1.5-3.8 3.4-3.8 3.5 1.7 3.4 3.8c0 2.1-1.5 3.8-3.4 3.8Zm11.4 0c-1.9 0-3.4-1.7-3.4-3.8s1.5-3.8 3.4-3.8 3.5 1.7 3.4 3.8c0 2.1-1.5 3.8-3.4 3.8Z" fill={color || "currentColor"} />
+      </svg>
+    ),
+  },
   dribbble: {
     color: "#EA4C89",
     label: "Dribbble",
@@ -62,6 +101,40 @@ export const builtinLogoRegistry: Record<BuiltinLogoKey, BuiltinLogoDefinition> 
       <svg aria-hidden="true" className="size-full" fill="none" viewBox="0 0 48 48">
         <circle cx="24" cy="24" r="17" fill={color || "currentColor"} />
         <path d="M10.5 22.8c7.3.2 14-1.1 20.3-4.1M18.3 8.7c5.1 6.2 8.9 15.9 10.5 30.2M14.6 35.7c4.5-7.4 11.4-11.5 22-12.5M35.7 14.5c-3.6 4.4-9.6 7.9-18.9 9.7" stroke="#fff" strokeLinecap="round" strokeWidth="2.5" />
+      </svg>
+    ),
+  },
+  gumroad: {
+    color: "#FF90E8",
+    label: "Gumroad",
+    render: ({ color }) => <TextLogo color={color} text="G" />,
+  },
+  stack: {
+    color: "#F48024",
+    label: "Stack Overflow",
+    render: ({ color }) => (
+      <svg aria-hidden="true" className="size-full" viewBox="0 0 48 48">
+        <path d="M14 36h20v4H14v-4Zm1-8 19 4 .8-3.9-19-4-.8 3.9Zm2.5-9.2 17.6 8.3 1.7-3.6-17.6-8.3-1.7 3.6Zm5-8.7L38 22.2l2.5-3.1L25 7l-2.5 3.1ZM14 30h20v4H14v-4Z" fill={color || "currentColor"} />
+      </svg>
+    ),
+  },
+  instagram: {
+    color: "#E1306C",
+    label: "Instagram",
+    render: ({ color }) => (
+      <svg aria-hidden="true" className="size-full" fill="none" viewBox="0 0 48 48">
+        <rect height="30" rx="9" stroke={color || "currentColor"} strokeWidth="4" width="30" x="9" y="9" />
+        <circle cx="24" cy="24" r="7" stroke={color || "currentColor"} strokeWidth="4" />
+        <circle cx="33" cy="15" fill={color || "currentColor"} r="2" />
+      </svg>
+    ),
+  },
+  reddit: {
+    color: "#FF4500",
+    label: "Reddit",
+    render: ({ color }) => (
+      <svg aria-hidden="true" className="size-full" viewBox="0 0 48 48">
+        <path d="M37.8 19.9c-1.4 0-2.6.6-3.4 1.5-2.5-1.7-5.9-2.8-9.6-2.9l1.7-7.7 5.3 1.1a3.7 3.7 0 1 0 .4-2l-6.3-1.3c-.5-.1-1 .2-1.1.7l-2 9.2c-3.8.1-7.2 1.2-9.8 2.9a4.6 4.6 0 1 0-5.1 7.4 8.2 8.2 0 0 0-.1 1.2c0 6.4 7.3 11.6 16.2 11.6S40.2 36.4 40.2 30c0-.4 0-.8-.1-1.2a4.6 4.6 0 0 0-2.3-8.9ZM17 28.1a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2Zm13.2 7.1c-1.8 1.8-4.9 2-6.2 2s-4.4-.2-6.2-2a1 1 0 0 1 1.4-1.4c1.1 1.1 3.3 1.4 4.8 1.4s3.7-.3 4.8-1.4a1 1 0 1 1 1.4 1.4Zm.8-7.1a2.6 2.6 0 1 1 0-5.2 2.6 2.6 0 0 1 0 5.2Z" fill={color || "currentColor"} />
       </svg>
     ),
   },
@@ -118,9 +191,16 @@ export function getBuiltinLogoKeyFromLabel(label: string): BuiltinLogoKey {
 
   if (normalized.includes("figma")) return "figma";
   if (normalized.includes("github")) return "github";
+  if (normalized.includes("medium")) return "medium";
+  if (normalized.includes("pinterest")) return "pinterest";
   if (normalized.includes("twitter") || normalized === "x") return "x";
   if (normalized.includes("linkedin")) return "linkedin";
   if (normalized.includes("dribbble")) return "dribbble";
+  if (normalized.includes("discord")) return "discord";
+  if (normalized.includes("gumroad")) return "gumroad";
+  if (normalized.includes("stack")) return "stack";
+  if (normalized.includes("instagram")) return "instagram";
+  if (normalized.includes("reddit")) return "reddit";
   if (normalized.includes("mail") || normalized.includes("email")) return "email";
   if (normalized.includes("blog")) return "blog";
   if (normalized.includes("coffee")) return "coffee";

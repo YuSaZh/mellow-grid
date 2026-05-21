@@ -27,11 +27,11 @@ export function WidgetEditorModal() {
   }
 
   return (
-    <div className="fixed inset-0 z-[100] grid place-items-end bg-zinc-950/20 px-4 py-4 backdrop-blur-sm sm:place-items-center" onClick={clearSelection}>
+    <div className="fixed inset-0 z-[100] pointer-events-none px-4 py-4 sm:px-6" onClick={clearSelection}>
       <section
         aria-label={`${definition.name} 编辑选项`}
         aria-modal="true"
-        className="max-h-[min(44rem,calc(100dvh-2rem))] w-full max-w-xl overflow-y-auto rounded-[2rem] border border-black/10 bg-white p-5 shadow-[0_30px_100px_rgba(20,16,10,0.25)] sm:p-6"
+        className="pointer-events-auto fixed bottom-28 right-4 max-h-[min(42rem,calc(100dvh-9rem))] w-[min(24rem,calc(100vw-2rem))] overflow-y-auto rounded-[1.75rem] border border-white/70 bg-white/88 p-5 shadow-[0_30px_70px_rgba(22,24,31,0.24)] backdrop-blur-2xl sm:right-6 sm:p-6"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
       >

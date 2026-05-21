@@ -1,25 +1,25 @@
 import type { PageProfile } from "@/lib/page-config/types";
 
 export function ProfilePanel({ props }: { props: PageProfile }) {
-  const description = [props.location, props.bio].filter(Boolean).join(props.location && props.bio ? " · " : "");
-
   return (
-    <section className="max-w-[412px] text-left">
-      <div
-        className="grid size-[184px] place-items-center overflow-hidden rounded-full bg-[radial-gradient(circle_at_32%_24%,#65615b_0%,#252321_48%,#0f0f0f_100%)] bg-cover bg-center text-5xl font-black text-white shadow-[0_18px_45px_rgba(20,16,10,0.10)]"
-        style={props.avatarUrl ? { backgroundImage: `url(${props.avatarUrl})` } : undefined}
-      >
-        {props.avatarUrl ? null : props.name.slice(0, 1)}
+    <section className="max-w-[340px] text-inherit">
+      <div className="mx-auto size-[140px] overflow-hidden rounded-full bg-[#111113] p-1 shadow-[0_15px_35px_rgba(0,0,0,0.15),inset_1.5px_1.5px_0_rgba(255,255,255,0.15),inset_-2px_-2px_5px_rgba(0,0,0,0.4)] transition hover:scale-[1.03] xl:mx-0">
+        {props.avatarUrl ? (
+          <span aria-label={`${props.name} avatar`} className="block size-full rounded-full bg-cover bg-center" role="img" style={{ backgroundImage: `url(${props.avatarUrl})` }} />
+        ) : (
+          <GlitchAvatar />
+        )}
       </div>
 
-      <h1 className="mt-8 text-[44px] font-bold leading-[1.2] tracking-[-0.045em] text-black">{props.name}</h1>
-      {description ? <p className="mt-3 text-[20px] leading-[28px] tracking-[-0.035em] text-[#565656]">{description}</p> : null}
+      <h1 className="mt-9 text-[2.5rem] font-extrabold leading-[1.05] tracking-[-0.04em] text-[#111113]">{props.name}</h1>
+      {props.location ? <p className="mt-4 text-[0.83rem] font-extrabold uppercase tracking-[0.16em] text-[#9b9ba4]">{props.location}</p> : null}
+      {props.bio ? <p className="mt-3 text-[1.05rem] font-normal leading-[1.6] text-[#5d5d65]">{props.bio}</p> : null}
 
       {props.contacts?.length ? (
         <div className="mt-6 flex flex-wrap items-center gap-3">
           {props.contacts.map((contact) => (
             <a
-              className="rounded-2xl bg-zinc-100 px-5 py-3 text-sm font-bold uppercase tracking-[-0.02em] text-zinc-700 shadow-[0_10px_28px_rgba(20,16,10,0.08)] transition hover:bg-zinc-200"
+              className="rounded-full bg-zinc-100 px-5 py-3 text-sm font-bold uppercase tracking-[-0.02em] text-zinc-700 shadow-[0_10px_28px_rgba(20,16,10,0.08)] transition hover:-translate-y-0.5 hover:bg-zinc-200"
               href={contact.href}
               key={`${contact.label}-${contact.href}`}
             >
@@ -29,5 +29,25 @@ export function ProfilePanel({ props }: { props: PageProfile }) {
         </div>
       ) : null}
     </section>
+  );
+}
+
+function GlitchAvatar() {
+  return (
+    <svg aria-hidden="true" className="block size-full rounded-full" viewBox="0 0 100 100">
+      <rect width="100" height="100" fill="#0c0c0e" />
+      <line x1="0" y1="20" x2="100" y2="20" stroke="#1d1d23" strokeWidth="0.5" />
+      <line x1="0" y1="40" x2="100" y2="40" stroke="#1d1d23" strokeWidth="0.5" />
+      <line x1="0" y1="60" x2="100" y2="60" stroke="#1d1d23" strokeWidth="0.5" />
+      <line x1="0" y1="80" x2="100" y2="80" stroke="#1d1d23" strokeWidth="0.5" />
+      <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#00f0ff" opacity="0.6" transform="translate(-2, 1)" />
+      <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#ff007f" opacity="0.6" transform="translate(2, -1)" />
+      <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#1b1c21" />
+      <rect x="15" y="30" width="18" height="4" fill="#00f0ff" opacity="0.8" />
+      <rect x="68" y="32" width="15" height="3" fill="#ff007f" opacity="0.8" />
+      <rect x="25" y="55" width="55" height="1.5" fill="#ffffff" opacity="0.9" />
+      <rect x="40" y="65" width="30" height="2" fill="#00f0ff" opacity="0.7" />
+      <rect x="20" y="74" width="12" height="3" fill="#ff007f" opacity="0.8" />
+    </svg>
   );
 }

@@ -1,0 +1,9 @@
+---
+import { EditorClient } from "@/app/editor/editor-client";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { defaultPageConfig } from "@/lib/page-config/defaults";
+---
+
+<BaseLayout title="MellowGrid Editor" description="Edit and export a static bento personal homepage.">
+  <EditorClient client:only="react" initialConfig={defaultPageConfig} mode="static" />
+</BaseLayout>

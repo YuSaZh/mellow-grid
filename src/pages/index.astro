@@ -1,0 +1,11 @@
+---
+import { PageRenderer } from "@/components/page/page-renderer";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { defaultPageConfig } from "@/lib/page-config/defaults";
+
+const config = defaultPageConfig;
+---
+
+<BaseLayout title={config.title} description={config.description}>
+  <PageRenderer config={config} />
+</BaseLayout>
