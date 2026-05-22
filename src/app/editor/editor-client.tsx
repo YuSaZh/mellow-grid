@@ -2,16 +2,15 @@
 
 import { EditorLayout } from "./components/editor-layout";
 import { EditorStoreProvider } from "./store";
-import type { DeploymentMode, PageConfig } from "@/lib/page-config/types";
+import type { PageConfig } from "@/lib/page-config/types";
 
 type EditorClientProps = {
   initialConfig: PageConfig;
-  mode: DeploymentMode;
 };
 
-export function EditorClient({ initialConfig, mode }: EditorClientProps) {
+export function EditorClient({ initialConfig }: EditorClientProps) {
   return (
-    <EditorStoreProvider initialConfig={initialConfig} mode={mode}>
+    <EditorStoreProvider initialConfig={initialConfig}>
       <EditorLayout />
     </EditorStoreProvider>
   );

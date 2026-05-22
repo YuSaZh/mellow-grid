@@ -1,7 +1,5 @@
 import type { ComponentType } from "react";
 
-export type DeploymentMode = "static" | "file" | "remote";
-
 export type GridLayoutItem = {
   i: string;
   x: number;

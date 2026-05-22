@@ -3,9 +3,9 @@
   "title": "MellowGrid",
   "description": "A soft, modular personal homepage.",
   "profile": {
-    "name": "Your Name",
+    "name": "Username",
     "bio": "A short introduction for your personal homepage.",
-    "location": "Based in Your City",
+    "location": "Location",
     "avatarUrl": "",
     "contacts": []
   },
@@ -52,17 +52,6 @@
       "maxH": 2
     },
     {
-      "i": "links",
-      "x": 0,
-      "y": 1,
-      "w": 2,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
       "i": "about",
       "x": 3,
       "y": 1,
@@ -76,17 +65,6 @@
     {
       "i": "social-mail",
       "x": 1,
-      "y": 2,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "stats",
-      "x": 0,
       "y": 2,
       "w": 1,
       "h": 1,
@@ -209,7 +187,7 @@
       "props": {
         "title": "Figma",
         "href": "https://figma.com/",
-        "description": "@Web Design",
+        "description": "@username",
         "logo": {
           "type": "builtin",
           "key": "figma"
@@ -237,22 +215,6 @@
           "type": "solid",
           "value": "#f37cdd"
         }
-      }
-    },
-    {
-      "id": "links",
-      "type": "links",
-      "props": {
-        "links": [
-          {
-            "label": "Buy me a coffee",
-            "href": "https://example.com"
-          },
-          {
-            "label": "Portfolio",
-            "href": "https://example.com"
-          }
-        ]
       }
     },
     {
@@ -299,14 +261,6 @@
       }
     },
     {
-      "id": "stats",
-      "type": "stats",
-      "props": {
-        "value": "12",
-        "label": "Playground widgets"
-      }
-    },
-    {
       "id": "social-blog",
       "type": "link",
       "props": {
@@ -328,7 +282,7 @@
       "type": "link",
       "props": {
         "title": "Email",
-        "href": "mailto:hello@example.com",
+        "href": "mailto:email@example.com",
         "description": "@handle or address",
         "logo": {
           "type": "builtin",

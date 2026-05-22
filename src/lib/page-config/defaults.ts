@@ -10,19 +10,19 @@ export const defaultTheme: PageTheme = {
 };
 
 export const defaultProfile: PageProfile = {
-  name: "Double Glitch",
-  bio: "Hey there! My name is Roman, I'm a Ukrainian designer who turns useful links into soft 3D interface objects.",
-  location: "Ukrainian designer",
+  name: "Username",
+  bio: "Short bio for your personal homepage.",
+  location: "Location",
   avatarUrl: "",
   contacts: [
-    { label: "Email", href: "mailto:hello@example.com" },
-    { label: "Portfolio", href: "https://example.com" },
+    { label: "Email", href: "mailto:email@example.com" },
+    { label: "Website", href: "https://example.com" },
   ],
 };
 
 export const defaultPageConfig: PageConfig = {
-  username: "double-glitch",
-  title: "Double Glitch - Link Tree",
+  username: "username",
+  title: "Username - Link Tree",
   description: "A static 3D bento personal homepage inspired by soft social link cards.",
   profile: defaultProfile,
   theme: defaultTheme,
@@ -48,7 +48,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Twitter",
         href: "https://twitter.com/",
-        description: "@doubleglitch",
+        description: "@username",
         logo: { type: "builtin", key: "x" },
         color: "#f5f5f5",
         background: { type: "gradient", from: "#2f2f2f", to: "#101112", angle: 180 },
@@ -60,7 +60,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Medium",
         href: "https://medium.com/",
-        description: "@Design Stories",
+        description: "@username",
         logo: { type: "builtin", key: "medium" },
         color: "#1c1c1c",
         background: { type: "solid", value: "#f7f7f2" },
@@ -72,7 +72,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Pinterest",
         href: "https://pinterest.com/",
-        description: "@Moodboard",
+        description: "@username",
         logo: { type: "builtin", key: "pinterest" },
         color: "#E60023",
         background: { type: "solid", value: "#ffe8ee" },
@@ -84,7 +84,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Buy me a Coffee",
         href: "https://example.com",
-        description: "Support the work",
+        description: "@username",
         logo: { type: "builtin", key: "coffee" },
         color: "#8b5b05",
         background: { type: "gradient", from: "#ffe181", to: "#f5b63d", angle: 180 },
@@ -96,7 +96,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Figma",
         href: "https://figma.com/",
-        description: "@Web Design",
+        description: "@username",
         logo: { type: "builtin", key: "figma" },
         color: "#7b38d8",
         background: { type: "gradient", from: "#fce3fe", to: "#bd83e5", angle: 180 },
@@ -108,7 +108,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Discord",
         href: "https://discord.com/",
-        description: "@Community",
+        description: "@username",
         logo: { type: "builtin", key: "discord" },
         color: "#5865F2",
         background: { type: "solid", value: "#dde2ff" },
@@ -120,7 +120,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Dribbble",
         href: "https://dribbble.com/",
-        description: "@Shots",
+        description: "@username",
         logo: { type: "builtin", key: "dribbble" },
         color: "#EA4C89",
         background: { type: "gradient", from: "#ff95d3", to: "#ef64bd", angle: 180 },
@@ -132,7 +132,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "LinkedIn",
         href: "https://www.linkedin.com/",
-        description: "@Profile",
+        description: "@username",
         logo: { type: "builtin", key: "linkedin" },
         color: "#0A66C2",
         background: { type: "solid", value: "#dff0ff" },
@@ -144,7 +144,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Gumroad",
         href: "https://gumroad.com/",
-        description: "@Products",
+        description: "@username",
         logo: { type: "builtin", key: "gumroad" },
         color: "#ff90e8",
         background: { type: "solid", value: "#232323" },
@@ -156,7 +156,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Stack",
         href: "https://stackoverflow.com/",
-        description: "@Answers",
+        description: "@username",
         logo: { type: "builtin", key: "stack" },
         color: "#f48024",
         background: { type: "solid", value: "#fff1df" },
@@ -168,7 +168,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Instagram",
         href: "https://instagram.com/",
-        description: "@Visual Log",
+        description: "@username",
         logo: { type: "builtin", key: "instagram" },
         color: "#e1306c",
         background: { type: "gradient", from: "#ffe0f1", to: "#ffd39a", angle: 145 },
@@ -180,7 +180,7 @@ export const defaultPageConfig: PageConfig = {
       props: {
         title: "Reddit",
         href: "https://reddit.com/",
-        description: "@Threads",
+        description: "@username",
         logo: { type: "builtin", key: "reddit" },
         color: "#ff4500",
         background: { type: "solid", value: "#ffe4d8" },

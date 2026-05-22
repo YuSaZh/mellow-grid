@@ -1,4 +1,4 @@
-import { BentoCard, BentoIcon } from "@/components/ui/bento-card";
+import { BentoCard } from "@/components/ui/bento-card";
 
 export type TextWidgetProps = {
   eyebrow?: string;
@@ -9,11 +9,10 @@ export type TextWidgetProps = {
 export function TextWidget({ props }: { props: TextWidgetProps }) {
   return (
     <BentoCard>
-      <div className="relative z-10 flex h-full flex-col justify-between p-6">
-        <BentoIcon>TX</BentoIcon>
+      <div className="relative z-10 flex h-full flex-col justify-start p-6 text-left">
         <div>
-          {props.eyebrow ? <p className="text-[12px] font-normal leading-4 text-[#fbfbfb]">{props.eyebrow}</p> : null}
-          <h2 className="mt-1 text-[16px] font-semibold leading-tight text-[#fbfbfb]">{props.title}</h2>
+          {props.eyebrow ? <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-[#fbfbfb]/60">{props.eyebrow}</p> : null}
+          <h2 className="mt-1 text-[18px] font-semibold leading-tight text-[#fbfbfb]">{props.title}</h2>
           <p className="mt-2 text-[12px] leading-4 text-[#fbfbfb]/80">{props.body}</p>
         </div>
       </div>

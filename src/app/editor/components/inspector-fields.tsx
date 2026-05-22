@@ -25,10 +25,10 @@ type SelectFieldProps = {
 
 export function TextField({ label, onChange, placeholder, type = "text", value }: TextFieldProps) {
   return (
-    <label className="grid gap-1.5 text-sm font-bold capitalize text-zinc-700">
-      {label}
+    <label className="grid min-w-0 gap-1.5">
+      <span className="text-[0.75rem] font-bold uppercase tracking-[0.04em] text-[#72727a]">{label}</span>
       <input
-        className="min-h-11 rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-medium text-zinc-950 outline-none transition focus:border-[#7c5cff] focus:ring-2 focus:ring-[#7c5cff]/20"
+        className="min-h-11 w-full min-w-0 rounded-[14px] border-[1.5px] border-black/10 bg-black/[0.02] px-4 py-3 text-sm font-medium text-[#121214] outline-none transition duration-200 focus:border-[#3FA3EB] focus:bg-white focus:ring-4 focus:ring-[#3FA3EB]/[0.12]"
         onChange={(event) => onChange(event.target.value)}
         placeholder={placeholder}
         type={type}
@@ -40,10 +40,10 @@ export function TextField({ label, onChange, placeholder, type = "text", value }
 
 export function TextAreaField({ label, onChange, value }: { label: string; onChange: (value: string) => void; value: string }) {
   return (
-    <label className="grid gap-1.5 text-sm font-bold capitalize text-zinc-700">
-      {label}
+    <label className="grid min-w-0 gap-1.5">
+      <span className="text-[0.75rem] font-bold uppercase tracking-[0.04em] text-[#72727a]">{label}</span>
       <textarea
-        className="min-h-32 resize-y rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-medium leading-6 text-zinc-950 outline-none transition focus:border-[#7c5cff] focus:ring-2 focus:ring-[#7c5cff]/20"
+        className="min-h-28 w-full min-w-0 resize-y rounded-[14px] border-[1.5px] border-black/10 bg-black/[0.02] px-4 py-3 text-sm font-medium leading-6 text-[#121214] outline-none transition duration-200 focus:border-[#3FA3EB] focus:bg-white focus:ring-4 focus:ring-[#3FA3EB]/[0.12]"
         onChange={(event) => onChange(event.target.value)}
         value={value}
       />
@@ -53,10 +53,10 @@ export function TextAreaField({ label, onChange, value }: { label: string; onCha
 
 export function SelectField({ label, onChange, options, value }: SelectFieldProps) {
   return (
-    <label className="grid gap-1.5 text-sm font-bold capitalize text-zinc-700">
-      {label}
+    <label className="grid min-w-0 gap-1.5">
+      <span className="text-[0.75rem] font-bold uppercase tracking-[0.04em] text-[#72727a]">{label}</span>
       <select
-        className="min-h-11 rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-medium text-zinc-950 outline-none transition focus:border-[#7c5cff] focus:ring-2 focus:ring-[#7c5cff]/20"
+        className="min-h-11 w-full min-w-0 rounded-[14px] border-[1.5px] border-black/10 bg-black/[0.02] px-4 py-3 text-sm font-medium text-[#121214] outline-none transition duration-200 focus:border-[#3FA3EB] focus:bg-white focus:ring-4 focus:ring-[#3FA3EB]/[0.12]"
         onChange={(event) => onChange(event.target.value)}
         value={value}
       >
@@ -72,11 +72,11 @@ export function SelectField({ label, onChange, options, value }: SelectFieldProp
 
 export function ColorField({ label, onChange, value }: { label: string; onChange: (value: string) => void; value: string }) {
   return (
-    <label className="grid gap-1.5 text-sm font-bold capitalize text-zinc-700">
-      {label}
-      <span className="grid grid-cols-[3rem_1fr] overflow-hidden rounded-2xl border border-black/10 bg-white focus-within:border-[#7c5cff] focus-within:ring-2 focus-within:ring-[#7c5cff]/20">
-        <input className="h-full min-h-11 w-full cursor-pointer border-0 bg-transparent p-1" onChange={(event) => onChange(event.target.value)} type="color" value={normalizeColor(value)} />
-        <input className="min-h-11 border-0 px-4 py-3 text-sm font-medium text-zinc-950 outline-none" onChange={(event) => onChange(event.target.value)} value={value} />
+    <label className="grid min-w-0 gap-1.5">
+      <span className="text-[0.75rem] font-bold uppercase tracking-[0.04em] text-[#72727a]">{label}</span>
+      <span className="grid min-w-0 grid-cols-[2.8rem_minmax(0,1fr)] overflow-hidden rounded-[14px] border-[1.5px] border-black/10 bg-black/[0.02] transition focus-within:border-[#3FA3EB] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#3FA3EB]/[0.12]">
+        <input className="h-full min-h-11 w-full min-w-0 cursor-pointer border-0 bg-transparent p-1" onChange={(event) => onChange(event.target.value)} type="color" value={normalizeColor(value)} />
+        <input className="min-h-11 w-full min-w-0 border-0 px-3 py-3 text-sm font-medium text-zinc-950 outline-none" onChange={(event) => onChange(event.target.value)} value={value} />
       </span>
     </label>
   );
@@ -86,7 +86,7 @@ export function BackgroundField({ label, onChange, value }: { label: string; onC
   const background = normalizeBackground(value);
 
   return (
-    <div className="grid gap-3 rounded-3xl border border-black/5 bg-zinc-50 p-3">
+    <div className="grid gap-3">
       <SelectField
         label={label}
         onChange={(type) => {
@@ -111,12 +111,35 @@ export function BackgroundField({ label, onChange, value }: { label: string; onC
       />
       {background.type === "solid" ? <ColorField label="background color" onChange={(nextValue) => onChange({ ...background, value: nextValue })} value={background.value} /> : null}
       {background.type === "gradient" ? (
-        <div className="grid gap-3">
+        <div className="grid min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(6.75rem,0.55fr)]">
           <ColorField label="gradient from" onChange={(nextFrom) => onChange({ ...background, from: nextFrom })} value={background.from} />
           <ColorField label="gradient to" onChange={(nextTo) => onChange({ ...background, to: nextTo })} value={background.to} />
           <TextField label="gradient angle" onChange={(nextAngle) => onChange({ ...background, angle: Number.parseInt(nextAngle, 10) || 180 })} type="number" value={String(background.angle ?? 180)} />
         </div>
       ) : null}
+    </div>
+  );
+}
+
+export function BackgroundPresetDots({ onChange, value }: { onChange: (value: WidgetBackground) => void; value: WidgetBackground }) {
+  const background = normalizeBackground(value);
+  const activeKey = getPresetKey(background);
+
+  return (
+    <div className="grid gap-1.5">
+      <span className="text-[0.75rem] font-bold uppercase tracking-[0.04em] text-[#72727a]">快速贴底背景色</span>
+      <div className="flex flex-wrap gap-2">
+        {BACKGROUND_PRESETS.map((preset) => (
+          <button
+            aria-label={preset.label}
+            className={`size-7 rounded-full border-2 shadow-[inset_0_2px_4px_rgba(255,255,255,0.4),0_3px_8px_rgba(0,0,0,0.05)] transition duration-200 hover:scale-[1.15] ${activeKey === preset.key ? "scale-105 border-[#121214]" : "border-transparent"}`}
+            key={preset.key}
+            onClick={() => onChange(preset.background)}
+            style={{ background: preset.preview }}
+            type="button"
+          />
+        ))}
+      </div>
     </div>
   );
 }
@@ -189,6 +212,28 @@ function normalizeBackground(value: WidgetBackground): WidgetBackground {
   }
 
   return { type: "theme" };
+}
+
+const BACKGROUND_PRESETS: Array<{ background: WidgetBackground; key: string; label: string; preview: string }> = [
+  { key: "twitter", label: "Twitter blue", preview: "linear-gradient(135deg,#6EC2F7,#3FA3EB)", background: { type: "gradient", from: "#6EC2F7", to: "#3FA3EB", angle: 135 } },
+  { key: "medium", label: "Soft white", preview: "linear-gradient(135deg,#FCFCFC,#E6E6E6)", background: { type: "gradient", from: "#FCFCFC", to: "#E6E6E6", angle: 135 } },
+  { key: "pinterest", label: "Pinterest red", preview: "linear-gradient(135deg,#F23C3F,#C81D24)", background: { type: "gradient", from: "#F23C3F", to: "#C81D24", angle: 135 } },
+  { key: "coffee", label: "Coffee yellow", preview: "linear-gradient(135deg,#FFEA79,#F5C13D)", background: { type: "gradient", from: "#FFEA79", to: "#F5C13D", angle: 135 } },
+  { key: "figma", label: "Figma dark", preview: "linear-gradient(135deg,#2B2C2E,#17181A)", background: { type: "gradient", from: "#2B2C2E", to: "#17181A", angle: 135 } },
+  { key: "discord", label: "Discord purple", preview: "linear-gradient(135deg,#7A8CF6,#5462E7)", background: { type: "gradient", from: "#7A8CF6", to: "#5462E7", angle: 135 } },
+  { key: "gumroad", label: "Gumroad lilac", preview: "linear-gradient(135deg,#FCE3FE,#EAA2F0)", background: { type: "gradient", from: "#FCE3FE", to: "#EAA2F0", angle: 135 } },
+  { key: "instagram", label: "Instagram", preview: "linear-gradient(135deg,#9F2CAC,#EA485C 50%,#F4A751)", background: { type: "gradient", from: "#9F2CAC", to: "#F4A751", angle: 135 } },
+];
+
+function getPresetKey(background: WidgetBackground) {
+  if (background.type !== "gradient") {
+    return "";
+  }
+
+  return BACKGROUND_PRESETS.find((preset) => {
+    const presetBackground = preset.background;
+    return presetBackground.type === "gradient" && presetBackground.from.toLowerCase() === background.from.toLowerCase() && presetBackground.to.toLowerCase() === background.to.toLowerCase();
+  })?.key;
 }
 
 function normalizeColor(value: string) {

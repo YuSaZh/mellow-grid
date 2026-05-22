@@ -10,10 +10,10 @@ export function EditorLayout() {
   const config = useEditorStore((state) => state.config);
 
   return (
-    <main className="min-h-dvh bg-[#f6f6f9] pb-32 text-zinc-950">
+    <main className="grid min-h-screen place-items-center overflow-x-hidden px-4 py-8 text-[#121214] sm:px-6 lg:px-8 lg:py-16" style={{ background: config.theme.background, color: config.theme.foreground }}>
       <EditorToolbar />
-      <div className="mx-auto flex w-full max-w-[1240px] flex-col items-center gap-10 px-4 py-8 sm:px-6 lg:px-8 lg:py-14 xl:flex-row xl:items-start xl:gap-16">
-        <aside className="w-full max-w-[340px] shrink-0 pt-2 xl:sticky xl:top-12 xl:min-h-[calc(100vh-8rem)]">
+      <div className="mx-auto flex w-full max-w-[1240px] flex-col items-center gap-10 lg:items-start xl:flex-row xl:gap-16">
+        <aside className="w-full max-w-[340px] shrink-0 text-center xl:sticky xl:top-16 xl:text-left">
           <EditableProfile profile={config.profile} />
         </aside>
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { BackgroundField, ColorField, SelectField, TextField, fileToDataUrl, uploadFile } from "./inspector-fields";
+import { BackgroundField, BackgroundPresetDots, SelectField, TextField, fileToDataUrl, uploadFile } from "./inspector-fields";
 import type { WidgetBackground } from "@/components/widgets/widget-shell";
 import { builtinLogoOptions, getBuiltinLogoDefinition, isBuiltinLogoKey, type BuiltinLogoKey, type LinkLogo } from "@/lib/widgets/logo-registry";
 import type { LinkWidgetProps } from "@/widgets/link";
@@ -15,15 +15,15 @@ export function LinkWidgetInspector({ onChange, props }: LinkWidgetInspectorProp
   const logoType = value.logo?.type ?? "builtin";
 
   return (
-    <div className="grid gap-4">
-      <TextField label="title" onChange={(title) => onChange({ title })} value={value.title} />
-      <TextField label="description" onChange={(description) => onChange({ description })} value={value.description ?? ""} />
-      <TextField label="href" onChange={(href) => onChange({ href })} type="url" value={value.href} />
-      <ColorField label="brand color" onChange={(color) => onChange({ color })} value={value.color ?? "#ade0ff"} />
+    <div className="grid gap-4 sm:grid-cols-2">
+      <TextField label="主标题 (Title)" onChange={(title) => onChange({ title })} value={value.title} />
+      <TextField label="副标题 (Handle)" onChange={(description) => onChange({ description })} value={value.description ?? ""} />
+      <div className="sm:col-span-2">
+        <TextField label="跳转链接 (URL)" onChange={(href) => onChange({ href })} type="url" value={value.href} />
+      </div>
 
-      <div className="grid gap-3 rounded-3xl border border-black/5 bg-zinc-50 p-3">
-        <SelectField
-          label="logo source"
+      <SelectField
+          label="Logo source"
           onChange={(type) => {
             if (type === "uploaded") {
               onChange({ logo: { type: "uploaded", url: "", alt: value.title } });
@@ -41,7 +41,7 @@ export function LinkWidgetInspector({ onChange, props }: LinkWidgetInspectorProp
 
         {logoType === "builtin" ? (
           <SelectField
-            label="built-in logo"
+            label="饰板图标 (Icon)"
             onChange={(key) => {
               const nextKey = isBuiltinLogoKey(key) ? key : "website";
               const definition = getBuiltinLogoDefinition(nextKey);
@@ -52,11 +52,20 @@ export function LinkWidgetInspector({ onChange, props }: LinkWidgetInspectorProp
             value={getBuiltinKey(value.logo)}
           />
         ) : (
-          <UploadedLogoFields logo={value.logo} onChange={onChange} title={value.title} />
+          <div className="sm:col-span-2">
+            <UploadedLogoFields logo={value.logo} onChange={onChange} title={value.title} />
+          </div>
         )}
-      </div>
 
-      <BackgroundField label="background" onChange={(background) => onChange({ background })} value={value.background ?? { type: "theme" }} />
+      <div className="sm:col-span-2">
+        <BackgroundPresetDots onChange={(background) => onChange({ background })} value={value.background ?? { type: "theme" }} />
+      </div>
+      <details className="sm:col-span-2 rounded-[18px] border border-black/[0.06] bg-black/[0.02] p-3">
+        <summary className="cursor-pointer select-none text-[0.75rem] font-bold uppercase tracking-[0.04em] text-[#72727a]">高级背景模式</summary>
+        <div className="mt-3">
+          <BackgroundField label="背景模式" onChange={(background) => onChange({ background })} value={value.background ?? { type: "theme" }} />
+        </div>
+      </details>
     </div>
   );
 }
@@ -66,11 +75,11 @@ function UploadedLogoFields({ logo, onChange, title }: { logo?: LinkLogo; onChan
 
   return (
     <div className="grid gap-3">
-      <label className="grid gap-1.5 text-sm font-bold capitalize text-zinc-700">
-        upload logo
+      <label className="grid gap-1.5">
+        <span className="text-[0.75rem] font-bold uppercase tracking-[0.04em] text-[#72727a]">Upload logo</span>
         <input
           accept="image/svg+xml,image/png,image/jpeg,image/webp"
-          className="min-h-11 rounded-2xl border border-black/10 bg-white px-4 py-3 text-sm font-medium text-zinc-950 outline-none transition file:mr-4 file:rounded-full file:border-0 file:bg-zinc-950 file:px-4 file:py-2 file:text-xs file:font-bold file:text-white focus:border-[#7c5cff] focus:ring-2 focus:ring-[#7c5cff]/20"
+          className="min-h-11 rounded-[14px] border-[1.5px] border-black/10 bg-black/[0.02] px-4 py-3 text-sm font-medium text-[#121214] outline-none transition file:mr-4 file:rounded-full file:border-0 file:bg-[#121214] file:px-4 file:py-2 file:text-xs file:font-bold file:text-white focus:border-[#3FA3EB] focus:bg-white focus:ring-4 focus:ring-[#3FA3EB]/[0.12]"
           onChange={async (event) => {
             const file = uploadFile(event);
 

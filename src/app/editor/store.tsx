@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { createStore, useStore } from "zustand";
 import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_MIN_ITEM_SIZE, arrangeBentoLayout, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
 import { getGridWidgets, normalizePageConfig } from "@/lib/page-config/normalize";
-import type { DeploymentMode, GridLayoutItem, PageConfig, PageProfile, WidgetInstance } from "@/lib/page-config/types";
+import type { GridLayoutItem, PageConfig, PageProfile, WidgetInstance } from "@/lib/page-config/types";
 import { renderStaticPageHtml } from "@/lib/page-export/export-html";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 
@@ -17,7 +17,6 @@ type AddWidgetPlacement = {
 
 type EditorState = {
   config: PageConfig;
-  mode: DeploymentMode;
   selectedTarget: SelectedTarget;
   status: string;
   addWidget: (type: string, placement?: AddWidgetPlacement) => void;
@@ -39,8 +38,8 @@ type EditorStore = ReturnType<typeof createEditorStore>;
 
 const EditorStoreContext = createContext<EditorStore | null>(null);
 
-export function EditorStoreProvider({ children, initialConfig, mode }: { children: ReactNode; initialConfig: PageConfig; mode: DeploymentMode }) {
-  const [store] = useState(() => createEditorStore(initialConfig, mode));
+export function EditorStoreProvider({ children, initialConfig }: { children: ReactNode; initialConfig: PageConfig }) {
+  const [store] = useState(() => createEditorStore(initialConfig));
 
   useEffect(() => {
     store.getState().loadLocalDraft();
@@ -59,10 +58,9 @@ export function useEditorStore<T>(selector: (state: EditorState) => T) {
   return useStore(store, selector);
 }
 
-function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
+function createEditorStore(initialConfig: PageConfig) {
   return createStore<EditorState>((set, get) => ({
     config: normalizePageConfig(initialConfig),
-    mode,
     selectedTarget: null,
     status: "Ready",
 
@@ -175,9 +173,9 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
     },
 
     loadLocalDraft() {
-      const { config, mode } = get();
+      const { config } = get();
 
-      if (mode !== "static" || typeof window === "undefined") {
+      if (typeof window === "undefined") {
         return;
       }
 
@@ -195,31 +193,11 @@ function createEditorStore(initialConfig: PageConfig, mode: DeploymentMode) {
     },
 
     async saveDraft() {
-      const { config, mode } = get();
+      const { config } = get();
       const normalizedConfig = normalizePageConfig(config);
 
-      if (mode === "static") {
-        localStorage.setItem(getDraftKey(config.username), JSON.stringify(normalizedConfig, null, 2));
-        set({ config: normalizedConfig, status: "Saved locally" });
-        return;
-      }
-
-      try {
-        const response = await fetch(`/api/pages/${encodeURIComponent(config.username)}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(normalizedConfig),
-        });
-
-        if (!response.ok) {
-          set({ status: "Save failed" });
-          return;
-        }
-
-        set({ config: normalizePageConfig((await response.json()) as PageConfig), status: "Saved" });
-      } catch {
-        set({ status: "Save failed" });
-      }
+      localStorage.setItem(getDraftKey(config.username), JSON.stringify(normalizedConfig, null, 2));
+      set({ config: normalizedConfig, status: "Saved locally" });
     },
 
     selectWidget(id) {

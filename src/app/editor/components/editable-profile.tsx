@@ -1,21 +1,34 @@
 "use client";
 
-import { useState } from "react";
 import type { PageContact, PageProfile } from "@/lib/page-config/types";
 import { useEditorStore } from "../store";
-import { fileToDataUrl, LinksField, uploadFile } from "./inspector-fields";
+import { fileToDataUrl, uploadFile } from "./inspector-fields";
 
 export function EditableProfile({ profile }: { profile: PageProfile }) {
   const updateProfile = useEditorStore((state) => state.updateProfile);
-  const [editingContacts, setEditingContacts] = useState(false);
   const contacts = profile.contacts ?? [];
-  const initial = profile.name.trim().charAt(0).toUpperCase() || "Y";
+
+  function updateContacts(nextContacts: PageContact[]) {
+    updateProfile({ contacts: nextContacts });
+  }
+
+  function updateContact(index: number, patch: Partial<PageContact>) {
+    updateContacts(contacts.map((contact, contactIndex) => (contactIndex === index ? { ...contact, ...patch } : contact)));
+  }
+
+  function addContact() {
+    updateContacts([...contacts, { label: "Button", href: "https://example.com" }]);
+  }
+
+  function removeContact(index: number) {
+    updateContacts(contacts.filter((_, contactIndex) => contactIndex !== index));
+  }
 
   return (
-    <section className="group/profile grid justify-items-start gap-8 rounded-[2.5rem] p-3 transition hover:bg-white/50 focus-within:bg-white/70">
-      <label className="relative mx-auto grid size-44 cursor-pointer place-items-center overflow-hidden rounded-full bg-zinc-950 text-6xl font-black text-white shadow-[0_28px_80px_rgba(20,16,10,0.18)] transition hover:scale-[1.02] focus-within:ring-4 focus-within:ring-[#7c5cff]/30 lg:mx-0 xl:size-52">
-        {profile.avatarUrl ? <img alt="个人头像预览" className="size-full object-cover" src={profile.avatarUrl} /> : initial}
-        <span className="absolute inset-x-5 bottom-5 rounded-full bg-white/95 px-4 py-2 text-center text-xs font-black uppercase tracking-[0.16em] text-zinc-950 opacity-0 shadow-[0_12px_32px_rgba(20,16,10,0.18)] transition group-hover/profile:opacity-100 group-focus-within/profile:opacity-100">
+    <section className="group/profile relative max-w-[340px] text-inherit">
+      <label className="relative mx-auto grid size-[140px] cursor-pointer place-items-center overflow-hidden rounded-full bg-[#111113] p-1 shadow-[0_15px_35px_rgba(0,0,0,0.15),inset_1.5px_1.5px_0_rgba(255,255,255,0.15),inset_-2px_-2px_5px_rgba(0,0,0,0.4)] transition hover:scale-[1.03] focus-within:ring-4 focus-within:ring-[#3FA3EB]/20 xl:mx-0">
+        {profile.avatarUrl ? <img alt="个人头像预览" className="size-full rounded-full object-cover" src={profile.avatarUrl} /> : <GlitchAvatar />}
+        <span className="absolute inset-x-4 bottom-4 rounded-full bg-white/95 px-3 py-2 text-center text-[0.65rem] font-black uppercase tracking-[0.14em] text-[#121214] opacity-0 shadow-[0_12px_32px_rgba(20,16,10,0.18)] transition group-hover/profile:opacity-100 group-focus-within/profile:opacity-100">
           上传头像
         </span>
         <input
@@ -33,77 +46,105 @@ export function EditableProfile({ profile }: { profile: PageProfile }) {
         />
       </label>
 
-      <div className="grid w-full gap-4">
-        <label className="grid gap-2">
-          <span className="sr-only">姓名</span>
-          <input
-            className="w-full rounded-3xl border border-transparent bg-transparent px-0 py-1 text-5xl font-black tracking-[-0.08em] text-zinc-950 outline-none transition placeholder:text-zinc-300 focus:border-[#7c5cff]/30 focus:bg-white/70 focus:px-4 focus:ring-4 focus:ring-[#7c5cff]/15"
-            onChange={(event) => updateProfile({ name: event.target.value })}
-            placeholder="Your Name"
-            value={profile.name}
-          />
-        </label>
+      <h1
+        className="mt-9 text-[2.5rem] font-extrabold leading-[1.05] tracking-[-0.04em] text-[#111113] outline-none transition focus:rounded focus:bg-[#3FA3EB]/[0.04] focus:ring-2 focus:ring-[#3FA3EB]/20"
+        contentEditable
+        onInput={(event) => updateProfile({ name: event.currentTarget.textContent ?? "" })}
+        suppressContentEditableWarning
+      >
+        {profile.name}
+      </h1>
 
-        <label className="grid gap-2">
-          <span className="sr-only">位置</span>
-          <input
-            className="w-full rounded-2xl border border-transparent bg-transparent px-0 py-1 text-lg font-medium leading-7 text-zinc-500 outline-none transition placeholder:text-zinc-300 focus:border-[#7c5cff]/30 focus:bg-white/70 focus:px-4 focus:ring-4 focus:ring-[#7c5cff]/15"
-            onChange={(event) => updateProfile({ location: event.target.value })}
-            placeholder="Based in Your City"
-            value={profile.location}
-          />
-        </label>
+      <p
+        className="mt-4 text-[0.83rem] font-extrabold uppercase tracking-[0.16em] text-[#9b9ba4] outline-none transition focus:rounded focus:bg-[#3FA3EB]/[0.04] focus:ring-2 focus:ring-[#3FA3EB]/20"
+        contentEditable
+        onInput={(event) => updateProfile({ location: event.currentTarget.textContent ?? "" })}
+        suppressContentEditableWarning
+      >
+        {profile.location}
+      </p>
 
-        <label className="grid gap-2">
-          <span className="sr-only">简介</span>
-          <textarea
-            className="min-h-24 w-full resize-y rounded-2xl border border-transparent bg-transparent px-0 py-1 text-lg font-medium leading-7 text-zinc-500 outline-none transition placeholder:text-zinc-300 focus:border-[#7c5cff]/30 focus:bg-white/70 focus:px-4 focus:ring-4 focus:ring-[#7c5cff]/15"
-            onChange={(event) => updateProfile({ bio: event.target.value })}
-            placeholder="A short introduction for your personal homepage."
-            value={profile.bio}
-          />
-        </label>
-      </div>
+      <p
+        className="mt-3 text-[1.05rem] font-normal leading-[1.6] text-[#5d5d65] outline-none transition focus:rounded focus:bg-[#3FA3EB]/[0.04] focus:ring-2 focus:ring-[#3FA3EB]/20"
+        contentEditable
+        onInput={(event) => updateProfile({ bio: event.currentTarget.textContent ?? "" })}
+        suppressContentEditableWarning
+      >
+        {profile.bio}
+      </p>
 
-      <div className="grid w-full gap-3">
-        <div className="flex flex-wrap gap-3">
-          <button
-            className="mg-no-drag min-h-11 rounded-full bg-zinc-950 px-5 text-sm font-bold uppercase tracking-[-0.02em] text-white shadow-[0_16px_40px_rgba(20,16,10,0.12)] transition hover:bg-zinc-700 focus:outline-none focus:ring-4 focus:ring-[#7c5cff]/20"
-            onClick={() => setEditingContacts((value) => !value)}
-            type="button"
-          >
-            {editingContacts ? "收起联系方式" : "编辑联系方式"}
-          </button>
-          {profile.avatarUrl ? (
-            <button
-              className="mg-no-drag min-h-11 rounded-full bg-white px-5 text-sm font-bold text-zinc-700 shadow-[0_16px_40px_rgba(20,16,10,0.08)] transition hover:bg-zinc-100 focus:outline-none focus:ring-4 focus:ring-[#7c5cff]/20"
-              onClick={() => updateProfile({ avatarUrl: "" })}
-              type="button"
-            >
-              移除头像
-            </button>
-          ) : null}
-        </div>
-
-        {editingContacts ? (
-          <div className="mg-no-drag rounded-[2rem] border border-black/10 bg-white/90 p-4 shadow-[0_18px_60px_rgba(20,16,10,0.10)] backdrop-blur">
-            <LinksField label="Contacts" onChange={(value) => updateProfile({ contacts: value as PageContact[] })} value={contacts} />
-          </div>
-        ) : (
-          <div className="flex flex-wrap gap-3">
-            {contacts.map((contact, index) => (
-              <a
-                className="rounded-full bg-white px-5 py-3 text-sm font-black uppercase tracking-[-0.03em] text-zinc-700 shadow-[0_18px_45px_rgba(20,16,10,0.08)] transition hover:-translate-y-0.5 hover:text-zinc-950 focus:outline-none focus:ring-4 focus:ring-[#7c5cff]/20"
-                href={contact.href}
-                key={`${contact.label}-${index}`}
-                onClick={(event) => event.preventDefault()}
+      {contacts.length ? (
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          {contacts.map((contact, index) => (
+            <span className="group/contact relative inline-flex" key={`${contact.label}-${contact.href}-${index}`}>
+              <span
+                aria-label={`按钮 ${index + 1} 文案`}
+                className="cursor-text rounded-full bg-zinc-100 px-5 py-3 text-sm font-bold uppercase tracking-[-0.02em] text-zinc-700 shadow-[0_10px_28px_rgba(20,16,10,0.08)] outline-none transition hover:-translate-y-0.5 hover:bg-zinc-200 focus:ring-2 focus:ring-[#3FA3EB]/25"
+                contentEditable
+                onInput={(event) => updateContact(index, { label: event.currentTarget.textContent ?? "" })}
+                suppressContentEditableWarning
               >
                 {contact.label}
-              </a>
+              </span>
+              <button
+                aria-label={`删除 ${contact.label}`}
+                className="absolute -right-2 -top-2 grid size-6 place-items-center rounded-full bg-[#121214] text-sm font-black leading-none text-white opacity-0 shadow-[0_8px_18px_rgba(20,16,10,0.18)] transition group-hover/contact:opacity-100 group-focus-within/contact:opacity-100"
+                onClick={() => removeContact(index)}
+                type="button"
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+      ) : null}
+
+      <details className="pointer-events-none absolute left-0 top-full z-30 mt-4 w-full rounded-[24px] border border-black/[0.06] bg-white/[0.82] p-3 text-left opacity-0 shadow-[0_14px_34px_rgba(20,16,10,0.06)] backdrop-blur-sm transition group-hover/profile:pointer-events-auto group-hover/profile:opacity-100 group-focus-within/profile:pointer-events-auto group-focus-within/profile:opacity-100">
+        <summary className="flex cursor-pointer list-none items-center justify-between gap-3 [&::-webkit-details-marker]:hidden">
+          <span className="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[#9b9ba4]">Profile buttons</span>
+          <button className="rounded-full bg-[#121214] px-3 py-2 text-xs font-bold text-white transition hover:-translate-y-0.5 hover:bg-zinc-700" onClick={addContact} type="button">
+            添加按钮
+          </button>
+        </summary>
+
+        {contacts.length ? (
+          <div className="mt-3 grid gap-2">
+            {contacts.map((contact, index) => (
+              <div className="grid gap-2 rounded-[18px] bg-black/[0.025] p-2" key={`editor-${contact.label}-${contact.href}-${index}`}>
+                <input
+                  aria-label={`按钮 ${index + 1} 链接`}
+                  className="min-h-10 rounded-[13px] border border-black/10 bg-white/70 px-3 text-xs font-semibold text-[#121214] outline-none transition focus:border-[#3FA3EB] focus:ring-2 focus:ring-[#3FA3EB]/20"
+                  onChange={(event) => updateContact(index, { href: event.target.value })}
+                  placeholder="https://example.com"
+                  value={contact.href}
+                />
+              </div>
             ))}
           </div>
+        ) : (
+          <p className="mt-3 rounded-[18px] bg-black/[0.025] px-3 py-2 text-xs font-semibold text-[#9b9ba4]">还没有底部按钮，点击添加按钮创建。</p>
         )}
-      </div>
+      </details>
     </section>
+  );
+}
+
+function GlitchAvatar() {
+  return (
+    <svg aria-hidden="true" className="block size-full rounded-full" viewBox="0 0 100 100">
+      <rect width="100" height="100" fill="#0c0c0e" />
+      <line x1="0" y1="20" x2="100" y2="20" stroke="#1d1d23" strokeWidth="0.5" />
+      <line x1="0" y1="40" x2="100" y2="40" stroke="#1d1d23" strokeWidth="0.5" />
+      <line x1="0" y1="60" x2="100" y2="60" stroke="#1d1d23" strokeWidth="0.5" />
+      <line x1="0" y1="80" x2="100" y2="80" stroke="#1d1d23" strokeWidth="0.5" />
+      <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#00f0ff" opacity="0.6" transform="translate(-2, 1)" />
+      <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#ff007f" opacity="0.6" transform="translate(2, -1)" />
+      <path d="M50,15 C41,15 28,24 28,45 C28,58 35,68 38,72 L36,85 L62,85 L60,72 C63,68 70,58 70,45 C70,24 59,15 50,15 Z" fill="#1b1c21" />
+      <rect x="15" y="30" width="18" height="4" fill="#00f0ff" opacity="0.8" />
+      <rect x="68" y="32" width="15" height="3" fill="#ff007f" opacity="0.8" />
+      <rect x="25" y="55" width="55" height="1.5" fill="#ffffff" opacity="0.9" />
+      <rect x="40" y="65" width="30" height="2" fill="#00f0ff" opacity="0.7" />
+      <rect x="20" y="74" width="12" height="3" fill="#ff007f" opacity="0.8" />
+    </svg>
   );
 }

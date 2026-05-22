@@ -19,16 +19,16 @@ export function LinkWidget({ context, props }: { context?: WidgetRenderContext; 
 
   return (
     <WidgetShell ariaLabel={title} background={props.background} className="text-left" href={props.href || "#"} showLinkIndicator>
-      {variant === "large" ? <LargeLinkContent color={props.color} description={description} logo={props.logo} title={title} /> : <CompactLinkContent color={props.color} description={description} logo={props.logo} title={title} wide={variant === "wide"} />}
+      {variant === "large" ? <LargeLinkContent color={props.color} description={description} logo={props.logo} title={title} /> : <CompactLinkContent color={props.color} description={description} logo={props.logo} title={title} />}
     </WidgetShell>
   );
 }
 
-function CompactLinkContent({ color, description, logo, title, wide = false }: Pick<LinkWidgetProps, "color" | "description" | "logo" | "title"> & { wide?: boolean }) {
+function CompactLinkContent({ color, description, logo, title }: Pick<LinkWidgetProps, "color" | "description" | "logo" | "title">) {
   return (
     <span className="relative z-10 flex h-full flex-col justify-between px-8 pb-7 pt-7">
       <LinkLogo className="shrink-0" color={color} logo={logo} title={title} />
-      <span className={`grid gap-1 ${wide ? "absolute bottom-7 left-[7rem] right-8" : ""}`}>
+      <span className="grid gap-1">
         <span className="[word-break:break-word] text-[1.15rem] font-bold leading-none tracking-[-0.02em] text-current">{title}</span>
         {description ? <span className="[word-break:break-word] text-[0.85rem] font-medium leading-4 text-current opacity-70">{description}</span> : null}
       </span>

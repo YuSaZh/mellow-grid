@@ -556,8 +556,8 @@
                 </svg>
             </div>
             
-            <h1 class="profile-title" id="profileTitle" contenteditable="true" placeholder="名称">Double Glitch 🇺🇦</h1>
-            <p class="profile-bio" id="profileBio" contenteditable="true" placeholder="介绍">Hey there! My name is Roman, I'm a Ukrainian designer. I create unusual stuff with ordinary tools hoping to inspire people to unlock or boost their own creativity.</p>
+            <h1 class="profile-title" id="profileTitle" contenteditable="true" placeholder="名称">Username</h1>
+            <p class="profile-bio" id="profileBio" contenteditable="true" placeholder="介绍">Short bio for your personal homepage.</p>
         </div>
 
         <!-- 右侧 Bento 纯物理重塑网格区 -->
@@ -695,8 +695,8 @@
 
         let state = {
             profile: {
-                name: "Double Glitch 🇺🇦",
-                bio: "Hey there! My name is Roman, I'm a Ukrainian designer. I create unusual stuff with ordinary tools hoping to inspire people to unlock or boost their own creativity."
+                name: "Username",
+                bio: "Short bio for your personal homepage."
             },
             cards: [...DEFAULT_CARDS]
         };
@@ -721,7 +721,7 @@
         let hasTriggeredMove = false; // 判断是单击还是开始拔起拖拽
 
         window.onload = function() {
-            const cached = localStorage.getItem('yusazh_bento_shove_state');
+            const cached = localStorage.getItem('username_bento_shove_state');
             if (cached) {
                 try { state = JSON.parse(cached); } catch(e) { }
             }
@@ -1198,12 +1198,12 @@
         function triggerImport() { document.getElementById('importFileInput').click(); }
 
         function saveToLocal() {
-            localStorage.setItem('yusazh_bento_shove_state', JSON.stringify(state));
+            localStorage.setItem('username_bento_shove_state', JSON.stringify(state));
             showToast("💾 页面资产及物理排盘已写入本地磁盘缓存！");
         }
 
         function saveToLocalSilent() {
-            localStorage.setItem('yusazh_bento_shove_state', JSON.stringify(state));
+            localStorage.setItem('username_bento_shove_state', JSON.stringify(state));
         }
 
         function exportJSONConfig() {
@@ -1240,11 +1240,11 @@
 
         function resetDefaults() {
             if (confirm("⚠️ 确定要清空全盘的所有卡片排序和尺寸，恢复原始设置吗？")) {
-                localStorage.removeItem('yusazh_bento_shove_state');
+                localStorage.removeItem('username_bento_shove_state');
                 state = {
                     profile: {
-                        name: "Double Glitch 🇺🇦",
-                        bio: "Hey there! My name is Roman, I'm a Ukrainian designer. I create unusual stuff with ordinary tools hoping to inspire people to unlock or boost their own creativity."
+                        name: "Username",
+                        bio: "Short bio for your personal homepage."
                     },
                     cards: [...DEFAULT_CARDS]
                 };

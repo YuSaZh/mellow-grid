@@ -2,19 +2,21 @@ import { defaultProfile, defaultTheme } from "./defaults";
 import { clampBentoLayoutItem } from "./bento-layout";
 import type { PageConfig, PageContact, PageProfile, WidgetInstance } from "./types";
 import { builtinLogoRegistry, getBuiltinLogoKeyFromLabel, isBuiltinLogoKey, type LinkLogo } from "@/lib/widgets/logo-registry";
+import { getWidgetDefinition } from "@/lib/widgets/registry";
 
 export function normalizePageConfig(config: PageConfig): PageConfig {
   const widgets = Array.isArray(config.widgets) ? config.widgets : [];
   const legacyProfileWidget = widgets.find((widget) => widget.type === "profile");
   const normalizedWidgets = widgets.map(normalizeWidget);
   const profile = normalizeProfile(config.profile ?? legacyProfileWidget?.props);
-  const gridWidgetIds = new Set(normalizedWidgets.filter((widget) => widget.type !== "profile").map((widget) => widget.id));
+  const supportedWidgets = normalizedWidgets.filter((widget) => widget.type !== "profile" && getWidgetDefinition(widget.type));
+  const gridWidgetIds = new Set(supportedWidgets.map((widget) => widget.id));
 
   return {
     ...config,
     profile,
     theme: { ...defaultTheme, ...config.theme },
-    widgets: normalizedWidgets.filter((widget) => widget.type !== "profile"),
+    widgets: supportedWidgets,
     layout: (Array.isArray(config.layout) ? config.layout : []).filter((item) => gridWidgetIds.has(item.i)).map(clampBentoLayoutItem),
   };
 }
@@ -100,5 +102,5 @@ function stringValue(value: unknown, fallback: string) {
 }
 
 export function getGridWidgets(config: PageConfig): WidgetInstance[] {
-  return config.widgets.filter((widget) => widget.type !== "profile");
+  return config.widgets.filter((widget) => widget.type !== "profile" && getWidgetDefinition(widget.type));
 }

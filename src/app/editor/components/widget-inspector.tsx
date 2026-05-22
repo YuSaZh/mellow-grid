@@ -16,18 +16,7 @@ export function WidgetInspector({ id }: { id: string }) {
   }
 
   return (
-    <section className="grid gap-4">
-      <div className="flex items-start justify-between gap-3">
-        <div>
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-zinc-400">Widget</p>
-          <h2 className="mt-1 text-2xl font-black tracking-[-0.04em] text-zinc-950">{definition.name}</h2>
-          <p className="mt-1 text-sm leading-6 text-zinc-500">{definition.description}</p>
-        </div>
-        <button className="min-h-11 rounded-full bg-red-50 px-4 text-xs font-bold text-red-600 transition hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-200" onClick={() => deleteWidget(widget.id)} type="button">
-          删除
-        </button>
-      </div>
-
+    <section className="grid gap-[1.1rem]">
       {widget.type === "link" ? (
         <LinkWidgetInspector onChange={(nextProps) => updateWidgetProps(widget.id, nextProps)} props={widget.props} />
       ) : (
@@ -37,6 +26,9 @@ export function WidgetInspector({ id }: { id: string }) {
           ))}
         </div>
       )}
+      <button className="min-h-11 justify-self-start rounded-full bg-red-50 px-4 text-xs font-bold text-red-600 transition hover:bg-red-100 focus:outline-none focus:ring-4 focus:ring-red-200" onClick={() => deleteWidget(widget.id)} type="button">
+        删除模块
+      </button>
     </section>
   );
 }
