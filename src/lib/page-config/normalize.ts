@@ -1,5 +1,5 @@
-import { defaultProfile, defaultTheme } from "./defaults";
 import { clampBentoLayoutItem } from "./bento-layout";
+import { defaultProfile, defaultTheme } from "./fallbacks";
 import type { PageConfig, PageContact, PageProfile, WidgetInstance } from "./types";
 import { builtinLogoRegistry, getBuiltinLogoKeyFromLabel, isBuiltinLogoKey, type LinkLogo } from "@/lib/widgets/logo-registry";
 import { getWidgetDefinition } from "@/lib/widgets/registry";

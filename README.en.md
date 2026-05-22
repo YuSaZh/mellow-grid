@@ -15,6 +15,7 @@
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-38BDF8?logo=tailwindcss&logoColor=white">
   <img alt="Zustand" src="https://img.shields.io/badge/Zustand-state-443E38">
   <img alt="Static output" src="https://img.shields.io/badge/output-static-2EA44F">
+  <img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub_Pages-manual_deploy-222222?logo=github&logoColor=white">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
 </p>
 
@@ -30,7 +31,7 @@ The goal is not to build a multi-tenant SaaS product. MellowGrid is designed as 
 - **Editor on demand**: React, Zustand, and editor interactions only load on `/editor`.
 - **Bento visual system**: soft rounded cards, modular tiles, and a compact grid for links, text, and dividers.
 - **WYSIWYG-oriented**: the editor reuses the page rendering path to reduce differences between editing and publishing.
-- **Personal-friendly**: local drafts, JSON backup, and static HTML export fit a one-person homepage workflow.
+- **Personal-friendly**: local drafts, a JSON data source, and static HTML export fit a one-person homepage workflow.
 
 ## Route Design
 
@@ -41,7 +42,7 @@ The goal is not to build a multi-tenant SaaS product. MellowGrid is designed as 
 
 | Route | Description |
 | --- | --- |
-| `/` | Public homepage rendered from `defaultPageConfig`. |
+| `/` | Public homepage rendered from `defaultPageConfig`, which is built from `data/pages/username.json`. |
 | `/editor` | Visual editor loaded with `client:only="react"`. |
 
 ## Features
@@ -107,17 +108,35 @@ src/lib/page-config/           Page config types, defaults, and normalization
 src/lib/page-export/           Static HTML export helpers
 src/lib/widgets/registry.ts    Widget registry
 src/widgets/                   Widget implementations
-data/pages/username.json       Example import/export config
+data/pages/username.json       Build-time homepage config source
+.github/workflows/deploy-pages.yml  Manually triggered GitHub Pages deployment workflow
 ```
 
 `dist/` and `.astro/` are generated directories and are ignored by git. Regenerate them with `npm run build` when needed.
 
 ## Editing and Publishing Workflow
 
+MellowGrid currently uses a static-safe model: the editor does not keep a GitHub token in the browser and does not write to the repository directly. The homepage build flow is:
+
+```txt
+data/pages/username.json
+        ↓ build/import
+src/pages/index.astro
+        ↓
+dist/index.html
+```
+
+Recommended publishing steps:
+
 1. Open `/editor`.
 2. Adjust the profile, link cards, text cards, and dividers.
 3. Save the draft to browser `localStorage`.
-4. Export JSON for backup, or export static HTML for standalone publishing.
+4. Export JSON to download `username.json`.
+5. Replace `data/pages/username.json` in the repository with the exported file.
+6. Commit and push the change.
+7. Manually run the `Deploy GitHub Pages` workflow in GitHub Actions to build `dist/` and deploy it to GitHub Pages.
+
+If you only need a standalone HTML file, you can also export static HTML and upload the generated `index.html` directly.
 
 The current version does not include a runtime backend, page-save API, file storage adapter, or Docker deployment chain. That trade-off keeps the project focused as a personal static homepage tool rather than a long-running server application.
 
@@ -133,6 +152,7 @@ Pages are described by `PageConfig`. The key fields are:
 
 Related files:
 
+- `data/pages/username.json`
 - `src/lib/page-config/types.ts`
 - `src/lib/page-config/defaults.ts`
 - `src/lib/page-config/normalize.ts`

@@ -14,14 +14,14 @@ describe("renderStaticPageHtml", () => {
     expect(html).not.toContain("MellowGrid Editor");
   });
 
-  it("exports the reference-style social bento set without requiring application JavaScript", () => {
+  it("exports the JSON-driven bento set without requiring application JavaScript", () => {
     const html = renderStaticPageHtml(defaultPageConfig);
 
-    for (const label of ["Medium", "Pinterest", "Buy me a Coffee", "Discord", "Gumroad", "Instagram", "Reddit"]) {
+    for (const label of ["Figma", "Dribbble", "GitHub", "Blog", "Email", "Coffee"]) {
       expect(html).toContain(label);
     }
 
-    expect(html).toContain("grid-column:1 / span 2");
+    expect(html).toContain("grid-column:3 / span 2");
     expect(html).not.toContain("type=\"module\"");
     expect(html).not.toContain("/_astro/");
   });
