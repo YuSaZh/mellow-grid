@@ -1,4 +1,4 @@
-import { BentoCard } from "@/components/ui/bento-card";
+import { WidgetShell } from "@/components/widgets/widget-shell";
 
 export type TextWidgetProps = {
   eyebrow?: string;
@@ -8,7 +8,7 @@ export type TextWidgetProps = {
 
 export function TextWidget({ props }: { props: TextWidgetProps }) {
   return (
-    <BentoCard>
+    <WidgetShell interactive>
       <div className="relative z-10 flex h-full flex-col justify-start p-6 text-left">
         <div>
           {props.eyebrow ? <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-[#fbfbfb]/60">{props.eyebrow}</p> : null}
@@ -16,7 +16,7 @@ export function TextWidget({ props }: { props: TextWidgetProps }) {
           <p className="mt-2 text-[12px] leading-4 text-[#fbfbfb]/80">{props.body}</p>
         </div>
       </div>
-    </BentoCard>
+    </WidgetShell>
   );
 }
 

@@ -1,4 +1,4 @@
-import { BENTO_CELL_SIZE, BENTO_COLS, BENTO_GAP, BENTO_GRID_WIDTH, BENTO_ROW_HEIGHT, clampBentoLayoutItem } from "../page-config/bento-layout";
+import { BENTO_CELL_SIZE, BENTO_COLS, BENTO_GAP, BENTO_GRID_WIDTH, BENTO_ROW_UNIT_HEIGHT, clampBentoLayoutItem, getBentoGridRow } from "../page-config/bento-layout";
 import { normalizePageConfig } from "../page-config/normalize";
 import type { GridLayoutItem, PageConfig, WidgetInstance } from "../page-config/types";
 
@@ -43,7 +43,7 @@ export function renderStaticPageHtml(config: PageConfig) {
         ${normalized.profile.location ? `<p class="profile-location">${escapeHtml(normalized.profile.location)}</p>` : ""}
         ${normalized.profile.bio ? `<p class="profile-bio">${escapeHtml(normalized.profile.bio)}</p>` : ""}
       </aside>
-      <section class="bento-grid" style="--bento-cols:${BENTO_COLS};--bento-cell-size:${BENTO_CELL_SIZE}px;--bento-gap:${BENTO_GAP}px;--bento-grid-width:${BENTO_GRID_WIDTH}px;--bento-row-height:${BENTO_ROW_HEIGHT}px;">
+      <section class="bento-grid" style="--bento-cols:${BENTO_COLS};--bento-cell-size:${BENTO_CELL_SIZE}px;--bento-gap:${BENTO_GAP}px;--bento-grid-width:${BENTO_GRID_WIDTH}px;--bento-row-height:${BENTO_ROW_UNIT_HEIGHT}px;">
 ${cards}
       </section>
     </div>
@@ -69,7 +69,7 @@ function renderCard(item: GridLayoutItem, widget?: WidgetInstance) {
   const light = isLightBackground(background);
   const icon = getIconMarkup(props.logo, props.color || (light ? "#1a1a1a" : "#ffffff"), title);
 
-  return `        <a class="bento-card ${light ? "light-card" : ""}" href="${escapeAttribute(href)}" style="grid-column:${item.x + 1} / span ${item.w};grid-row:${item.y + 1} / span ${item.h};background:${escapeAttribute(background)};color:${light ? "#1a1a1a" : "#ffffff"}">
+  return `        <a class="bento-card ${light ? "light-card" : ""}" href="${escapeAttribute(href)}" style="grid-column:${item.x + 1} / span ${item.w};grid-row:${getBentoGridRow(item)};background:${escapeAttribute(background)};color:${light ? "#1a1a1a" : "#ffffff"}">
           <div class="card-top">${icon}</div>
           <div class="card-bottom"><div class="card-title">${escapeHtml(title)}</div>${description ? `<div class="card-handle">${escapeHtml(description)}</div>` : ""}</div>
         </a>`;
@@ -80,7 +80,7 @@ function renderGenericCard(item: GridLayoutItem, widget: WidgetInstance) {
   const title = typeof props.title === "string" ? props.title : widget.type;
   const body = typeof props.body === "string" ? props.body : typeof props.label === "string" ? props.label : "";
 
-  return `        <section class="bento-card" style="grid-column:${item.x + 1} / span ${item.w};grid-row:${item.y + 1} / span ${item.h};background:${DEFAULT_CARD_BACKGROUND};color:#ffffff">
+  return `        <section class="bento-card" style="grid-column:${item.x + 1} / span ${item.w};grid-row:${getBentoGridRow(item)};background:${DEFAULT_CARD_BACKGROUND};color:#ffffff">
           <div class="card-top"><span class="text-icon">${escapeHtml(widget.type.slice(0, 2).toUpperCase())}</span></div>
           <div class="card-bottom"><div class="card-title">${escapeHtml(title)}</div>${body ? `<div class="card-handle">${escapeHtml(body)}</div>` : ""}</div>
         </section>`;

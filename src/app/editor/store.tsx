@@ -58,7 +58,7 @@ export function useEditorStore<T>(selector: (state: EditorState) => T) {
   return useStore(store, selector);
 }
 
-function createEditorStore(initialConfig: PageConfig) {
+export function createEditorStore(initialConfig: PageConfig) {
   return createStore<EditorState>((set, get) => ({
     config: normalizePageConfig(initialConfig),
     selectedTarget: null,
@@ -179,14 +179,20 @@ function createEditorStore(initialConfig: PageConfig) {
         return;
       }
 
-      const draft = localStorage.getItem(getDraftKey(config.username));
+      const draftStorage = getSessionDraftStorage();
+
+      if (!draftStorage) {
+        return;
+      }
+
+      const draft = draftStorage.getItem(getDraftKey(config.username));
 
       if (!draft) {
         return;
       }
 
       try {
-        set({ config: normalizePageConfig(JSON.parse(draft) as PageConfig), selectedTarget: null, status: "Draft loaded" });
+        set({ config: normalizePageConfig(JSON.parse(draft) as PageConfig), selectedTarget: null, status: "Session draft loaded" });
       } catch {
         set({ status: "Ready" });
       }
@@ -196,8 +202,13 @@ function createEditorStore(initialConfig: PageConfig) {
       const { config } = get();
       const normalizedConfig = normalizePageConfig(config);
 
-      localStorage.setItem(getDraftKey(config.username), JSON.stringify(normalizedConfig, null, 2));
-      set({ config: normalizedConfig, status: "Saved locally" });
+      const draftStorage = getSessionDraftStorage();
+
+      if (draftStorage) {
+        draftStorage.setItem(getDraftKey(config.username), JSON.stringify(normalizedConfig, null, 2));
+      }
+
+      set({ config: normalizedConfig, status: "Saved for this session" });
     },
 
     selectWidget(id) {
@@ -301,6 +312,14 @@ function getDraftKey(username: string) {
   return `mellow-grid:${username}:draft`;
 }
 
+function getSessionDraftStorage() {
+  if (typeof window === "undefined") {
+    return null;
+  }
+
+  return window.sessionStorage;
+}
+
 function getGridLayout(config: PageConfig) {
   const gridIds = new Set(getGridWidgets(config).map((widget) => widget.id));
 
@@ -319,7 +338,6 @@ function normalizeLayoutPatch(item: GridLayoutItem, patch: Partial<Omit<GridLayo
   const maxW = patch.maxW ?? item.maxW;
   const maxH = patch.maxH ?? item.maxH;
   const w = clamp(Math.round(nextW), Math.max(BENTO_MIN_ITEM_SIZE, minW ?? BENTO_MIN_ITEM_SIZE), Math.min(BENTO_COLS, maxW ?? BENTO_COLS));
-  const h = clamp(Math.round(nextH), Math.max(BENTO_MIN_ITEM_SIZE, minH ?? BENTO_MIN_ITEM_SIZE), maxH ?? Number.MAX_SAFE_INTEGER);
 
   return clampBentoLayoutItem({
     ...item,
@@ -327,7 +345,7 @@ function normalizeLayoutPatch(item: GridLayoutItem, patch: Partial<Omit<GridLayo
     x: patch.x ?? item.x,
     y: patch.y ?? item.y,
     w,
-    h,
+    h: nextH,
     minW,
     minH,
     maxW,

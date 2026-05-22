@@ -22,7 +22,7 @@ export const dividerWidget = {
   type: "divider",
   name: "分栏符",
   description: "无框纯文字标题，用来上下分割右侧网格区域。",
-  defaultLayout: { w: 4, h: 1, minW: 1, minH: 1, maxW: 4, maxH: 1 },
+  defaultLayout: { w: 4, h: 0.5, minW: 1, minH: 0.5, maxW: 4, maxH: 0.5 },
   defaultProps: {
     eyebrow: "",
     title: "Section",

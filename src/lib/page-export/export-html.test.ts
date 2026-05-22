@@ -17,11 +17,13 @@ describe("renderStaticPageHtml", () => {
   it("exports the JSON-driven bento set without requiring application JavaScript", () => {
     const html = renderStaticPageHtml(defaultPageConfig);
 
-    for (const label of ["Figma", "Dribbble", "GitHub", "Blog", "Email", "Coffee"]) {
-      expect(html).toContain(label);
+    for (const widget of defaultPageConfig.widgets) {
+      if ("title" in widget.props && typeof widget.props.title === "string") {
+        expect(html).toContain(widget.props.title);
+      }
     }
 
-    expect(html).toContain("grid-column:3 / span 2");
+    expect(html).toContain("grid-row:7 / span 1");
     expect(html).not.toContain("type=\"module\"");
     expect(html).not.toContain("/_astro/");
   });

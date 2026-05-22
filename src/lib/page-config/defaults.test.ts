@@ -9,6 +9,6 @@ describe("defaultPageConfig", () => {
 
     expect(defaultPageConfig.title).toBe(sourceConfig.title);
     expect(defaultPageConfig.profile.name).toBe(sourceConfig.profile.name);
-    expect(defaultPageConfig.widgets.map((widget) => widget.id)).toContain("social-github");
+    expect(defaultPageConfig.widgets.map((widget) => widget.id)).toEqual(sourceConfig.widgets.map((widget) => widget.id));
   });
 });

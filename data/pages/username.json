@@ -1,15 +1,19 @@
 {
   "username": "username",
-  "title": "MellowGrid",
-  "description": "A soft, modular personal homepage.",
+  "title": "Username - Link Tree",
+  "description": "A static 3D bento personal homepage inspired by soft social link cards.",
   "profile": {
     "name": "Username",
-    "bio": "A short introduction for your personal homepage.",
+    "bio": "Short bio for your personal homepage.",
     "location": "Location",
-    "avatarUrl": "data:image/png;base64,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",
+    "avatarUrl": "",
     "contacts": [
       {
-        "label": "Home",
+        "label": "Email",
+        "href": "mailto:email@example.com"
+      },
+      {
+        "label": "Website",
         "href": "https://example.com"
       }
     ]
@@ -22,11 +26,45 @@
     "radius": "round",
     "shadow": "soft"
   },
+  "updatedAt": "2026-05-22T17:19:43.310Z",
   "layout": [
     {
       "i": "social-twitter",
       "x": 0,
       "y": 0,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-medium",
+      "x": 2,
+      "y": 0,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-pinterest",
+      "x": 3,
+      "y": 0,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-coffee",
+      "x": 0,
+      "y": 2,
       "w": 2,
       "h": 1,
       "minW": 1,
@@ -36,10 +74,43 @@
     },
     {
       "i": "social-figma",
-      "x": 3,
-      "y": 0,
+      "x": 2,
+      "y": 1,
       "w": 1,
       "h": 2,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-discord",
+      "x": 3,
+      "y": 1,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-linkedin",
+      "x": 2,
+      "y": 4.5,
+      "w": 2,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-gumroad",
+      "x": 2,
+      "y": 3.5,
+      "w": 1,
+      "h": 1,
       "minW": 1,
       "minH": 1,
       "maxW": 2,
@@ -57,20 +128,9 @@
       "maxH": 2
     },
     {
-      "i": "about",
+      "i": "social-stack",
       "x": 0,
-      "y": 2,
-      "w": 2,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-mail",
-      "x": 0,
-      "y": 4,
+      "y": 3.5,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -79,8 +139,30 @@
       "maxH": 2
     },
     {
-      "i": "social-github",
-      "x": 2,
+      "i": "social-instagram",
+      "x": 1,
+      "y": 3.5,
+      "w": 1,
+      "h": 2,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-reddit",
+      "x": 0,
+      "y": 4.5,
+      "w": 1,
+      "h": 2,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "link-mph6dsk9",
+      "x": 1,
       "y": 0,
       "w": 1,
       "h": 1,
@@ -90,70 +172,24 @@
       "maxH": 2
     },
     {
-      "i": "social-linkedin",
-      "x": 3,
-      "y": 4,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-blog",
-      "x": 0,
-      "y": 1,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "intro",
-      "x": 1,
-      "y": 1,
-      "w": 2,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-coffee",
-      "x": 2,
-      "y": 2,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "link-mph3yy2h",
-      "x": 1,
-      "y": 4,
-      "w": 2,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "divider-mph3zz2r",
+      "i": "divider-mph6ejam",
       "x": 0,
       "y": 3,
       "w": 4,
+      "h": 0.5,
+      "minW": 1,
+      "minH": 0.5,
+      "maxW": 4,
+      "maxH": 0.5
+    },
+    {
+      "i": "text-mph6esod",
+      "x": 0,
+      "y": 1,
+      "w": 2,
       "h": 1,
       "minW": 1,
-      "minH": 1,
-      "maxW": 4,
-      "maxH": 1
+      "minH": 1
     }
   ],
   "widgets": [
@@ -163,15 +199,73 @@
       "props": {
         "title": "Twitter",
         "href": "https://twitter.com/",
-        "description": "@handle or address",
+        "description": "@username",
         "logo": {
           "type": "builtin",
           "key": "x"
         },
         "color": "#f5f5f5",
         "background": {
+          "type": "gradient",
+          "from": "#2f2f2f",
+          "to": "#101112",
+          "angle": 180
+        }
+      }
+    },
+    {
+      "id": "social-medium",
+      "type": "link",
+      "props": {
+        "title": "Medium",
+        "href": "https://medium.com/",
+        "description": "@username",
+        "logo": {
+          "type": "builtin",
+          "key": "medium"
+        },
+        "color": "#1c1c1c",
+        "background": {
           "type": "solid",
-          "value": "#252222"
+          "value": "#f7f7f2"
+        }
+      }
+    },
+    {
+      "id": "social-pinterest",
+      "type": "link",
+      "props": {
+        "title": "Pinterest",
+        "href": "https://pinterest.com/",
+        "description": "@username",
+        "logo": {
+          "type": "builtin",
+          "key": "pinterest"
+        },
+        "color": "#E60023",
+        "background": {
+          "type": "solid",
+          "value": "#ffe8ee"
+        }
+      }
+    },
+    {
+      "id": "social-coffee",
+      "type": "link",
+      "props": {
+        "title": "Buy me a Coffee",
+        "href": "https://example.com",
+        "description": "@username",
+        "logo": {
+          "type": "builtin",
+          "key": "coffee"
+        },
+        "color": "#8b5b05",
+        "background": {
+          "type": "gradient",
+          "from": "#ffe181",
+          "to": "#f5b63d",
+          "angle": 180
         }
       }
     },
@@ -186,12 +280,30 @@
           "type": "builtin",
           "key": "figma"
         },
-        "color": "#8f4be7",
+        "color": "#7b38d8",
         "background": {
           "type": "gradient",
-          "from": "#FCE3FE",
-          "to": "#EAA2F0",
-          "angle": 135
+          "from": "#fce3fe",
+          "to": "#bd83e5",
+          "angle": 180
+        }
+      }
+    },
+    {
+      "id": "social-discord",
+      "type": "link",
+      "props": {
+        "title": "Discord",
+        "href": "https://discord.com/",
+        "description": "@username",
+        "logo": {
+          "type": "builtin",
+          "key": "discord"
+        },
+        "color": "#5865F2",
+        "background": {
+          "type": "solid",
+          "value": "#dde2ff"
         }
       }
     },
@@ -201,15 +313,17 @@
       "props": {
         "title": "Dribbble",
         "href": "https://dribbble.com/",
-        "description": "@handle or address",
+        "description": "@username",
         "logo": {
           "type": "builtin",
           "key": "dribbble"
         },
         "color": "#EA4C89",
         "background": {
-          "type": "solid",
-          "value": "#f37cdd"
+          "type": "gradient",
+          "from": "#ff95d3",
+          "to": "#ef64bd",
+          "angle": 180
         }
       }
     },
@@ -219,117 +333,66 @@
       "props": {
         "title": "LinkedIn",
         "href": "https://www.linkedin.com/",
-        "description": "@handle or address",
+        "description": "@username",
         "logo": {
           "type": "builtin",
           "key": "linkedin"
         },
         "color": "#0A66C2",
         "background": {
-          "type": "theme"
+          "type": "solid",
+          "value": "#dff0ff"
         }
       }
     },
     {
-      "id": "social-github",
+      "id": "social-gumroad",
       "type": "link",
       "props": {
-        "title": "GitHub",
-        "href": "https://github.com/",
-        "description": "@handle or address",
+        "title": "Gumroad",
+        "href": "https://gumroad.com/",
+        "description": "@username",
         "logo": {
           "type": "builtin",
-          "key": "github"
+          "key": "gumroad"
         },
-        "color": "#f0f6fc",
-        "background": {
-          "type": "theme"
-        }
-      }
-    },
-    {
-      "id": "intro",
-      "type": "text",
-      "props": {
-        "eyebrow": "Playground",
-        "title": "2.5D widgets for ordinary tools.",
-        "body": "Rounded cards, subtle highlights, and a crisp bento layout."
-      }
-    },
-    {
-      "id": "social-blog",
-      "type": "link",
-      "props": {
-        "title": "Blog",
-        "href": "https://example.com",
-        "description": "@handle or address",
-        "logo": {
-          "type": "builtin",
-          "key": "blog"
-        },
-        "color": "#ade0ff",
-        "background": {
-          "type": "theme"
-        }
-      }
-    },
-    {
-      "id": "social-mail",
-      "type": "link",
-      "props": {
-        "title": "Email",
-        "href": "mailto:email@example.com",
-        "description": "@handle or address",
-        "logo": {
-          "type": "builtin",
-          "key": "email"
-        },
-        "color": "#ade0ff",
+        "color": "#ff90e8",
         "background": {
           "type": "solid",
-          "value": "#37c5e1"
+          "value": "#232323"
         }
       }
     },
     {
-      "id": "about",
-      "type": "text",
-      "props": {
-        "eyebrow": "Notes",
-        "title": "Designed as a compact visual playground.",
-        "body": "Each tile follows the current link widget template with unified logo shadows."
-      }
-    },
-    {
-      "id": "social-coffee",
+      "id": "social-stack",
       "type": "link",
       "props": {
-        "title": "Coffee",
-        "href": "https://example.com",
-        "description": "@handle or address",
+        "title": "Stack",
+        "href": "https://stackoverflow.com/",
+        "description": "@username",
         "logo": {
           "type": "builtin",
-          "key": "coffee"
+          "key": "stack"
         },
-        "color": "#ffdd99",
+        "color": "#f48024",
         "background": {
           "type": "solid",
-          "value": "#d79d37"
+          "value": "#fff1df"
         }
       }
     },
     {
-      "id": "link-mph3yy2h",
+      "id": "social-instagram",
       "type": "link",
       "props": {
-        "title": "INS",
+        "title": "Instagram",
         "href": "https://instagram.com/",
-        "description": "@handle or address",
+        "description": "@username",
         "logo": {
           "type": "builtin",
           "key": "instagram"
         },
-        "color": "#E1306C",
+        "color": "#e1306c",
         "background": {
           "type": "gradient",
           "from": "#9F2CAC",
@@ -339,13 +402,56 @@
       }
     },
     {
-      "id": "divider-mph3zz2r",
+      "id": "social-reddit",
+      "type": "link",
+      "props": {
+        "title": "Reddit",
+        "href": "https://reddit.com/",
+        "description": "@username",
+        "logo": {
+          "type": "builtin",
+          "key": "reddit"
+        },
+        "color": "#ff4500",
+        "background": {
+          "type": "solid",
+          "value": "#ffe4d8"
+        }
+      }
+    },
+    {
+      "id": "link-mph6dsk9",
+      "type": "link",
+      "props": {
+        "title": "Github",
+        "href": "https://figma.com/",
+        "description": "@handle or address",
+        "logo": {
+          "type": "builtin",
+          "key": "github"
+        },
+        "color": "#F0F6FC",
+        "background": {
+          "type": "theme"
+        }
+      }
+    },
+    {
+      "id": "divider-mph6ejam",
       "type": "divider",
       "props": {
         "eyebrow": "",
         "title": "About Me"
       }
+    },
+    {
+      "id": "text-mph6esod",
+      "type": "text",
+      "props": {
+        "eyebrow": "Snapshot",
+        "title": "Simple, rounded, customizable.",
+        "body": "A soft Bento module for notes, quotes, or introductions."
+      }
     }
-  ],
-  "updatedAt": "2026-05-22T16:04:10.463Z"
+  ]
 }

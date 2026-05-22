@@ -6,19 +6,22 @@ export const BENTO_ROW_HEIGHT = BENTO_CELL_SIZE;
 export const BENTO_GAP = 24;
 export const BENTO_GRID_WIDTH = BENTO_COLS * BENTO_CELL_SIZE + (BENTO_COLS - 1) * BENTO_GAP;
 export const BENTO_MIN_ITEM_SIZE = 1;
+export const BENTO_MIN_ITEM_HEIGHT = 0.5;
 export const BENTO_DEFAULT_ITEM_SIZE = 1;
+export const BENTO_ROW_UNITS_PER_ITEM = 2;
+export const BENTO_ROW_UNIT_HEIGHT = (BENTO_ROW_HEIGHT - BENTO_GAP) / BENTO_ROW_UNITS_PER_ITEM;
 
 export type BentoLayoutPatch = Partial<Pick<GridLayoutItem, "x" | "y" | "w" | "h">>;
 
 export function clampBentoLayoutItem(item: GridLayoutItem): GridLayoutItem {
   const minW = Math.max(BENTO_MIN_ITEM_SIZE, item.minW ?? BENTO_MIN_ITEM_SIZE);
-  const minH = Math.max(BENTO_MIN_ITEM_SIZE, item.minH ?? BENTO_MIN_ITEM_SIZE);
+  const minH = Math.max(BENTO_MIN_ITEM_HEIGHT, item.minH ?? BENTO_DEFAULT_ITEM_SIZE);
   const maxW = Math.max(minW, Math.min(BENTO_COLS, item.maxW ?? BENTO_COLS));
   const maxH = Math.max(minH, item.maxH ?? Number.MAX_SAFE_INTEGER);
   const w = clamp(Math.round(item.w), minW, maxW);
-  const h = clamp(Math.round(item.h), minH, maxH);
+  const h = clamp(snapBentoHeight(item.h), minH, maxH);
   const x = clamp(Math.round(item.x), 0, BENTO_COLS - w);
-  const y = Math.max(0, Math.round(item.y));
+  const y = Math.max(0, snapBentoHeight(item.y));
 
   return {
     ...item,
@@ -31,6 +34,12 @@ export function clampBentoLayoutItem(item: GridLayoutItem): GridLayoutItem {
     maxW: item.maxW,
     maxH: item.maxH,
   };
+}
+
+export function getBentoGridRow(item: GridLayoutItem) {
+  const nextItem = clampBentoLayoutItem(item);
+
+  return `${getBentoGridRowStart(nextItem.y)} / span ${getBentoGridRowSpan(nextItem.h)}`;
 }
 
 export function arrangeBentoLayout(layout: GridLayoutItem[], pinnedId?: string): GridLayoutItem[] {
@@ -94,7 +103,7 @@ function compactItem(item: GridLayoutItem, placed: GridLayoutItem[]): GridLayout
   let next = placeWithoutCollisions(item, placed);
 
   while (next.y > 0) {
-    const candidate = { ...next, y: next.y - 1 };
+    const candidate = { ...next, y: Math.max(0, next.y - BENTO_MIN_ITEM_HEIGHT) };
 
     if (placed.some((placedItem) => bentoLayoutItemsCollide(candidate, placedItem))) {
       break;
@@ -124,6 +133,18 @@ function sortByGridPosition(a: GridLayoutItem, b: GridLayoutItem, originalOrder:
 
 function restoreOriginalOrder(layout: GridLayoutItem[], originalOrder: Map<string, number>) {
   return [...layout].sort((a, b) => (originalOrder.get(a.i) ?? 0) - (originalOrder.get(b.i) ?? 0));
+}
+
+function getBentoGridRowStart(y: number) {
+  return Math.round(y * BENTO_ROW_UNITS_PER_ITEM) + 1;
+}
+
+function getBentoGridRowSpan(h: number) {
+  return Math.max(1, Math.round(h * BENTO_ROW_UNITS_PER_ITEM));
+}
+
+function snapBentoHeight(value: number) {
+  return Math.round(value / BENTO_MIN_ITEM_HEIGHT) * BENTO_MIN_ITEM_HEIGHT;
 }
 
 function clamp(value: number, min: number, max: number) {
