@@ -6,8 +6,13 @@
     "name": "Username",
     "bio": "A short introduction for your personal homepage.",
     "location": "Location",
-    "avatarUrl": "",
-    "contacts": []
+    "avatarUrl": "data:image/png;base64,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",
+    "contacts": [
+      {
+        "label": "Home",
+        "href": "https://example.com"
+      }
+    ]
   },
   "theme": {
     "background": "#ffffff",
@@ -22,17 +27,6 @@
       "i": "social-twitter",
       "x": 0,
       "y": 0,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-figma",
-      "x": 2,
-      "y": 0,
       "w": 2,
       "h": 1,
       "minW": 1,
@@ -41,20 +35,9 @@
       "maxH": 2
     },
     {
-      "i": "social-dribbble",
-      "x": 2,
-      "y": 1,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "about",
+      "i": "social-figma",
       "x": 3,
-      "y": 1,
+      "y": 0,
       "w": 1,
       "h": 2,
       "minW": 1,
@@ -63,8 +46,8 @@
       "maxH": 2
     },
     {
-      "i": "social-mail",
-      "x": 1,
+      "i": "social-dribbble",
+      "x": 3,
       "y": 2,
       "w": 1,
       "h": 1,
@@ -74,8 +57,30 @@
       "maxH": 2
     },
     {
+      "i": "about",
+      "x": 0,
+      "y": 2,
+      "w": 2,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-mail",
+      "x": 0,
+      "y": 4,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
       "i": "social-github",
-      "x": 1,
+      "x": 2,
       "y": 0,
       "w": 1,
       "h": 1,
@@ -87,7 +92,7 @@
     {
       "i": "social-linkedin",
       "x": 3,
-      "y": 3,
+      "y": 4,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -98,7 +103,7 @@
     {
       "i": "social-blog",
       "x": 0,
-      "y": 3,
+      "y": 1,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -109,7 +114,7 @@
     {
       "i": "intro",
       "x": 1,
-      "y": 3,
+      "y": 1,
       "w": 2,
       "h": 1,
       "minW": 1,
@@ -129,37 +134,26 @@
       "maxH": 2
     },
     {
-      "i": "link-mpdg3yiv",
-      "x": 0,
-      "y": 4,
-      "w": 1,
-      "h": 2,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "link-mpdg42d4",
+      "i": "link-mph3yy2h",
       "x": 1,
       "y": 4,
-      "w": 1,
-      "h": 2,
+      "w": 2,
+      "h": 1,
       "minW": 1,
       "minH": 1,
       "maxW": 2,
       "maxH": 2
     },
     {
-      "i": "link-mpdg457t",
-      "x": 2,
-      "y": 4,
-      "w": 1,
-      "h": 2,
+      "i": "divider-mph3zz2r",
+      "x": 0,
+      "y": 3,
+      "w": 4,
+      "h": 1,
       "minW": 1,
       "minH": 1,
-      "maxW": 2,
-      "maxH": 2
+      "maxW": 4,
+      "maxH": 1
     }
   ],
   "widgets": [
@@ -194,8 +188,10 @@
         },
         "color": "#8f4be7",
         "background": {
-          "type": "solid",
-          "value": "#b77dde"
+          "type": "gradient",
+          "from": "#FCE3FE",
+          "to": "#EAA2F0",
+          "angle": 135
         }
       }
     },
@@ -323,56 +319,33 @@
       }
     },
     {
-      "id": "link-mpdg3yiv",
+      "id": "link-mph3yy2h",
       "type": "link",
       "props": {
-        "title": "Figma",
-        "href": "https://figma.com/",
+        "title": "INS",
+        "href": "https://instagram.com/",
         "description": "@handle or address",
         "logo": {
           "type": "builtin",
-          "key": "figma"
+          "key": "instagram"
         },
-        "color": "#A259FF",
+        "color": "#E1306C",
         "background": {
-          "type": "theme"
+          "type": "gradient",
+          "from": "#9F2CAC",
+          "to": "#F4A751",
+          "angle": 135
         }
       }
     },
     {
-      "id": "link-mpdg42d4",
-      "type": "link",
+      "id": "divider-mph3zz2r",
+      "type": "divider",
       "props": {
-        "title": "Figma",
-        "href": "https://figma.com/",
-        "description": "@handle or address",
-        "logo": {
-          "type": "builtin",
-          "key": "figma"
-        },
-        "color": "#A259FF",
-        "background": {
-          "type": "theme"
-        }
-      }
-    },
-    {
-      "id": "link-mpdg457t",
-      "type": "link",
-      "props": {
-        "title": "Figma",
-        "href": "https://figma.com/",
-        "description": "@handle or address",
-        "logo": {
-          "type": "builtin",
-          "key": "figma"
-        },
-        "color": "#A259FF",
-        "background": {
-          "type": "theme"
-        }
+        "eyebrow": "",
+        "title": "About Me"
       }
     }
   ],
-  "updatedAt": "2026-05-20T02:31:49.806Z"
+  "updatedAt": "2026-05-22T16:04:10.463Z"
 }
