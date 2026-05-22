@@ -3,6 +3,8 @@ import { defineConfig } from "astro/config";
 import { fileURLToPath } from "node:url";
 
 export default defineConfig({
+  site: "https://yusazh.github.io",
+  base: "/mellow-grid",
   integrations: [react()],
   output: "static",
   vite: {
