@@ -5,7 +5,7 @@ import { createStore, useStore } from "zustand";
 import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_MIN_ITEM_SIZE, arrangeBentoLayout, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
 import { getGridWidgets, normalizePageConfig } from "@/lib/page-config/normalize";
 import type { GridLayoutItem, PageConfig, PageProfile, WidgetInstance } from "@/lib/page-config/types";
-import { renderStaticPageHtml } from "@/lib/page-export/export-html";
+import { collectDocumentStyles, renderStaticPageHtml } from "@/lib/page-export/export-html";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 
 export type SelectedTarget = { type: "widget"; id: string } | null;
@@ -150,7 +150,7 @@ export function createEditorStore(initialConfig: PageConfig) {
     exportStaticHtml() {
       const { config } = get();
       const normalizedConfig = normalizePageConfig(config);
-      const blob = new Blob([renderStaticPageHtml(normalizedConfig)], { type: "text/html;charset=utf-8" });
+      const blob = new Blob([renderStaticPageHtml(normalizedConfig, { styles: collectDocumentStyles() })], { type: "text/html;charset=utf-8" });
       const href = URL.createObjectURL(blob);
       const link = document.createElement("a");
 
