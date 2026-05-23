@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="mellowgrid.svg" alt="MellowGrid logo" width="128">
+</p>
+
 <h1 align="center">MellowGrid</h1>
 
 <p align="center">

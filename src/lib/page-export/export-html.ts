@@ -1,6 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { PageRenderer } from "@/components/page/page-renderer";
+import { getPageDocumentTitle } from "../page-config/metadata";
 import { normalizePageConfig } from "../page-config/normalize";
 import type { PageConfig } from "../page-config/types";
 
@@ -10,6 +11,7 @@ export type StaticPageHtmlOptions = {
 
 export function renderStaticPageHtml(config: PageConfig, options: StaticPageHtmlOptions = {}) {
   const normalized = normalizePageConfig(config);
+  const title = getPageDocumentTitle(normalized);
   const pageMarkup = renderToStaticMarkup(createElement(PageRenderer, { config: normalized }));
   const styles = getStandaloneStyleContent(normalized, options.styles);
 
@@ -19,7 +21,7 @@ export function renderStaticPageHtml(config: PageConfig, options: StaticPageHtml
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="${escapeHtml(normalized.description ?? "")}">
-  <title>${escapeHtml(normalized.title)}</title>
+  <title>${escapeHtml(title)}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">

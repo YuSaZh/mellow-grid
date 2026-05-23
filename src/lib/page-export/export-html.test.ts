@@ -50,6 +50,20 @@ describe("renderStaticPageHtml", () => {
     expect(html).toContain("--bento-grid-row:");
     expect(html).not.toContain("style=\"grid-column:");
   });
+
+  it("uses the profile name as the document title", () => {
+    const html = renderStaticPageHtml({
+      ...createExportFixture(),
+      title: "Old static title",
+      profile: {
+        ...createExportFixture().profile,
+        name: "Updated Profile Name",
+      },
+    });
+
+    expect(html).toContain("<title>Updated Profile Name</title>");
+    expect(html).not.toContain("<title>Old static title</title>");
+  });
 });
 
 function createExportFixture(): PageConfig {

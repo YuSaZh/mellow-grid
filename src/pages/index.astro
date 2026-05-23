@@ -2,10 +2,12 @@
 import { PageRenderer } from "@/components/page/page-renderer";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { defaultPageConfig } from "@/lib/page-config/defaults";
+import { getPageDocumentTitle } from "@/lib/page-config/metadata";
 
 const config = defaultPageConfig;
+const title = getPageDocumentTitle(config);
 ---
 
-<BaseLayout title={config.title} description={config.description}>
+<BaseLayout title={title} description={config.description}>
   <PageRenderer config={config} />
 </BaseLayout>

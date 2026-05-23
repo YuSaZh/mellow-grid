@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
 import { BentoGrid, bentoGridStyles, getBentoGridItemStyle } from "@/components/page/bento-grid";
-import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_GAP, bentoLayoutItemsCollide, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
+import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_GAP, BENTO_MIN_ITEM_HEIGHT, bentoLayoutItemsCollide, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
 import type { GridLayoutItem, WidgetInstance, WidgetRenderVariant } from "@/lib/page-config/types";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 import { useEditorStore } from "../store";
@@ -375,11 +375,11 @@ function getWidgetRenderVariant(item: GridLayoutItem): WidgetRenderVariant {
   return "compact";
 }
 
-function findAddModuleLayout(layout: GridLayoutItem[]): GridLayoutItem {
+export function findAddModuleLayout(layout: GridLayoutItem[]): GridLayoutItem {
   const occupied = layout.map(clampBentoLayoutItem);
   const maxY = occupied.reduce((bottom, item) => Math.max(bottom, item.y + item.h), 0);
 
-  for (let y = 0; y <= maxY + BENTO_DEFAULT_ITEM_SIZE; y += 1) {
+  for (let y = 0; y <= maxY + BENTO_DEFAULT_ITEM_SIZE; y += BENTO_MIN_ITEM_HEIGHT) {
     for (let x = 0; x <= BENTO_COLS - BENTO_DEFAULT_ITEM_SIZE; x += 1) {
       const candidate: GridLayoutItem = { i: ADD_MODULE_ID, x, y, w: BENTO_DEFAULT_ITEM_SIZE, h: BENTO_DEFAULT_ITEM_SIZE };
 
