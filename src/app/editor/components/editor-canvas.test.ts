@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { findAddModuleLayout } from "./editor-canvas";
+import { findAddModuleLayout, getVerticalLayoutUnits } from "./editor-canvas";
 import type { GridLayoutItem } from "@/lib/page-config/types";
 
 describe("findAddModuleLayout", () => {
@@ -13,5 +13,19 @@ describe("findAddModuleLayout", () => {
     ];
 
     expect(findAddModuleLayout(layout)).toMatchObject({ x: 0, y: 1.5, w: 1, h: 1 });
+  });
+});
+
+describe("getVerticalLayoutUnits", () => {
+  it("maps one rendered half-height row to 0.5 layout units", () => {
+    expect(getVerticalLayoutUnits(106, 82, 24)).toBe(0.5);
+  });
+
+  it("maps two rendered half-height rows to 1 layout unit", () => {
+    expect(getVerticalLayoutUnits(212, 82, 24)).toBe(1);
+  });
+
+  it("supports upward movement in half-height increments", () => {
+    expect(getVerticalLayoutUnits(-106, 82, 24)).toBe(-0.5);
   });
 });

@@ -34,7 +34,7 @@ const SOFT_SHADOW_LAYERS = [
 export function IconEffect({ children, className = "", depth = "clay", framed = false, highlight = true }: IconEffectProps) {
   if (depth === "clay") {
     return (
-      <span className={`relative z-10 grid size-[46px] place-items-center overflow-visible transition duration-[450ms] ease-[cubic-bezier(0.165,0.84,0.44,1)] [filter:drop-shadow(1.5px_2px_1.5px_rgba(0,0,0,0.15))_drop-shadow(5px_9px_8px_rgba(0,0,0,0.22))_drop-shadow(10px_16px_18px_rgba(0,0,0,0.14))] group-hover:scale-110 group-hover:-translate-x-1 group-hover:-translate-y-1 ${className}`}>
+      <span className={`relative z-10 grid size-[46px] place-items-center overflow-visible transition duration-[450ms] ease-[cubic-bezier(0.165,0.84,0.44,1)] [filter:drop-shadow(1.5px_2px_1.5px_rgba(0,0,0,0.13))_drop-shadow(4px_8px_7px_rgba(0,0,0,0.18))_drop-shadow(8px_13px_14px_rgba(0,0,0,0.11))] [transform:translateZ(8px)] group-hover:scale-[1.08] group-hover:-translate-x-0.5 group-hover:-translate-y-1 group-hover:[filter:drop-shadow(1.5px_2.5px_1.5px_rgba(0,0,0,0.08))_drop-shadow(6px_12px_10px_rgba(0,0,0,0.20))_drop-shadow(11px_18px_16px_rgba(0,0,0,0.12))] group-hover:[transform:translate3d(-2px,-4px,18px)_scale(1.08)] ${className}`}>
         {children}
       </span>
     );

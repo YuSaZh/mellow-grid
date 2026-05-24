@@ -123,13 +123,13 @@ export function EditorCanvas() {
       });
 
       const nextX = Math.round((event.clientX - metrics.left - interaction.pointerOffsetX) / (metrics.columnWidth + metrics.gap));
-      const nextY = Math.round((event.clientY - metrics.top - interaction.pointerOffsetY) / (metrics.rowHeight + metrics.gap));
+      const nextY = getVerticalLayoutUnits(event.clientY - metrics.top - interaction.pointerOffsetY, metrics.rowHeight, metrics.gap);
       setPreviewLayout(updateBentoLayoutItem(interaction.baseLayout, interaction.id, { x: nextX, y: nextY }));
       return;
     }
 
     const nextW = interaction.baseItem.w + Math.round(deltaX / (metrics.columnWidth + metrics.gap));
-    const nextH = interaction.baseItem.h + Math.round(deltaY / (metrics.rowHeight + metrics.gap));
+    const nextH = interaction.baseItem.h + getVerticalLayoutUnits(deltaY, metrics.rowHeight, metrics.gap);
     setPreviewLayout(updateBentoLayoutItem(interaction.baseLayout, interaction.id, { w: nextW, h: nextH }));
   }
 
@@ -181,11 +181,22 @@ export function EditorCanvas() {
         }
 
         .mg-editor-placeholder > *:first-child {
-          opacity: 0.15 !important;
+          opacity: 0 !important;
           transform: scale(0.96) !important;
-          border: 2px dashed #3FA3EB !important;
-          background: rgba(63, 163, 235, 0.05) !important;
+          border: 0 !important;
+          background: transparent !important;
+          outline: none !important;
           box-shadow: none !important;
+        }
+
+        .mg-editor-placeholder::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          border: 2px dashed rgba(63, 163, 235, 0.72);
+          border-radius: 38px;
+          background: rgba(63, 163, 235, 0.05);
         }
       `}</style>
       <div onPointerCancel={cancelInteraction} onPointerMove={updateInteraction} onPointerUp={commitInteraction}>
@@ -288,13 +299,17 @@ function EditorGridOverlay({ item, selected, startInteraction, widget }: { item:
   return (
     <div
       aria-label={`选择 ${definition.name} 模块`}
-      className={`group absolute inset-0 z-20 rounded-[38px] touch-none transition ${selected ? "outline outline-[3.5px] outline-offset-[4px] outline-[#3FA3EB] shadow-[0_25px_50px_rgba(63,163,235,0.15)]" : "outline outline-0 outline-offset-[4px] outline-transparent hover:outline-[2px] hover:outline-[#3FA3EB]/35"}`}
+      className={`group absolute inset-0 z-20 rounded-[38px] touch-none outline-none transition ${selected ? "shadow-[0_25px_50px_rgba(63,163,235,0.15)]" : ""}`}
       data-editor-widget-id={widget.id}
       onKeyDown={handleKeyDown}
       onPointerDown={(event) => startInteraction(event, item, widget, "move")}
       role="button"
       tabIndex={0}
     >
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute -inset-1 rounded-[42px] border-2 transition duration-200 ${selected ? "border-[#3FA3EB] opacity-100 shadow-[0_0_0_1.5px_rgba(63,163,235,0.25),0_18px_42px_rgba(63,163,235,0.16)]" : "border-[#3FA3EB]/35 opacity-0 group-hover:opacity-100 group-focus:opacity-100"}`}
+      />
       <div
         aria-label="拖拽调整模块大小"
         className={`absolute bottom-3 right-3 z-[99] flex size-[18px] cursor-se-resize items-center justify-center transition duration-200 hover:scale-125 ${selected ? "opacity-100" : "opacity-0 group-hover:opacity-100 group-focus:opacity-100"}`}
@@ -323,7 +338,7 @@ function EditorDragGhost({ ghost }: { ghost: DragGhostState }) {
 
   return (
     <div
-      className="pointer-events-none fixed z-[3000] opacity-[0.92] shadow-[0_30px_65px_rgba(0,0,0,0.28),0_10px_20px_rgba(0,0,0,0.15)]"
+      className="pointer-events-none fixed z-[3000] rounded-[38px] opacity-[0.92] shadow-[0_30px_65px_rgba(0,0,0,0.28),0_10px_20px_rgba(0,0,0,0.15)]"
       style={{
         height: ghost.height,
         left: ghost.left,
@@ -332,7 +347,9 @@ function EditorDragGhost({ ghost }: { ghost: DragGhostState }) {
         width: ghost.width,
       }}
     >
-      <Widget context={{ layout: ghost.item, variant: getWidgetRenderVariant(ghost.item) }} props={ghost.widget.props} />
+      <div className="h-full w-full overflow-hidden rounded-[38px] [clip-path:inset(0_round_38px)]">
+        <Widget context={{ layout: ghost.item, variant: getWidgetRenderVariant(ghost.item) }} props={ghost.widget.props} />
+      </div>
     </div>
   );
 }
@@ -361,6 +378,10 @@ function getGridMetrics(element: HTMLElement): GridMetrics | null {
 
 function distance(event: PointerEvent<HTMLDivElement>, interaction: InteractionState) {
   return Math.max(Math.abs(event.clientX - interaction.startClientX), Math.abs(event.clientY - interaction.startClientY));
+}
+
+export function getVerticalLayoutUnits(pixelDelta: number, rowHeight: number, gap: number) {
+  return Math.round(pixelDelta / (rowHeight + gap)) * BENTO_MIN_ITEM_HEIGHT;
 }
 
 function getWidgetRenderVariant(item: GridLayoutItem): WidgetRenderVariant {

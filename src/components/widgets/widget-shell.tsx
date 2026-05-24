@@ -17,15 +17,18 @@ type WidgetShellProps = PropsWithChildren<{
   topRightSlot?: ReactNode;
 }>;
 
-const DEFAULT_CARD_BACKGROUND = "linear-gradient(180deg,#313030 0%,#121313 100%)";
+const DEFAULT_CARD_BACKGROUND = "linear-gradient(135deg,#2B2C2E 0%,#17181A 100%)";
 
 export function WidgetShell({ ariaLabel, background, children, className = "", href, interactive, showLinkIndicator, style, topRightSlot }: WidgetShellProps) {
   const backgroundStyle = getWidgetBackgroundStyle(background);
   const lightCard = isLightBackground(backgroundStyle.background);
+  const hoverShadowClassName = lightCard
+    ? "hover:shadow-[0_22px_45px_rgba(0,0,0,0.06),inset_2px_2px_1.5px_rgba(255,255,255,0.95),inset_-2.5px_-2.5px_4px_rgba(0,0,0,0.04)]"
+    : "hover:shadow-[0_22px_45px_rgba(0,0,0,0.09),inset_2px_2px_1.5px_rgba(255,255,255,0.45),inset_-2px_-2px_3px_rgba(0,0,0,0.08)]";
   const shellClassName = [
-    "group relative block h-full overflow-hidden rounded-[38px] border border-white/10 shadow-[0_12px_30px_rgba(0,0,0,0.05),inset_1.5px_1.5px_1px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(0,0,0,0.1)] transition duration-[450ms] ease-[cubic-bezier(0.165,0.84,0.44,1)]",
+    "group relative block h-full overflow-hidden rounded-[38px] border border-white/[0.08] shadow-[0_12px_30px_rgba(0,0,0,0.05),inset_1.5px_1.5px_1px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(0,0,0,0.1)] transition duration-[450ms] ease-[cubic-bezier(0.165,0.84,0.44,1)] [perspective:1000px] [transform-style:preserve-3d]",
     lightCard ? "border-white/50 shadow-[0_12px_30px_rgba(0,0,0,0.03),inset_1.8px_1.8px_1px_rgba(255,255,255,0.9),inset_-2px_-2px_4px_rgba(0,0,0,0.05)]" : "",
-    interactive || href ? "outline-none hover:-translate-y-2 hover:scale-[1.015] hover:shadow-[0_22px_45px_rgba(0,0,0,0.09),inset_2px_2px_1.5px_rgba(255,255,255,0.45),inset_-2px_-2px_3px_rgba(0,0,0,0.08)] focus-visible:ring-4 focus-visible:ring-white/25" : "",
+    interactive || href ? `outline-none hover:-translate-y-2 hover:scale-[1.015] ${hoverShadowClassName} focus-visible:ring-4 focus-visible:ring-white/25` : "",
     className,
   ]
     .filter(Boolean)
@@ -34,6 +37,7 @@ export function WidgetShell({ ariaLabel, background, children, className = "", h
   const content = (
     <>
       <div className="pointer-events-none absolute inset-px rounded-[37px] border border-white/[0.24] [mask-image:linear-gradient(180deg,#000_0%,transparent_100%)]" />
+      <div className="pointer-events-none absolute inset-0 rounded-[38px] bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.22),transparent_32%)] opacity-70 mix-blend-screen" />
       {showLinkIndicator || topRightSlot ? (
         <div className="pointer-events-none absolute right-4 top-4 z-20 grid size-5 place-items-center rounded-full border-2 border-white/20 bg-black/20 opacity-0 backdrop-blur-[7px] transition group-hover:opacity-100 group-focus-visible:opacity-100">
           {topRightSlot ?? <span className="text-[10px] font-black text-white">↗</span>}
@@ -67,9 +71,9 @@ export function getWidgetBackgroundStyle(background?: WidgetBackground): CSSProp
     return { background: background.value || DEFAULT_CARD_BACKGROUND };
   }
 
-  const angle = Number.isFinite(background.angle) ? background.angle : 180;
-  const from = background.from || "#313030";
-  const to = background.to || "#121313";
+  const angle = Number.isFinite(background.angle) ? background.angle : 135;
+  const from = background.from || "#2B2C2E";
+  const to = background.to || "#17181A";
 
   return { background: `linear-gradient(${angle}deg, ${from} 0%, ${to} 100%)` };
 }

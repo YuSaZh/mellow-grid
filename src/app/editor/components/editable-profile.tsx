@@ -26,8 +26,9 @@ export function EditableProfile({ profile }: { profile: PageProfile }) {
 
   return (
     <section className="group/profile relative max-w-[340px] text-inherit">
-      <label className="relative mx-auto grid size-[140px] cursor-pointer place-items-center overflow-hidden rounded-full bg-[#111113] p-1 shadow-[0_15px_35px_rgba(0,0,0,0.15),inset_1.5px_1.5px_0_rgba(255,255,255,0.15),inset_-2px_-2px_5px_rgba(0,0,0,0.4)] transition hover:scale-[1.03] focus-within:ring-4 focus-within:ring-[#3FA3EB]/20 xl:mx-0">
+      <label className="relative mx-auto grid size-[140px] cursor-pointer place-items-center overflow-hidden rounded-full border border-[#d8d8de] bg-white p-[2px] shadow-[0_14px_34px_rgba(20,16,10,0.10),inset_1px_1px_0_rgba(255,255,255,0.85),inset_-1px_-1px_2px_rgba(20,16,10,0.06)] transition hover:scale-[1.03] focus-within:ring-4 focus-within:ring-[#3FA3EB]/20 xl:mx-0">
         {profile.avatarUrl ? <img alt="个人头像预览" className="size-full rounded-full object-cover" src={profile.avatarUrl} /> : <GlitchAvatar />}
+        <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.72),inset_0_4px_12px_rgba(20,16,10,0.10)]" />
         <span className="absolute inset-x-4 bottom-4 rounded-full bg-white/95 px-3 py-2 text-center text-[0.65rem] font-black uppercase tracking-[0.14em] text-[#121214] opacity-0 shadow-[0_12px_32px_rgba(20,16,10,0.18)] transition group-hover/profile:opacity-100 group-focus-within/profile:opacity-100">
           上传头像
         </span>

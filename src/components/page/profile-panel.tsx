@@ -3,12 +3,13 @@ import type { PageProfile } from "@/lib/page-config/types";
 export function ProfilePanel({ props }: { props: PageProfile }) {
   return (
     <section className="max-w-[340px] text-inherit">
-      <div className="mx-auto size-[140px] overflow-hidden rounded-full bg-[#111113] p-1 shadow-[0_15px_35px_rgba(0,0,0,0.15),inset_1.5px_1.5px_0_rgba(255,255,255,0.15),inset_-2px_-2px_5px_rgba(0,0,0,0.4)] transition hover:scale-[1.03] xl:mx-0">
+      <div className="relative mx-auto size-[140px] overflow-hidden rounded-full border border-[#d8d8de] bg-white p-[2px] shadow-[0_14px_34px_rgba(20,16,10,0.10),inset_1px_1px_0_rgba(255,255,255,0.85),inset_-1px_-1px_2px_rgba(20,16,10,0.06)] transition hover:scale-[1.03] xl:mx-0">
         {props.avatarUrl ? (
           <span aria-label={`${props.name} avatar`} className="block size-full rounded-full bg-cover bg-center" role="img" style={{ backgroundImage: `url(${props.avatarUrl})` }} />
         ) : (
           <GlitchAvatar />
         )}
+        <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.72),inset_0_4px_12px_rgba(20,16,10,0.10)]" />
       </div>
 
       <h1 className="mt-9 text-[2.5rem] font-extrabold leading-[1.05] tracking-[-0.04em] text-[#111113]">{props.name}</h1>
