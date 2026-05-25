@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="mellowgrid.svg" alt="MellowGrid logo" width="128">
+  <img src="mellowgrid.svg" alt="MellowGrid logo" width="96">
 </p>
 
 <h1 align="center">MellowGrid</h1>
