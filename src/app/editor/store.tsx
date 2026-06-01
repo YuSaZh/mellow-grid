@@ -209,7 +209,7 @@ export function createEditorStore(initialConfig: PageConfig) {
     updateLayout(layout) {
       set((state) => {
         const gridIds = new Set(getGridWidgets(state.config).map((widget) => widget.id));
-        const nextLayout = arrangeBentoLayout(layout.filter((item) => gridIds.has(item.i)).map(normalizeLayoutItem));
+        const nextLayout = arrangeBentoLayout(layout.filter((item) => gridIds.has(item.i)).map(clampBentoLayoutItem));
 
         return {
           config: touchConfig(
