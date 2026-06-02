@@ -70,10 +70,6 @@ export function collectDocumentStyles() {
   return Array.from(new Set(styleChunks)).join("\n");
 }
 
-function getStandaloneStyleContent(config: PageConfig, collectedStyles?: string) {
-  return [getStandaloneBaseCss(config), collectedStyles].filter(Boolean).join("\n");
-}
-
 function getStandaloneBaseCss(config: PageConfig) {
   return `*{box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body{margin:0;min-height:100vh;font-family:'Plus Jakarta Sans',Inter,ui-sans-serif,system-ui,sans-serif;background:${config.theme.background};color:${config.theme.foreground}}`;
 }
