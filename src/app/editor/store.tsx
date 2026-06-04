@@ -323,12 +323,6 @@ function getSessionDraftStorage() {
   }
 }
 
-function getGridLayout(config: PageConfig) {
-  const gridIds = new Set(getGridWidgets(config).map((widget) => widget.id));
-
-  return config.layout.filter((item) => gridIds.has(item.i));
-}
-
 function normalizeLayoutItem(item: GridLayoutItem): GridLayoutItem {
   return clampBentoLayoutItem(item);
 }
