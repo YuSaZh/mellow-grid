@@ -69,10 +69,6 @@ export function updateBentoLayoutItem(layout: GridLayoutItem[], id: string, patc
   );
 }
 
-export function resizeBentoLayoutItem(layout: GridLayoutItem[], id: string, patch: Pick<BentoLayoutPatch, "w" | "h">): GridLayoutItem[] {
-  return updateBentoLayoutItem(layout, id, patch);
-}
-
 export function bentoLayoutItemsCollide(a: GridLayoutItem, b: GridLayoutItem) {
   return a.i !== b.i && a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 }
