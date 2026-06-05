@@ -349,13 +349,10 @@ function normalizeLayoutPatch(item: GridLayoutItem, patch: Partial<Omit<GridLayo
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
 function findNextColumn(layout: GridLayoutItem[]) {
-  const lastItem = layout.reduce<GridLayoutItem | null>((latest, item) => {
-    if (!latest) {
-      return item;
-    }
-
-    return item.y + item.h >= latest.y + latest.h ? item : latest;
-  }, null);
+  const lastItem = layout.reduce<GridLayoutItem | null>((latest, item) =>
+    !latest || item.y + item.h >= latest.y + latest.h ? item : latest,
+    null,
+  );
 
   if (!lastItem) {
     return 0;
