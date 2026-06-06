@@ -64,6 +64,28 @@ describe("renderStaticPageHtml", () => {
     expect(html).toContain("<title>Updated Profile Name</title>");
     expect(html).not.toContain("<title>Old static title</title>");
   });
+
+  it("exports rich widgets for activity, music, maps, and media", () => {
+    const html = renderStaticPageHtml(createRichWidgetFixture());
+
+    expect(html).toContain("GitHub");
+    expect(html).toContain("https://www.dailygreen.xyz/octocat");
+    expect(html).toContain("GitHub contribution activity for octocat");
+    expect(html).not.toContain("1,284 contributions");
+    expect(html).not.toContain("Repos");
+    expect(html).not.toContain("Stars");
+    expect(html).not.toContain("Streak");
+    expect(html).not.toContain("PRs");
+    expect(html).toContain("Night Drive");
+    expect(html).toContain("open.spotify.com/embed/playlist/example");
+    expect(html).toContain("Tokyo");
+    expect(html).toContain("basemaps.cartocdn.com/light_nolabels");
+    expect(html).toContain("map-marker");
+    expect(html).not.toContain("tile.openstreetmap.org");
+    expect(html).not.toContain("export/embed.html");
+    expect(html).toContain("Studio reel");
+    expect(html).toContain("www.youtube.com/embed/example");
+  });
 });
 
 function createExportFixture(): PageConfig {
@@ -121,5 +143,64 @@ function createExportFixture(): PageConfig {
       },
     ],
     updatedAt: "2026-01-01T00:00:00.000Z",
+  };
+}
+
+function createRichWidgetFixture(): PageConfig {
+  return {
+    ...createExportFixture(),
+    layout: [
+      { i: "activity", x: 0, y: 0, w: 4, h: 1 },
+      { i: "music", x: 0, y: 1, w: 2, h: 1 },
+      { i: "map", x: 2, y: 1, w: 2, h: 2 },
+      { i: "media", x: 0, y: 2, w: 2, h: 2 },
+    ],
+    widgets: [
+      {
+        id: "activity",
+        type: "github-activity",
+        props: {
+          title: "GitHub",
+          username: "octocat",
+          profileUrl: "https://github.com/octocat",
+          href: "https://github.com/octocat",
+          summary: "",
+          days: [0, 1, 2, 3, 4],
+        },
+      },
+      {
+        id: "music",
+        type: "music",
+        props: {
+          title: "Night Drive",
+          artist: "MellowGrid FM",
+          embedUrl: "https://open.spotify.com/embed/playlist/example",
+          href: "https://open.spotify.com/playlist/example",
+        },
+      },
+      {
+        id: "map",
+        type: "map",
+        props: {
+          title: "Tokyo",
+          location: "Shibuya, Tokyo",
+          latitude: 35.6595,
+          longitude: 139.7005,
+          zoom: 15,
+          href: "https://www.openstreetmap.org/?mlat=35.6595&mlon=139.7005#map=15/35.6595/139.7005",
+        },
+      },
+      {
+        id: "media",
+        type: "media",
+        props: {
+          title: "Studio reel",
+          caption: "Recent visual notes",
+          mediaType: "video",
+          embedUrl: "https://www.youtube.com/embed/example",
+          href: "https://youtube.com/watch?v=example",
+        },
+      },
+    ],
   };
 }

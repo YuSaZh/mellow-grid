@@ -10,14 +10,33 @@ export function normalizePageConfig(config: PageConfig): PageConfig {
   const normalizedWidgets = widgets.map(normalizeWidget);
   const profile = normalizeProfile(config.profile ?? legacyProfileWidget?.props);
   const supportedWidgets = normalizedWidgets.filter((widget) => widget.type !== "profile" && getWidgetDefinition(widget.type));
-  const gridWidgetIds = new Set(supportedWidgets.map((widget) => widget.id));
+  const gridWidgetTypes = new Map(supportedWidgets.map((widget) => [widget.id, widget.type]));
 
   return {
     ...config,
     profile,
     theme: { ...defaultTheme, ...config.theme },
     widgets: supportedWidgets,
-    layout: (Array.isArray(config.layout) ? config.layout : []).filter((item) => gridWidgetIds.has(item.i)).map(clampBentoLayoutItem),
+    layout: (Array.isArray(config.layout) ? config.layout : [])
+      .filter((item) => gridWidgetTypes.has(item.i))
+      .map((item) => refreshLayoutConstraints(item, gridWidgetTypes.get(item.i)))
+      .map(clampBentoLayoutItem),
+  };
+}
+
+function refreshLayoutConstraints(item: PageConfig["layout"][number], widgetType?: string) {
+  const defaultLayout = widgetType ? getWidgetDefinition(widgetType)?.defaultLayout : undefined;
+
+  if (!defaultLayout) {
+    return item;
+  }
+
+  return {
+    ...item,
+    minW: defaultLayout.minW,
+    minH: defaultLayout.minH,
+    maxW: defaultLayout.maxW,
+    maxH: defaultLayout.maxH,
   };
 }
 
@@ -26,7 +45,13 @@ function normalizeWidget(widget: WidgetInstance): WidgetInstance {
     return { ...widget, props: normalizeLinkProps(widget.props) };
   }
 
-  return widget;
+  const definition = getWidgetDefinition(widget.type);
+
+  if (!definition) {
+    return widget;
+  }
+
+  return { ...widget, props: { ...asRecord(definition.defaultProps), ...asRecord(widget.props) } };
 }
 
 function normalizeLinkProps(value: unknown): Record<string, unknown> {

@@ -79,5 +79,21 @@ export function getWidgetBackgroundStyle(background?: WidgetBackground): CSSProp
 }
 
 function isLightBackground(background: CSSProperties["background"]) {
-  return typeof background === "string" && /#(?:fff|fcfcfc|f7f7f2|e6e6e6|ffea79|ffe181|f5c13d|fce3fe|eaa2f0|ffe8ee|dde2ff|dff0ff|fff1df|ffe0f1|ffd39a|ffe4d8)/i.test(background);
+  if (typeof background !== "string") {
+    return false;
+  }
+
+  const hex = background.match(/#([0-9a-f]{6}|[0-9a-f]{3})\b/i)?.[1];
+
+  if (!hex) {
+    return false;
+  }
+
+  const normalized = hex.length === 3 ? hex.split("").map((value) => value + value).join("") : hex;
+  const red = Number.parseInt(normalized.slice(0, 2), 16);
+  const green = Number.parseInt(normalized.slice(2, 4), 16);
+  const blue = Number.parseInt(normalized.slice(4, 6), 16);
+  const luminance = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255;
+
+  return luminance > 0.62;
 }
