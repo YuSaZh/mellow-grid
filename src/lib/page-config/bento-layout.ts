@@ -69,10 +69,6 @@ export function updateBentoLayoutItem(layout: GridLayoutItem[], id: string, patc
   );
 }
 
-export function moveBentoLayoutItem(layout: GridLayoutItem[], id: string, patch: Pick<BentoLayoutPatch, "x" | "y">): GridLayoutItem[] {
-  return updateBentoLayoutItem(layout, id, patch);
-}
-
 export function resizeBentoLayoutItem(layout: GridLayoutItem[], id: string, patch: Pick<BentoLayoutPatch, "w" | "h">): GridLayoutItem[] {
   return updateBentoLayoutItem(layout, id, patch);
 }
