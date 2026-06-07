@@ -95,7 +95,8 @@ function compactItem(item: GridLayoutItem, placed: GridLayoutItem[]): GridLayout
   const maxIterations = 100;
   let next = placeWithoutCollisions(item, placed);
 
-  while (next.y > 0) {
+  for (let i = 0; i < maxIterations; i++) {
+    if (next.y <= 0) break;
     const candidate = { ...next, y: Math.max(0, next.y - BENTO_MIN_ITEM_HEIGHT) };
 
     if (placed.some((placedItem) => bentoLayoutItemsCollide(candidate, placedItem))) {
