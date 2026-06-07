@@ -113,7 +113,10 @@ export function normalizeProfile(value: unknown): PageProfile {
 }
 
 function isPageContact(value: unknown): value is PageContact {
-  return typeof value === "object" && value !== null && "label" in value && "href" in value && typeof value.label === "string" && typeof value.href === "string";
+  if (typeof value !== "object" || value === null) return false;
+  const record = value as Record<string, unknown>;
+
+  return typeof record.label === "string" && typeof record.href === "string";
 }
 
 function asRecord(value: unknown): Record<string, unknown> {
