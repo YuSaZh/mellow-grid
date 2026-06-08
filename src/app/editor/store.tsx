@@ -323,10 +323,6 @@ function getSessionDraftStorage() {
   }
 }
 
-function normalizeLayoutItem(item: GridLayoutItem): GridLayoutItem {
-  return clampBentoLayoutItem(item);
-}
-
 function normalizeLayoutPatch(item: GridLayoutItem, patch: Partial<Omit<GridLayoutItem, "i">>): GridLayoutItem {
   const nextW = patch.w ?? item.w;
   const nextH = patch.h ?? item.h;
