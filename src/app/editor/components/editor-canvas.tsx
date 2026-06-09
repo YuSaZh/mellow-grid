@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
 import { BentoGrid, bentoGridStyles, getBentoGridItemStyle, getWidgetRenderVariant } from "@/components/page/bento-grid";
 import { BENTO_COLS, BENTO_DEFAULT_ITEM_SIZE, BENTO_GAP, BENTO_MIN_ITEM_HEIGHT, bentoLayoutItemsCollide, clampBentoLayoutItem, updateBentoLayoutItem } from "@/lib/page-config/bento-layout";
-import type { GridLayoutItem, WidgetInstance, WidgetRenderVariant } from "@/lib/page-config/types";
+import type { GridLayoutItem, WidgetInstance } from "@/lib/page-config/types";
 import { getWidgetDefinition } from "@/lib/widgets/registry";
 import { useEditorStore } from "../store";
 import { AddWidgetPanel } from "./add-widget-panel";
