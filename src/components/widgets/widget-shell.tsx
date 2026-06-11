@@ -78,6 +78,8 @@ export function getWidgetBackgroundStyle(background?: WidgetBackground): CSSProp
   return { background: `linear-gradient(${angle}deg, ${from} 0%, ${to} 100%)` };
 }
 
+export const WIDGET_DEFAULT_BG = DEFAULT_CARD_BACKGROUND;
+
 function isLightBackground(background: CSSProperties["background"]) {
   if (typeof background !== "string") {
     return false;
