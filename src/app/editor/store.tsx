@@ -73,7 +73,8 @@ export function createEditorStore(initialConfig: PageConfig) {
 
       set((state) => {
         const id = createWidgetId(type, state.config.widgets);
-        const gridLayout = getGridLayout(state.config);
+        const gridIds = new Set(getGridWidgets(state.config).map((widget) => widget.id));
+        const gridLayout = state.config.layout.filter((item) => gridIds.has(item.i));
         const maxY = gridLayout.reduce((bottom, item) => Math.max(bottom, item.y + item.h), 0);
         const widget: WidgetInstance = {
           id,
