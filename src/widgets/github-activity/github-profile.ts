@@ -70,7 +70,7 @@ function parseGithubProfileUrl(input: string) {
 }
 
 function parseGithubHandle(input: string) {
-  return input.includes("/") || input.includes("?") || input.includes("#") ? "" : input;
+  return /[/?#]/.test(input) ? "" : input;
 }
 
 function isValidGithubUsername(username: string) {
