@@ -106,10 +106,8 @@ export function normalizeProfile(value: unknown): PageProfile {
   const props = value && typeof value === "object" ? (value as Partial<PageProfile>) : {};
 
   return {
-    name: typeof props.name === "string" ? props.name : defaultProfile.name,
-    bio: typeof props.bio === "string" ? props.bio : defaultProfile.bio,
-    location: typeof props.location === "string" ? props.location : defaultProfile.location,
-    avatarUrl: typeof props.avatarUrl === "string" ? props.avatarUrl : defaultProfile.avatarUrl,
+    ...defaultProfile,
+    ...props,
     contacts: Array.isArray(props.contacts) ? props.contacts.filter(isPageContact) : defaultProfile.contacts,
   };
 }
