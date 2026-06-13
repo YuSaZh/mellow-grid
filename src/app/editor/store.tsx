@@ -277,12 +277,8 @@ export function createEditorStore(initialConfig: PageConfig) {
   }));
 }
 
-function cloneValue(value: unknown) {
-  if (typeof structuredClone === "function") {
-    return structuredClone(value);
-  }
-
-  return JSON.parse(JSON.stringify(value));
+function cloneValue<T>(value: T): T {
+  return structuredClone(value);
 }
 
 function downloadBlob(blob: Blob, filename: string) {
