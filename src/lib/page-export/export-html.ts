@@ -43,7 +43,7 @@ export function collectDocumentStyles() {
 
   for (const sheet of Array.from(document.styleSheets)) {
     try {
-      if (sheet.href && typeof window !== "undefined" && new URL(sheet.href).origin !== window.location.origin) {
+      if (sheet.href && new URL(sheet.href).origin !== window.location.origin) {
         continue;
       }
 
