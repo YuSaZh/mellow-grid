@@ -81,5 +81,5 @@ function sanitizeStyleContent(styles: string) {
 }
 
 function escapeHtml(value: string) {
-  return value.replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char] ?? char);
+  return value.replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char]);
 }
