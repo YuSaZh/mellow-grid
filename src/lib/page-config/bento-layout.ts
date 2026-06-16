@@ -92,6 +92,7 @@ function compactBentoLayout(layout: GridLayoutItem[], pinnedId: string | undefin
 }
 
 function compactItem(item: GridLayoutItem, placed: GridLayoutItem[]): GridLayoutItem {
+  const maxIterations = 100;
   let next = placeWithoutCollisions(item, placed);
 
   while (next.y > 0) {
