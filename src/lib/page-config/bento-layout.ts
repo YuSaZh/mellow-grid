@@ -141,6 +141,4 @@ function snapBentoHeight(value: number) {
   return Math.round(value / BENTO_MIN_ITEM_HEIGHT) * BENTO_MIN_ITEM_HEIGHT;
 }
 
-function clamp(value: number, min: number, max: number) {
-  return Math.min(Math.max(value, min), max);
-}
+const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
