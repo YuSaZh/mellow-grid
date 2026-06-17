@@ -384,17 +384,6 @@ export function getVerticalLayoutUnits(pixelDelta: number, rowHeight: number, ga
   return Math.round(pixelDelta / (rowHeight + gap)) * BENTO_MIN_ITEM_HEIGHT;
 }
 
-function getWidgetRenderVariant(item: GridLayoutItem): WidgetRenderVariant {
-  if (item.w >= 2 && item.h >= 2) {
-    return "large";
-  }
-
-  if (item.w >= 2) {
-    return "wide";
-  }
-
-  return "compact";
-}
 
 export function findAddModuleLayout(layout: GridLayoutItem[]): GridLayoutItem {
   const occupied = layout.map(clampBentoLayoutItem);
