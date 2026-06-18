@@ -47,6 +47,24 @@ describe("editor draft storage", () => {
     expect(store.getState().config.title).toBe("JSON title");
     expect(store.getState().status).toBe("Ready");
   });
+
+  it("keeps editing when session draft storage cannot be read", () => {
+    vi.stubGlobal("window", createStorageAccessErrorWindow());
+    const store = createEditorStore(createConfig({ title: "JSON title" }));
+
+    expect(() => store.getState().loadLocalDraft()).not.toThrow();
+    expect(store.getState().config.title).toBe("JSON title");
+    expect(store.getState().status).toBe("Ready");
+  });
+
+  it("reports an unavailable session draft when storage cannot be written", async () => {
+    vi.stubGlobal("window", createStorageAccessErrorWindow());
+    const store = createEditorStore(createConfig({ title: "JSON title" }));
+
+    await expect(store.getState().saveDraft()).resolves.toBeUndefined();
+
+    expect(store.getState().status).toBe("Session storage unavailable");
+  });
 });
 
 function createConfig(overrides: Partial<PageConfig> = {}): PageConfig {
@@ -98,4 +116,12 @@ function createStorageMock(): Storage {
       items.set(key, value);
     },
   };
+}
+
+function createStorageAccessErrorWindow(): Window {
+  return Object.defineProperty({}, "sessionStorage", {
+    get() {
+      throw new DOMException("Storage is blocked", "SecurityError");
+    },
+  }) as Window;
 }

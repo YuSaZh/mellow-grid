@@ -134,32 +134,14 @@ export function createEditorStore(initialConfig: PageConfig) {
 
     exportConfig() {
       const { config } = get();
-      const blob = new Blob([JSON.stringify(normalizePageConfig(config), null, 2)], { type: "application/json" });
-      const href = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-
-      link.href = href;
-      link.download = "username.json";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(href);
+      downloadBlob(new Blob([JSON.stringify(normalizePageConfig(config), null, 2)], { type: "application/json" }), "username.json");
       set({ status: "Exported" });
     },
 
     exportStaticHtml() {
       const { config } = get();
       const normalizedConfig = normalizePageConfig(config);
-      const blob = new Blob([renderStaticPageHtml(normalizedConfig, { styles: collectDocumentStyles() })], { type: "text/html;charset=utf-8" });
-      const href = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-
-      link.href = href;
-      link.download = "index.html";
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-      URL.revokeObjectURL(href);
+      downloadBlob(new Blob([renderStaticPageHtml(normalizedConfig, { styles: collectDocumentStyles() })], { type: "text/html;charset=utf-8" }), "index.html");
       set({ config: normalizedConfig, status: "Static HTML exported" });
     },
 
@@ -204,8 +186,16 @@ export function createEditorStore(initialConfig: PageConfig) {
 
       const draftStorage = getSessionDraftStorage();
 
-      if (draftStorage) {
+      if (!draftStorage) {
+        set({ config: normalizedConfig, status: "Session storage unavailable" });
+        return;
+      }
+
+      try {
         draftStorage.setItem(getDraftKey(config.username), JSON.stringify(normalizedConfig, null, 2));
+      } catch {
+        set({ config: normalizedConfig, status: "Session storage unavailable" });
+        return;
       }
 
       set({ config: normalizedConfig, status: "Saved for this session" });
@@ -294,6 +284,18 @@ function cloneValue(value: unknown) {
   return JSON.parse(JSON.stringify(value));
 }
 
+function downloadBlob(blob: Blob, filename: string) {
+  const href = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = href;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(href);
+}
+
 function createWidgetId(type: string, widgets: WidgetInstance[]) {
   const existingIds = new Set(widgets.map((widget) => widget.id));
   const baseId = `${type}-${Date.now().toString(36)}`;
@@ -317,7 +319,11 @@ function getSessionDraftStorage() {
     return null;
   }
 
-  return window.sessionStorage;
+  try {
+    return window.sessionStorage;
+  } catch {
+    return null;
+  }
 }
 
 function getGridLayout(config: PageConfig) {
