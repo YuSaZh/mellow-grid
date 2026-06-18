@@ -13,7 +13,8 @@ export function renderStaticPageHtml(config: PageConfig, options: StaticPageHtml
   const normalized = normalizePageConfig(config);
   const title = getPageDocumentTitle(normalized);
   const pageMarkup = renderToStaticMarkup(createElement(PageRenderer, { config: normalized }));
-  const styles = getStandaloneStyleContent(normalized, options.styles);
+  const baseCss = getStandaloneBaseCss(normalized);
+  const styles = [baseCss, options.styles].filter(Boolean).join("\n");
 
   return `<!DOCTYPE html>
 <html lang="zh-CN">
