@@ -65,7 +65,7 @@ export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout
   );
 }
 
-function getWidgetRenderVariant(item: GridLayoutItem): WidgetRenderVariant {
+export function getWidgetRenderVariant(item: GridLayoutItem): WidgetRenderVariant {
   if (item.w >= 2 && item.h >= 2) {
     return "large";
   }
