@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import usernamePageConfig from "../../../data/pages/username.json";
+import { widgetRegistry } from "@/lib/widgets/registry";
 import { defaultPageConfig } from "./defaults";
 import { normalizePageConfig } from "./normalize";
 import type { PageConfig } from "./types";
@@ -11,6 +12,15 @@ describe("defaultPageConfig", () => {
     expect(defaultPageConfig.title).toBe(sourceConfig.title);
     expect(defaultPageConfig.profile.name).toBe(sourceConfig.profile.name);
     expect(defaultPageConfig.widgets.map((widget) => widget.id)).toEqual(sourceConfig.widgets.map((widget) => widget.id));
+  });
+
+  it("keeps the default showcase page populated with every available widget type", () => {
+    const expectedTypes = Object.keys(widgetRegistry).sort();
+    const defaultTypes = [...new Set(defaultPageConfig.widgets.map((widget) => widget.type))].sort();
+    const layoutIds = new Set(defaultPageConfig.layout.map((item) => item.i));
+
+    expect(defaultTypes).toEqual(expectedTypes);
+    expect(defaultPageConfig.widgets.every((widget) => layoutIds.has(widget.id))).toBe(true);
   });
 
   it("refreshes rich widget minimum sizes from current widget definitions", () => {

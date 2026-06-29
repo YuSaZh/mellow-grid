@@ -4,6 +4,7 @@ import { WidgetShell } from "@/components/widgets/widget-shell";
 import { dividerWidget } from "./divider";
 import { GithubActivityWidget, githubActivityWidget } from "./github-activity";
 import { MapWidget, mapWidget } from "./map";
+import { MusicWidget } from "./music";
 import { TextWidget } from "./text";
 import { getWidgetDefinition, widgetRegistry } from "@/lib/widgets/registry";
 
@@ -82,6 +83,58 @@ describe("widget definitions", () => {
       latitude: 35.6595,
       longitude: 139.7005,
     });
+  });
+
+  it("renders music as a polished static player when no safe embed is available", () => {
+    const html = renderToStaticMarkup(
+      MusicWidget({
+        props: {
+          title: "Night Drive",
+          artist: "MellowGrid FM",
+          provider: "Spotify",
+          embedUrl: "javascript:alert(1)",
+          href: "https://open.spotify.com/",
+        },
+      }),
+    );
+
+    expect(html).toContain("music-artwork");
+    expect(html).toContain("music-progress");
+    expect(html).toContain("music-equalizer");
+    expect(html).toContain("Now playing");
+    expect(html).toContain("Play Night Drive");
+    expect(html).toContain('href="https://open.spotify.com/"');
+    expect(html).not.toContain("<iframe");
+    expect(html).not.toContain("javascript:alert");
+  });
+
+  it("keeps safe music embeds for large cards and falls back to the player in compact cards", () => {
+    const safeEmbedUrl = "https://open.spotify.com/embed/playlist/example";
+    const largeHtml = renderToStaticMarkup(
+      MusicWidget({
+        context: { layout: { i: "music", x: 0, y: 0, w: 2, h: 2 }, variant: "large" },
+        props: {
+          title: "Night Drive",
+          artist: "MellowGrid FM",
+          embedUrl: safeEmbedUrl,
+        },
+      }),
+    );
+    const compactHtml = renderToStaticMarkup(
+      MusicWidget({
+        context: { layout: { i: "music", x: 0, y: 0, w: 1, h: 1 }, variant: "compact" },
+        props: {
+          title: "Night Drive",
+          artist: "MellowGrid FM",
+          embedUrl: safeEmbedUrl,
+        },
+      }),
+    );
+
+    expect(largeHtml).toContain("<iframe");
+    expect(largeHtml).toContain(safeEmbedUrl);
+    expect(compactHtml).toContain("music-artwork");
+    expect(compactHtml).not.toContain("<iframe");
   });
 
   it("keeps map presentation clear with a lightweight marker overlay", () => {
