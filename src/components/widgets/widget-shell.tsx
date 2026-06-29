@@ -91,16 +91,10 @@ function isLightBackground(background: CSSProperties["background"]) {
     return false;
   }
 
-  const expanded = hex.length === 3 ? hex.replace(/./g, "  const normalized = hex.length === 3 ? hex.split("").map((value) => value + value).join("") : hex;
+  const normalized = hex.length === 3 ? hex.split("").map((value) => value + value).join("") : hex;
   const red = Number.parseInt(normalized.slice(0, 2), 16);
   const green = Number.parseInt(normalized.slice(2, 4), 16);
-  const blue = Number.parseInt(normalized.slice(4, 6), 16);  const normalized = hex.length === 3 ? hex.split("").map((value) => value + value).join("") : hex;
-  const red = Number.parseInt(normalized.slice(0, 2), 16);
-  const green = Number.parseInt(normalized.slice(2, 4), 16);
-  const blue = Number.parseInt(normalized.slice(4, 6), 16);") : hex;
-  const red = Number.parseInt(expanded.slice(0, 2), 16);
-  const green = Number.parseInt(expanded.slice(2, 4), 16);
-  const blue = Number.parseInt(expanded.slice(4, 6), 16);
+  const blue = Number.parseInt(normalized.slice(4, 6), 16);
   const luminance = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255;
 
   return luminance > 0.62;

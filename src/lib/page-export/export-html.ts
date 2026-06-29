@@ -81,5 +81,7 @@ function sanitizeStyleContent(styles: string) {
 }
 
 function escapeHtml(value: string) {
-  return value.replace(/[&<>"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[char]);
+  const entities: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" };
+
+  return value.replace(/[&<>"]/g, (char) => entities[char] ?? char);
 }
