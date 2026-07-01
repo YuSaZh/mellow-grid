@@ -26,23 +26,12 @@
     "radius": "round",
     "shadow": "soft"
   },
-  "updatedAt": "2026-06-06T00:00:00.000Z",
+  "updatedAt": "2026-07-05T02:18:58.854Z",
   "layout": [
     {
       "i": "social-twitter",
       "x": 0,
-      "y": 0,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-medium",
-      "x": 2,
-      "y": 0,
+      "y": 2,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -53,7 +42,7 @@
     {
       "i": "social-pinterest",
       "x": 3,
-      "y": 0,
+      "y": 1,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -64,7 +53,7 @@
     {
       "i": "social-coffee",
       "x": 0,
-      "y": 2,
+      "y": 3.5,
       "w": 2,
       "h": 1,
       "minW": 1,
@@ -74,8 +63,8 @@
     },
     {
       "i": "social-figma",
-      "x": 2,
-      "y": 1,
+      "x": 3,
+      "y": 3.5,
       "w": 1,
       "h": 2,
       "minW": 1,
@@ -86,7 +75,7 @@
     {
       "i": "social-discord",
       "x": 3,
-      "y": 1,
+      "y": 2,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -97,8 +86,8 @@
     {
       "i": "social-linkedin",
       "x": 2,
-      "y": 4.5,
-      "w": 2,
+      "y": 2,
+      "w": 1,
       "h": 1,
       "minW": 1,
       "minH": 1,
@@ -118,8 +107,8 @@
     },
     {
       "i": "social-dribbble",
-      "x": 3,
-      "y": 2,
+      "x": 2,
+      "y": 4.5,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -130,7 +119,7 @@
     {
       "i": "social-stack",
       "x": 0,
-      "y": 3.5,
+      "y": 5.5,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -140,10 +129,10 @@
     },
     {
       "i": "social-instagram",
-      "x": 1,
-      "y": 3.5,
+      "x": 2,
+      "y": 1,
       "w": 1,
-      "h": 2,
+      "h": 1,
       "minW": 1,
       "minH": 1,
       "maxW": 2,
@@ -151,8 +140,8 @@
     },
     {
       "i": "social-reddit",
-      "x": 0,
-      "y": 4.5,
+      "x": 1,
+      "y": 5.5,
       "w": 1,
       "h": 2,
       "minW": 1,
@@ -163,7 +152,7 @@
     {
       "i": "link-mph6dsk9",
       "x": 1,
-      "y": 0,
+      "y": 2,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -185,7 +174,7 @@
     {
       "i": "text-mph6esod",
       "x": 0,
-      "y": 1,
+      "y": 4.5,
       "w": 2,
       "h": 1,
       "minW": 1,
@@ -193,18 +182,18 @@
     },
     {
       "i": "rich-github-activity",
-      "x": 0,
-      "y": 7,
-      "w": 4,
-      "h": 2,
+      "x": 2,
+      "y": 0,
+      "w": 2,
+      "h": 1,
       "minW": 1,
       "minH": 1,
       "maxW": 4
     },
     {
       "i": "rich-music",
-      "x": 0,
-      "y": 8,
+      "x": 2,
+      "y": 5.5,
       "w": 2,
       "h": 2,
       "minW": 1,
@@ -213,8 +202,8 @@
     },
     {
       "i": "rich-map",
-      "x": 2,
-      "y": 8,
+      "x": 0,
+      "y": 0,
       "w": 2,
       "h": 2,
       "minW": 1,
@@ -224,7 +213,7 @@
     {
       "i": "rich-media",
       "x": 0,
-      "y": 9,
+      "y": 7.5,
       "w": 2,
       "h": 2,
       "minW": 1,
@@ -250,24 +239,6 @@
           "from": "#2f2f2f",
           "to": "#101112",
           "angle": 180
-        }
-      }
-    },
-    {
-      "id": "social-medium",
-      "type": "link",
-      "props": {
-        "title": "Medium",
-        "href": "https://medium.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "medium"
-        },
-        "color": "#1c1c1c",
-        "background": {
-          "type": "solid",
-          "value": "#f7f7f2"
         }
       }
     },
@@ -502,6 +473,7 @@
       "props": {
         "title": "GitHub",
         "username": "octocat",
+        "profileUrl": "https://github.com/octocat",
         "summary": "",
         "href": "https://github.com/octocat",
         "days": [
@@ -541,7 +513,6 @@
           4,
           1
         ],
-        "profileUrl": "https://github.com/octocat",
         "activityImageUrl": "https://www.dailygreen.xyz/octocat"
       }
     },
@@ -562,11 +533,13 @@
       "props": {
         "title": "Tokyo",
         "location": "Shibuya, Tokyo",
-        "embedUrl": "",
+        "label": "Location",
+        "note": "",
         "latitude": 35.6595,
         "longitude": 139.7005,
         "zoom": 15,
-        "href": "https://www.openstreetmap.org/?mlat=35.6595&mlon=139.7005#map=15/35.6595/139.7005"
+        "href": "https://www.openstreetmap.org/?mlat=35.6595&mlon=139.7005#map=15/35.6595/139.7005",
+        "embedUrl": ""
       }
     },
     {
@@ -577,8 +550,8 @@
         "caption": "Recent visual notes and motion experiments.",
         "mediaType": "image",
         "embedUrl": "",
-        "imageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232B2C2E'/%3E%3Cstop offset='1' stop-color='%233FA3EB'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='800' fill='url(%23g)'/%3E%3Ccircle cx='590' cy='210' r='110' fill='%23B9F778' opacity='.88'/%3E%3Crect x='130' y='420' width='540' height='170' rx='52' fill='%23fff' opacity='.17'/%3E%3Cpath d='M170 555 310 390l118 114 72-82 146 154H170Z' fill='%23fff' opacity='.68'/%3E%3C/svg%3E",
-        "href": "https://youtube.com/"
+        "href": "https://youtube.com/",
+        "imageUrl": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 800'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%232B2C2E'/%3E%3Cstop offset='1' stop-color='%233FA3EB'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='800' height='800' fill='url(%23g)'/%3E%3Ccircle cx='590' cy='210' r='110' fill='%23B9F778' opacity='.88'/%3E%3Crect x='130' y='420' width='540' height='170' rx='52' fill='%23fff' opacity='.17'/%3E%3Cpath d='M170 555 310 390l118 114 72-82 146 154H170Z' fill='%23fff' opacity='.68'/%3E%3C/svg%3E"
       }
     }
   ]

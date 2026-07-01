@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import usernamePageConfig from "../../../data/pages/username.json";
+import { bentoLayoutItemsCollide } from "./bento-layout";
 import { widgetRegistry } from "@/lib/widgets/registry";
 import { defaultPageConfig } from "./defaults";
 import { normalizePageConfig } from "./normalize";
@@ -21,6 +22,17 @@ describe("defaultPageConfig", () => {
 
     expect(defaultTypes).toEqual(expectedTypes);
     expect(defaultPageConfig.widgets.every((widget) => layoutIds.has(widget.id))).toBe(true);
+  });
+
+  it("keeps the default showcase layout free of overlapping cards", () => {
+    const collisions = defaultPageConfig.layout.flatMap((item, index) =>
+      defaultPageConfig.layout
+        .slice(index + 1)
+        .filter((nextItem) => bentoLayoutItemsCollide(item, nextItem))
+        .map((nextItem) => `${item.i} overlaps ${nextItem.i}`),
+    );
+
+    expect(collisions).toEqual([]);
   });
 
   it("refreshes rich widget minimum sizes from current widget definitions", () => {
