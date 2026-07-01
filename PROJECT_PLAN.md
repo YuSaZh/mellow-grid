@@ -27,17 +27,21 @@ The project is optimized for a single-person homepage workflow. The public page 
 
 ## Active Widgets
 
-The current widget registry is intentionally small:
+The current widget registry supports the core homepage widgets and the richer personal-page widgets now used by the default showcase:
 
 - `link`
 - `text`
 - `divider`
+- `github-activity`
+- `music`
+- `map`
+- `media`
 
 Removed widgets such as the old `links` and `stats` modules should not be reintroduced unless the design is revisited.
 
 ## Storage and Export Model
 
-- The editor saves drafts to browser `localStorage`.
+- The editor saves drafts to browser `sessionStorage` and handles blocked or unavailable session storage without crashing.
 - JSON import/export remains available for backups and manual config movement.
 - Static HTML export remains available for standalone publishing.
 - There is no active file-mode backend, page-save API, storage adapter layer, or Docker deployment path.
@@ -56,8 +60,9 @@ They can be regenerated with `npm run build`.
 1. Keep homepage and editor rendering visually aligned.
 2. Keep the public homepage static and minimal.
 3. Continue improving editor WYSIWYG behavior.
-4. Add only widgets that fit the current Bento design.
-5. Keep sample data anonymized with generic placeholders.
+4. Refine existing rich widgets and add only widgets that fit the current Bento design.
+5. Keep the default showcase populated with every registered widget type and covered by non-overlap layout tests.
+6. Keep sample data anonymized with generic placeholders.
 
 ## Maintenance Notes
 

@@ -33,7 +33,7 @@ The goal is not to build a multi-tenant SaaS product. MellowGrid is designed as 
 
 - **Static first**: the public homepage is Astro static output by default and does not require a runtime backend.
 - **Editor on demand**: React, Zustand, and editor interactions only load on `/editor`.
-- **Bento visual system**: soft rounded cards, modular tiles, and a compact grid for links, text, and dividers.
+- **Bento visual system**: soft rounded cards, modular tiles, and a compact grid for links, text, dividers, activity, music, maps, and media.
 - **WYSIWYG-oriented**: the editor reuses the page rendering path to reduce differences between editing and publishing.
 - **Personal-friendly**: local drafts, a JSON data source, and static HTML export fit a one-person homepage workflow.
 
@@ -56,19 +56,23 @@ The goal is not to build a multi-tenant SaaS product. MellowGrid is designed as 
 - Drag modules around the grid and resize them.
 - Customize link card colors, backgrounds, gradients, and icons.
 - Import and export JSON configuration.
-- Save browser-local drafts.
+- Save browser-session drafts, with graceful fallback when `sessionStorage` is unavailable.
 - Export standalone static HTML.
 - Keep the public homepage free from full editor dependencies.
 
 ## Active Widgets
 
-MellowGrid currently keeps three core widgets to avoid premature complexity:
+MellowGrid currently supports the core homepage widgets plus richer personal-page widgets through the widget registry:
 
 | Widget | Purpose |
 | --- | --- |
 | `link` | Social links, external links, and button-like cards. |
 | `text` | Introductions, notes, and short content cards. |
 | `divider` | Borderless section titles for splitting the right-side grid into content groups. |
+| `github-activity` | GitHub profile and contribution activity cards. |
+| `music` | Playlist, track, album, or embedded music cards. |
+| `map` | Location cards with map presentation and optional embed support. |
+| `media` | Image, video, or embedded media cards. |
 
 ## Tech Stack
 
@@ -133,8 +137,8 @@ dist/index.html
 Recommended publishing steps:
 
 1. Open `/editor`.
-2. Adjust the profile, link cards, text cards, and dividers.
-3. Save the draft to browser `localStorage`.
+2. Adjust the profile, link cards, text cards, dividers, activity, music, map, and media widgets.
+3. Save the draft to browser `sessionStorage`; the editor handles blocked session storage without crashing.
 4. Export JSON to download `username.json`.
 5. Replace `data/pages/username.json` in the repository with the exported file.
 6. Commit and push the change.
@@ -165,15 +169,16 @@ Related files:
 
 - [ ] Keep improving WYSIWYG consistency between the editor and public homepage.
 - [ ] Expand theme tokens and preset styles.
-- [ ] Add more lightweight widgets that fit the Bento homepage model.
+- [ ] Refine the existing rich widgets and add new ones only when they fit the Bento homepage model.
 - [ ] Improve the static HTML export experience.
-- [ ] Add more tests around layout and config normalization.
+- [ ] Continue adding targeted tests around layout and config normalization as behavior grows.
 
 ## Maintenance Principles
 
 - Keep the public homepage lightweight and free from editor-only dependencies.
 - Register new right-side modules through the widget registry.
 - Keep the profile as an independent area instead of mixing it into the widget system.
+- Keep the default showcase page populated with every registered widget type and covered by non-overlap layout tests.
 - Keep sample data generic with placeholders such as `Username`, `Location`, and example URLs.
 - Do not reintroduce a backend, Docker, or file-mode storage layer unless there is a clear requirement.
 
