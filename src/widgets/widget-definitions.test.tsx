@@ -155,6 +155,20 @@ describe("widget definitions", () => {
     expect(compactHtml).not.toContain("<iframe");
   });
 
+  it("allows same-site relative music cover images", () => {
+    const html = renderToStaticMarkup(
+      MusicWidget({
+        props: {
+          title: "Night Drive",
+          artist: "MellowGrid FM",
+          coverUrl: "default-media.svg",
+        },
+      }),
+    );
+
+    expect(html).toContain('src="default-media.svg"');
+  });
+
   it("keeps map presentation clear with a lightweight marker overlay", () => {
     const html = renderToStaticMarkup(
       MapWidget({
