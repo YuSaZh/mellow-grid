@@ -55,6 +55,7 @@ export const musicWidget = {
   type: "music",
   name: "音乐",
   description: "Playlist, track, or album card with optional music embed.",
+  editor: { inspector: "rich" },
   defaultLayout: { w: 2, h: 2, minW: 1, minH: 1, maxW: 4 },
   defaultProps: {
     title: "Night Drive",

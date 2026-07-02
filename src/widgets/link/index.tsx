@@ -52,6 +52,7 @@ export const linkWidget = {
   type: "link",
   name: "Link",
   description: "A single social, contact, or action link tile.",
+  editor: { inspector: "link" },
   defaultLayout: { w: 1, h: 1, minW: 1, minH: 1, maxW: 2, maxH: 2 },
   defaultProps: {
     title: "Figma",

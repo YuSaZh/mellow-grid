@@ -50,6 +50,8 @@ export type WidgetRenderContext = {
   variant: WidgetRenderVariant;
 };
 
+export type WidgetEditorInspector = "default" | "link" | "rich";
+
 export type PageConfig = {
   username: string;
   title: string;
@@ -65,6 +67,9 @@ export type WidgetDefinition<TProps = unknown> = {
   type: string;
   name: string;
   description: string;
+  editor?: {
+    inspector: WidgetEditorInspector;
+  };
   defaultLayout: Omit<GridLayoutItem, "i" | "x" | "y">;
   defaultProps: TProps;
   Component: ComponentType<{ props: TProps; context?: WidgetRenderContext }>;

@@ -53,6 +53,7 @@ export const mapWidget = {
   type: "map",
   name: "地图",
   description: "Location card with optional OpenStreetMap or Google Maps embed.",
+  editor: { inspector: "rich" },
   defaultLayout: { w: 2, h: 2, minW: 1, minH: 1, maxW: 4 },
   defaultProps: {
     title: "Tokyo",

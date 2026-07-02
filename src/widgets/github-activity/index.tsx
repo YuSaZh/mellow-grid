@@ -74,6 +74,7 @@ export const githubActivityWidget = {
   type: "github-activity",
   name: "GitHub 活跃度",
   description: "Live GitHub contribution activity strip.",
+  editor: { inspector: "rich" },
   defaultLayout: { w: 4, h: 2, minW: 1, minH: 1, maxW: 4 },
   defaultProps: {
     title: "GitHub",

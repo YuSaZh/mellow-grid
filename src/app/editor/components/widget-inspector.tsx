@@ -20,10 +20,10 @@ export function WidgetInspector({ id }: { id: string }) {
 
   return (
     <section className="grid gap-[1.1rem]">
-      {widget.type === "link" ? (
-        <LinkWidgetInspector onChange={(nextProps) => updateWidgetProps(widget.id, nextProps)} props={widget.props} />
-      ) : isRichWidgetType(widget.type) ? (
-        <RichWidgetInspector onChange={(nextProps) => updateWidgetProps(widget.id, nextProps)} props={widget.props} type={widget.type} />
+      {definition.editor?.inspector === "link" ? (
+        <LinkWidgetInspector onChange={(nextProps) => updateWidgetProps(widget.id, nextProps)} props={mergeDefaultProps(definition.defaultProps, widget.props)} />
+      ) : definition.editor?.inspector === "rich" ? (
+        <RichWidgetInspector onChange={(nextProps) => updateWidgetProps(widget.id, nextProps)} props={mergeDefaultProps(definition.defaultProps, widget.props)} type={widget.type} />
       ) : (
         <div className="grid gap-4">
           {Object.entries(mergeDefaultProps(definition.defaultProps, widget.props)).map(([key, value]) => (
@@ -203,10 +203,6 @@ function PropertyField({ label, onChange, value }: { label: string; onChange: (v
   }
 
   return <TextField label={label} onChange={onChange} value={typeof value === "string" ? value : String(value ?? "")} />;
-}
-
-function isRichWidgetType(type: string) {
-  return type === "github-activity" || type === "music" || type === "map" || type === "media";
 }
 
 function mergeDefaultProps(defaultProps: unknown, props: unknown) {

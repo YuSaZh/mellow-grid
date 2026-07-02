@@ -56,6 +56,7 @@ export const mediaWidget = {
   type: "media",
   name: "图片/视频",
   description: "Image, reel, or video embed tile for visual homepage moments.",
+  editor: { inspector: "rich" },
   defaultLayout: { w: 2, h: 2, minW: 1, minH: 1, maxW: 4 },
   defaultProps: {
     title: "Studio reel",
