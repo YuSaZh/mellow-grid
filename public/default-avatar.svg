@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="Default avatar">
+  <defs>
+    <linearGradient id="avatar-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="0.55" stop-color="#dcefff"/>
+      <stop offset="1" stop-color="#b7ddff"/>
+    </linearGradient>
+    <linearGradient id="avatar-core" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#111113"/>
+      <stop offset="1" stop-color="#364049"/>
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" fill="url(#avatar-bg)"/>
+  <circle cx="236" cy="74" r="38" fill="#ade0ff"/>
+  <circle cx="94" cy="236" r="56" fill="#ffffff" opacity="0.72"/>
+  <path d="M160 74c-42 0-76 33-76 75 0 30 17 56 42 68l-12 45h92l-12-45c25-12 42-38 42-68 0-42-34-75-76-75z" fill="url(#avatar-core)"/>
+  <circle cx="134" cy="150" r="9" fill="#ade0ff"/>
+  <circle cx="186" cy="150" r="9" fill="#ade0ff"/>
+  <path d="M130 192c18 16 42 16 60 0" fill="none" stroke="#ade0ff" stroke-width="10" stroke-linecap="round"/>
+</svg>

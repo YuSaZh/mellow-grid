@@ -35,6 +35,15 @@ describe("defaultPageConfig", () => {
     expect(collisions).toEqual([]);
   });
 
+  it("keeps default showcase media assets outside the page JSON payload", () => {
+    const activityWidget = defaultPageConfig.widgets.find((widget) => widget.id === "rich-github-activity");
+    const mediaWidget = defaultPageConfig.widgets.find((widget) => widget.id === "rich-media");
+
+    expect(defaultPageConfig.profile.avatarUrl).not.toMatch(/^data:/);
+    expect(String(activityWidget?.props.activityImageUrl ?? "")).toBe("");
+    expect(String(mediaWidget?.props.imageUrl ?? "")).not.toMatch(/^data:/);
+  });
+
   it("refreshes rich widget minimum sizes from current widget definitions", () => {
     const config = normalizePageConfig({
       ...(usernamePageConfig as PageConfig),

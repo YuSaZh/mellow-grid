@@ -69,8 +69,9 @@ describe("renderStaticPageHtml", () => {
     const html = renderStaticPageHtml(createRichWidgetFixture());
 
     expect(html).toContain("GitHub");
-    expect(html).toContain("https://www.dailygreen.xyz/octocat");
-    expect(html).toContain("GitHub contribution activity for octocat");
+    expect(html).toContain("Contribution intensity preview");
+    expect(html).not.toContain("https://www.dailygreen.xyz/octocat");
+    expect(html).not.toContain("GitHub contribution activity for octocat");
     expect(html).not.toContain("1,284 contributions");
     expect(html).not.toContain("Repos");
     expect(html).not.toContain("Stars");

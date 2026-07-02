@@ -1,7 +1,7 @@
 import { WidgetShell } from "@/components/widgets/widget-shell";
 import { getBuiltinLogoDefinition } from "@/lib/widgets/logo-registry";
 import type { WidgetRenderContext } from "@/lib/page-config/types";
-import { buildGithubActivityImageUrl, parseGithubUsername } from "./github-profile";
+import { parseGithubUsername } from "./github-profile";
 
 export type GithubActivityWidgetProps = {
   activityImageUrl?: string;
@@ -91,11 +91,7 @@ function getGithubUsername(props: GithubActivityWidgetProps) {
 }
 
 function getActivityImageUrl(props: GithubActivityWidgetProps) {
-  if (props.activityImageUrl) {
-    return props.activityImageUrl;
-  }
-
-  return buildGithubActivityImageUrl(props.profileUrl || props.href || props.username);
+  return props.activityImageUrl ?? "";
 }
 
 function normalizeDays(days: GithubActivityWidgetProps["days"]) {

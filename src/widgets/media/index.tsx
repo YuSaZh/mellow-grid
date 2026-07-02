@@ -82,7 +82,17 @@ function sanitizeImageUrl(url?: string) {
     return "";
   }
 
-  return /^(https?:\/\/|data:image\/)/i.test(url) ? url : "";
+  const value = url.trim();
+
+  if (/^(https?:\/\/|data:image\/)/i.test(value)) {
+    return value;
+  }
+
+  if (value.startsWith("//") || /^[a-z][a-z\d+.-]*:/i.test(value)) {
+    return "";
+  }
+
+  return value;
 }
 
 function sanitizeVideoEmbedUrl(url?: string) {

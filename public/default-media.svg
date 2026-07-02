@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Default media preview">
+  <defs>
+    <linearGradient id="media-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b2c2e"/>
+      <stop offset="1" stop-color="#3fa3eb"/>
+    </linearGradient>
+    <linearGradient id="media-card" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.08"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="800" fill="url(#media-bg)"/>
+  <circle cx="590" cy="210" r="110" fill="#b9f778" opacity="0.88"/>
+  <rect x="104" y="120" width="592" height="496" rx="56" fill="url(#media-card)" stroke="#ffffff" stroke-opacity="0.18" stroke-width="4"/>
+  <path d="M158 564 310 390l118 114 72-82 146 154H158z" fill="#ffffff" opacity="0.74"/>
+  <circle cx="238" cy="262" r="54" fill="#ffffff" opacity="0.54"/>
+  <rect x="158" y="642" width="320" height="28" rx="14" fill="#ffffff" opacity="0.34"/>
+</svg>
