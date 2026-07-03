@@ -104,6 +104,42 @@ describe("WidgetInspector", () => {
 
     expect(html).toContain("标题 (Title)");
     expect(html).toContain("跳转链接 (URL)");
-    expect(html).not.toContain(">title<");
+    expect(html).toContain("Registry rich widget");
+    expect(html).toContain("https://example.com/");
+  });
+
+  it("uses widget definition metadata to choose the link inspector", () => {
+    mockWidgetDefinitions.definitions["custom-link"] = {
+      type: "custom-link",
+      name: "Custom link",
+      description: "A link widget provided by the registry.",
+      editor: { inspector: "link" },
+      defaultLayout: { w: 1, h: 1 },
+      defaultProps: {
+        background: { type: "theme" },
+        color: "#A259FF",
+        description: "Default handle",
+        href: "https://example.com/",
+        logo: { type: "builtin", key: "website" },
+        title: "Default link title",
+      },
+    };
+    mockEditorState.state.config.widgets = [
+      {
+        id: "registry-link",
+        type: "custom-link",
+        props: {
+          title: "Registry link widget",
+        },
+      },
+    ];
+
+    const html = renderToStaticMarkup(<WidgetInspector id="registry-link" />);
+
+    expect(html).toContain("主标题 (Title)");
+    expect(html).toContain("副标题 (Handle)");
+    expect(html).toContain("Registry link widget");
+    expect(html).toContain("Default handle");
+    expect(html).toContain("https://example.com/");
   });
 });
