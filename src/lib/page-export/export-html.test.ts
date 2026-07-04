@@ -40,6 +40,32 @@ describe("renderStaticPageHtml", () => {
     expect(html).not.toContain(">TE<");
   });
 
+  it("omits unsafe profile contact and widget href protocols", () => {
+    const html = renderStaticPageHtml({
+      ...createExportFixture(),
+      profile: {
+        ...createExportFixture().profile,
+        contacts: [{ label: "Unsafe contact", href: "javascript:alert(1)" }],
+      },
+      widgets: [
+        {
+          id: "unsafe-link",
+          type: "link",
+          props: {
+            title: "Unsafe widget",
+            description: "Should not link",
+            href: "javascript:alert(1)",
+          },
+        },
+      ],
+      layout: [{ i: "unsafe-link", x: 0, y: 0, w: 1, h: 1 }],
+    });
+
+    expect(html).toContain("Unsafe contact");
+    expect(html).toContain("Unsafe widget");
+    expect(html).not.toContain("javascript:");
+  });
+
   it("exports current logo and grid structure parity for standalone HTML", () => {
     const html = renderStaticPageHtml(createExportFixture(), { styles: ".export-probe{color:red}" });
 

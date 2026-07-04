@@ -126,6 +126,18 @@ describe("widget definitions", () => {
     expect(html).not.toContain("javascript:alert");
   });
 
+  it("omits unsafe widget href protocols", () => {
+    const html = renderToStaticMarkup(
+      <WidgetShell href="javascript:alert(1)" showLinkIndicator>
+        <span>Unsafe widget link</span>
+      </WidgetShell>,
+    );
+
+    expect(html).toContain("Unsafe widget link");
+    expect(html).not.toContain("<a ");
+    expect(html).not.toContain("javascript:");
+  });
+
   it("keeps safe music embeds for large cards and falls back to the player in compact cards", () => {
     const safeEmbedUrl = "https://open.spotify.com/embed/playlist/example";
     const largeHtml = renderToStaticMarkup(

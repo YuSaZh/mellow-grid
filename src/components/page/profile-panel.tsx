@@ -1,4 +1,5 @@
 import type { PageProfile } from "@/lib/page-config/types";
+import { sanitizeHref } from "@/lib/urls/safe-href";
 
 export function ProfilePanel({ props }: { props: PageProfile }) {
   return (
@@ -18,15 +19,20 @@ export function ProfilePanel({ props }: { props: PageProfile }) {
 
       {props.contacts?.length ? (
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          {props.contacts.map((contact) => (
-            <a
-              className="rounded-full bg-zinc-100 px-5 py-3 text-sm font-bold uppercase tracking-[-0.02em] text-zinc-700 shadow-[0_10px_28px_rgba(20,16,10,0.08)] transition hover:-translate-y-0.5 hover:bg-zinc-200"
-              href={contact.href}
-              key={`${contact.label}-${contact.href}`}
-            >
-              {contact.label}
-            </a>
-          ))}
+          {props.contacts.map((contact) => {
+            const href = sanitizeHref(contact.href);
+            const className = "rounded-full bg-zinc-100 px-5 py-3 text-sm font-bold uppercase tracking-[-0.02em] text-zinc-700 shadow-[0_10px_28px_rgba(20,16,10,0.08)] transition hover:-translate-y-0.5 hover:bg-zinc-200";
+
+            return href ? (
+              <a className={className} href={href} key={`${contact.label}-${contact.href}`}>
+                {contact.label}
+              </a>
+            ) : (
+              <span className={className} key={`${contact.label}-${contact.href}`}>
+                {contact.label}
+              </span>
+            );
+          })}
         </div>
       ) : null}
     </section>
