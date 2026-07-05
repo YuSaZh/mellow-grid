@@ -37,7 +37,7 @@ describe("widget definitions", () => {
     expect(getWidgetDefinition("media")?.defaultLayout).toMatchObject({ w: 2, h: 2 });
   });
 
-  it("renders GitHub with a local contribution preview unless an activity image is explicit", () => {
+  it("renders GitHub with the DailyGreen activity wall by default", () => {
     const html = renderToStaticMarkup(
       GithubActivityWidget({
         props: {
@@ -59,16 +59,16 @@ describe("widget definitions", () => {
     expect(githubActivityWidget.defaultProps).not.toHaveProperty("stats");
     expect(html).toContain(">GitHub<");
     expect(html).toContain("@octocat");
-    expect(html).toContain("Contribution intensity preview");
-    expect(html).toContain("1,284 contributions this year");
-    expect(html).toContain("max-w-[18rem]");
-    expect(html).toContain("grid-cols-[repeat(14,minmax(0,1fr))]");
-    expect(html).not.toContain("https://www.dailygreen.xyz/octocat");
-    expect(html).not.toContain("GitHub contribution activity for octocat");
-    expect(html).not.toContain("max-w-[707px]");
-    expect(html).not.toContain("w-[735px]");
-    expect(html).not.toContain("justify-end");
-    expect(html).not.toContain("translate-x-[10px]");
+    expect(html).toContain("https://www.dailygreen.xyz/octocat");
+    expect(html).toContain("GitHub contribution activity for octocat");
+    expect(html).toContain("max-w-[707px]");
+    expect(html).toContain("w-[735px]");
+    expect(html).toContain("justify-end");
+    expect(html).toContain("translate-x-[10px]");
+    expect(html).not.toContain("Contribution intensity preview");
+    expect(html).not.toContain("1,284 contributions this year");
+    expect(html).not.toContain("max-w-[18rem]");
+    expect(html).not.toContain("grid-cols-[repeat(14,minmax(0,1fr))]");
     expect(html).not.toContain("object-contain");
     expect(html).not.toContain("max-w-full");
     expect(html).not.toContain("grid-cols-7");
