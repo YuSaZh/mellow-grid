@@ -35,13 +35,13 @@ describe("defaultPageConfig", () => {
     expect(collisions).toEqual([]);
   });
 
-  it("keeps the default showcase GitHub activity wall in its pre-July layout", () => {
+  it("keeps the default showcase GitHub activity card in the exported layout", () => {
     const activityWidget = defaultPageConfig.widgets.find((widget) => widget.id === "rich-github-activity");
     const activityLayout = defaultPageConfig.layout.find((item) => item.i === "rich-github-activity");
     const mediaWidget = defaultPageConfig.widgets.find((widget) => widget.id === "rich-media");
 
     expect(defaultPageConfig.profile.avatarUrl).not.toMatch(/^data:/);
-    expect(activityLayout).toMatchObject({ x: 0, y: 7, w: 4, h: 2 });
+    expect(activityLayout).toMatchObject({ x: 2, y: 0, w: 2, h: 1 });
     expect(String(activityWidget?.props.activityImageUrl ?? "")).toBe("https://www.dailygreen.xyz/octocat");
     expect(String(mediaWidget?.props.imageUrl ?? "")).not.toMatch(/^data:/);
   });
