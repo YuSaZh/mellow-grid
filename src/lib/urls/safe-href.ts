@@ -1,4 +1,5 @@
 const SAFE_SCHEMES = new Set(["http", "https", "mailto", "tel"]);
+const CONTROL_OR_SPACE_PATTERN = /[\u0000-\u001f\u007f\s]+/g;
 
 export function sanitizeHref(href?: string) {
   if (!href) {
@@ -6,13 +7,13 @@ export function sanitizeHref(href?: string) {
   }
 
   const value = href.trim();
+  const normalized = value.replace(CONTROL_OR_SPACE_PATTERN, "").replace(/\\/g, "/");
 
-  if (!value || value.startsWith("//")) {
+  if (!value || normalized.startsWith("//")) {
     return "";
   }
 
-  const schemeSource = value.replace(/[\u0000-\u001f\u007f\s]+/g, "");
-  const scheme = schemeSource.match(/^([a-z][a-z\d+.-]*):/i)?.[1]?.toLowerCase();
+  const scheme = normalized.match(/^([a-z][a-z\d+.-]*):/i)?.[1]?.toLowerCase();
 
   if (scheme) {
     return SAFE_SCHEMES.has(scheme) ? value : "";
