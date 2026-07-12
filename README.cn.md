@@ -1,3 +1,5 @@
+> MellowGrid 当前已经初步可用，欢迎使用体验！
+
 <p align="center">
   <img src="mellowgrid.svg" alt="MellowGrid logo" width="96">
 </p>

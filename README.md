@@ -1,3 +1,5 @@
+> MellowGrid is now ready for initial use. You're welcome to try it out!
+
 <p align="center">
   <img src="mellowgrid.svg" alt="MellowGrid logo" width="96">
 </p>
