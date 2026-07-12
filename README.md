@@ -1,10 +1,12 @@
-> MellowGrid is now ready for initial use. You're welcome to try it out!
-
 <p align="center">
   <img src="mellowgrid.svg" alt="MellowGrid logo" width="96">
 </p>
 
 <h1 align="center">MellowGrid</h1>
+
+<p align="center">
+  <strong>MellowGrid is now ready for initial use. You're welcome to try it out!</strong>
+</p>
 
 <p align="center">
   <strong>A lightweight, static-first, visually editable Bento-style personal homepage.</strong>

@@ -1,10 +1,12 @@
-> MellowGrid 当前已经初步可用，欢迎使用体验！
-
 <p align="center">
   <img src="mellowgrid.svg" alt="MellowGrid logo" width="96">
 </p>
 
 <h1 align="center">MellowGrid</h1>
+
+<p align="center">
+  <strong>MellowGrid 当前已经初步可用，欢迎使用体验！</strong>
+</p>
 
 <p align="center">
   <strong>一个轻量、静态优先、可视化编辑的 Bento 风格个人主页。</strong>
