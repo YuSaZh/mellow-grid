@@ -46,6 +46,20 @@ describe("defaultPageConfig", () => {
     expect(String(mediaWidget?.props.imageUrl ?? "")).not.toMatch(/^data:/);
   });
 
+  it("links the default showcase to the Bilibili CDN Router project", () => {
+    const projectWidget = defaultPageConfig.widgets.find((widget) => widget.id === "link-mph6dsk9");
+
+    expect(projectWidget).toMatchObject({
+      type: "link",
+      props: {
+        title: "Bili CDN",
+        href: "https://github.com/YuSaZh/bilibili-cdn-router",
+        description: "mpv fallback router",
+        logo: { type: "builtin", key: "github" },
+      },
+    });
+  });
+
   it("refreshes rich widget minimum sizes from current widget definitions", () => {
     const config = normalizePageConfig({
       ...(usernamePageConfig as PageConfig),

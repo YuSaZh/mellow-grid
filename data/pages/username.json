@@ -434,9 +434,9 @@
       "id": "link-mph6dsk9",
       "type": "link",
       "props": {
-        "title": "Github",
-        "href": "https://figma.com/",
-        "description": "@handle or address",
+        "title": "Bili CDN",
+        "href": "https://github.com/YuSaZh/bilibili-cdn-router",
+        "description": "mpv fallback router",
         "logo": {
           "type": "builtin",
           "key": "github"
