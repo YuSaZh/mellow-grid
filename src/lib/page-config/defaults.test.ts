@@ -60,6 +60,22 @@ describe("defaultPageConfig", () => {
     });
   });
 
+  it("links the default showcase to the BDSubMerge project", () => {
+    const projectWidget = defaultPageConfig.widgets.find((widget) => widget.id === "project-bdsubmerge");
+    const projectLayout = defaultPageConfig.layout.find((item) => item.i === "project-bdsubmerge");
+
+    expect(projectWidget).toMatchObject({
+      type: "link",
+      props: {
+        title: "BDSubMerge",
+        href: "https://github.com/YuSaZh/BDSubMerge",
+        description: "Blu-ray subtitle tool",
+        logo: { type: "builtin", key: "github" },
+      },
+    });
+    expect(projectLayout).toMatchObject({ x: 1, y: 5.5, w: 1, h: 1 });
+  });
+
   it("refreshes rich widget minimum sizes from current widget definitions", () => {
     const config = normalizePageConfig({
       ...(usernamePageConfig as PageConfig),

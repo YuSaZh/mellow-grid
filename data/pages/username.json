@@ -161,6 +161,17 @@
       "maxH": 2
     },
     {
+      "i": "project-bdsubmerge",
+      "x": 1,
+      "y": 5.5,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
       "i": "divider-mph6ejam",
       "x": 0,
       "y": 3,
@@ -437,6 +448,23 @@
         "title": "Bili CDN",
         "href": "https://github.com/YuSaZh/bilibili-cdn-router",
         "description": "mpv fallback router",
+        "logo": {
+          "type": "builtin",
+          "key": "github"
+        },
+        "color": "#F0F6FC",
+        "background": {
+          "type": "theme"
+        }
+      }
+    },
+    {
+      "id": "project-bdsubmerge",
+      "type": "link",
+      "props": {
+        "title": "BDSubMerge",
+        "href": "https://github.com/YuSaZh/BDSubMerge",
+        "description": "Blu-ray subtitle tool",
         "logo": {
           "type": "builtin",
           "key": "github"
