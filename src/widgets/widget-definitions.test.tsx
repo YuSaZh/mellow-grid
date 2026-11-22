@@ -82,9 +82,11 @@ describe("widget definitions", () => {
     expect(html).toContain("GitHub contribution activity for octocat");
     expect(html).toContain("max-w-[707px]");
     expect(html).toContain("h-[92px]");
+    expect(html).toContain("w-[524px]");
     expect(html).toContain("justify-end");
     expect(html).toContain("translate-x-[6px]");
     expect(html).toContain("mask-image");
+    expect(html).not.toContain('loading="lazy"');
     expect(html).not.toContain("Contribution intensity preview");
     expect(html).not.toContain("1,284 contributions this year");
     expect(html).not.toContain("max-w-[18rem]");

@@ -65,10 +65,12 @@ export function GithubActivityWidget({ context, props }: { context?: WidgetRende
             <div className="flex h-full w-full max-w-[707px] items-center justify-end overflow-hidden [mask-image:linear-gradient(90deg,transparent_0%,black_5%,black_97%,transparent_100%)]">
               <img
                 alt={`GitHub contribution activity for ${username}`}
-                className="block h-[92px] w-auto max-w-none shrink-0 translate-x-[6px]"
-                loading="lazy"
+                className="block h-[92px] w-[524px] max-w-none shrink-0 translate-x-[6px]"
+                decoding="async"
+                height={92}
                 referrerPolicy="no-referrer"
                 src={activityImageUrl}
+                width={524}
               />
             </div>
           </div>
