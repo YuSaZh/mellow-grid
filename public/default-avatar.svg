@@ -1,20 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="Default avatar">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="YuSaZh geometric Bento avatar">
   <defs>
-    <linearGradient id="avatar-bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#f7fbff"/>
-      <stop offset="0.55" stop-color="#dcefff"/>
-      <stop offset="1" stop-color="#b7ddff"/>
+    <linearGradient id="av-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1A1D24" />
+      <stop offset="55%" stop-color="#15171C" />
+      <stop offset="100%" stop-color="#0E1015" />
     </linearGradient>
-    <linearGradient id="avatar-core" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#111113"/>
-      <stop offset="1" stop-color="#364049"/>
+    <radialGradient id="av-glow-sky" cx="78%" cy="22%" r="58%">
+      <stop offset="0%" stop-color="#ADE0FF" stop-opacity="0.34" />
+      <stop offset="60%" stop-color="#3FA3EB" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#3FA3EB" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="av-glow-sage" cx="22%" cy="82%" r="54%">
+      <stop offset="0%" stop-color="#9CC9B5" stop-opacity="0.30" />
+      <stop offset="65%" stop-color="#9CC9B5" stop-opacity="0.06" />
+      <stop offset="100%" stop-color="#9CC9B5" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="av-tile-sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D2EEFF" />
+      <stop offset="48%" stop-color="#ADE0FF" />
+      <stop offset="100%" stop-color="#5DB3F0" />
+    </linearGradient>
+    <linearGradient id="av-tile-sage" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#C6E6D7" />
+      <stop offset="55%" stop-color="#9CC9B5" />
+      <stop offset="100%" stop-color="#6FA890" />
+    </linearGradient>
+    <linearGradient id="av-tile-pearl" x1="0" y1="0" x2="0.9" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#DDE7F2" />
+    </linearGradient>
+    <linearGradient id="av-tile-glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.07" />
+    </linearGradient>
+    <linearGradient id="av-gloss" x1="0" y1="0" x2="0.7" y2="0.85">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.20" />
+      <stop offset="42%" stop-color="#FFFFFF" stop-opacity="0.04" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
     </linearGradient>
   </defs>
-  <rect width="320" height="320" fill="url(#avatar-bg)"/>
-  <circle cx="236" cy="74" r="38" fill="#ade0ff"/>
-  <circle cx="94" cy="236" r="56" fill="#ffffff" opacity="0.72"/>
-  <path d="M160 74c-42 0-76 33-76 75 0 30 17 56 42 68l-12 45h92l-12-45c25-12 42-38 42-68 0-42-34-75-76-75z" fill="url(#avatar-core)"/>
-  <circle cx="134" cy="150" r="9" fill="#ade0ff"/>
-  <circle cx="186" cy="150" r="9" fill="#ade0ff"/>
-  <path d="M130 192c18 16 42 16 60 0" fill="none" stroke="#ade0ff" stroke-width="10" stroke-linecap="round"/>
+
+  <rect width="200" height="200" fill="url(#av-bg)" />
+  <rect width="200" height="200" fill="url(#av-glow-sky)" />
+  <rect width="200" height="200" fill="url(#av-glow-sage)" />
+
+  <g stroke="#FFFFFF" stroke-opacity="0.055" stroke-width="1">
+    <line x1="50" y1="0" x2="50" y2="200" />
+    <line x1="100" y1="0" x2="100" y2="200" />
+    <line x1="150" y1="0" x2="150" y2="200" />
+    <line x1="0" y1="50" x2="200" y2="50" />
+    <line x1="0" y1="100" x2="200" y2="100" />
+    <line x1="0" y1="150" x2="200" y2="150" />
+  </g>
+
+  <rect x="42" y="42" width="116" height="116" rx="28" fill="#FFFFFF" fill-opacity="0.045" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="1.25" />
+
+  <g>
+    <rect x="52" y="52" width="46" height="58" rx="16" fill="url(#av-tile-sky)" />
+    <rect x="52.75" y="52.75" width="44.5" height="56.5" rx="15.25" fill="none" stroke="#FFFFFF" stroke-opacity="0.45" stroke-width="1.2" />
+    <circle cx="67" cy="68" r="5" fill="#15171C" fill-opacity="0.72" />
+    <rect x="62" y="92" width="22" height="5" rx="2.5" fill="#15171C" fill-opacity="0.32" />
+
+    <rect x="106" y="52" width="42" height="42" rx="15" fill="url(#av-tile-sage)" />
+    <rect x="106.75" y="52.75" width="40.5" height="40.5" rx="14.25" fill="none" stroke="#FFFFFF" stroke-opacity="0.42" stroke-width="1.2" />
+    <circle cx="127" cy="73" r="10.5" fill="none" stroke="#15171C" stroke-opacity="0.34" stroke-width="2" />
+    <circle cx="127" cy="73" r="4" fill="#15171C" fill-opacity="0.78" />
+
+    <rect x="52" y="118" width="46" height="30" rx="13" fill="url(#av-tile-glass)" stroke="#FFFFFF" stroke-opacity="0.22" stroke-width="1.2" />
+    <circle cx="66" cy="133" r="4.5" fill="#ADE0FF" />
+    <rect x="75" y="130.5" width="14" height="5" rx="2.5" fill="#FFFFFF" fill-opacity="0.58" />
+
+    <rect x="106" y="102" width="42" height="46" rx="15" fill="url(#av-tile-pearl)" />
+    <rect x="106.75" y="102.75" width="40.5" height="44.5" rx="14.25" fill="none" stroke="#FFFFFF" stroke-opacity="0.85" stroke-width="1.2" />
+    <path d="M127 115 L136 125 L127 135 L118 125 Z" fill="#15171C" />
+  </g>
+
+  <path d="M0 0 H200 V92 C148 118 68 88 0 118 Z" fill="url(#av-gloss)" />
 </svg>

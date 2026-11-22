@@ -13,6 +13,8 @@
 </p>
 
 <p align="center">
+  <strong><a href="https://yusazh.github.io/mellow-grid/">Live Demo</a></strong> ·
+  <strong><a href="https://yusazh.github.io/mellow-grid/editor/">Live Editor</a></strong> ·
   <a href="README.cn.md">简体中文</a> · <a href="README.md">English</a>
 </p>
 
@@ -23,7 +25,7 @@
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-38BDF8?logo=tailwindcss&logoColor=white">
   <img alt="Zustand" src="https://img.shields.io/badge/Zustand-state-443E38">
   <img alt="Static output" src="https://img.shields.io/badge/output-static-2EA44F">
-  <img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub_Pages-manual_deploy-222222?logo=github&logoColor=white">
+  <a href="https://yusazh.github.io/mellow-grid/"><img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub_Pages-live_demo-222222?logo=github&logoColor=white"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
 </p>
 
@@ -96,8 +98,8 @@ npm run dev
 
 Default local URLs:
 
-- Homepage: <http://localhost:4321/>
-- Editor: <http://localhost:4321/editor>
+- Homepage: <http://localhost:4321/mellow-grid/>
+- Editor: <http://localhost:4321/mellow-grid/editor/>
 
 ## Scripts
 
@@ -112,16 +114,16 @@ npm test        # Run Vitest
 ## Project Structure
 
 ```txt
-src/pages/index.astro          Static homepage route
-src/pages/editor.astro         React editor island route
-src/app/editor/                Editor UI, state, and inspectors
-src/components/page/           Shared homepage and editor preview renderers
-src/lib/page-config/           Page config types, defaults, and normalization
-src/lib/page-export/           Static HTML export helpers
-src/lib/widgets/registry.ts    Widget registry
-src/widgets/                   Widget implementations
-data/pages/username.json       Build-time homepage config source
-.github/workflows/deploy-pages.yml  Manually triggered GitHub Pages deployment workflow
+src/pages/index.astro               Static homepage route
+src/pages/editor.astro              React editor island route
+src/app/editor/                     Editor UI, state, and inspectors
+src/components/page/                Shared homepage and editor preview renderers
+src/lib/page-config/                Page config types, defaults, and normalization
+src/lib/page-export/                Static HTML export helpers
+src/lib/widgets/registry.ts         Widget registry
+src/widgets/                        Widget implementations
+data/pages/username.json            Build-time homepage config source
+.github/workflows/deploy-pages.yml  GitHub Pages deployment workflow (auto on master push + manual workflow_dispatch)
 ```
 
 `dist/` and `.astro/` are generated directories and are ignored by git. Regenerate them with `npm run build` when needed.
@@ -140,13 +142,13 @@ dist/index.html
 
 Recommended publishing steps:
 
-1. Open `/editor`.
+1. Open `/mellow-grid/editor/` (or the [Live Editor](https://yusazh.github.io/mellow-grid/editor/)).
 2. Adjust the profile, link cards, text cards, dividers, activity, music, map, and media widgets.
 3. Save the draft to browser `sessionStorage`; the editor handles blocked session storage without crashing.
 4. Export JSON to download `username.json`.
 5. Replace `data/pages/username.json` in the repository with the exported file.
-6. Commit and push the change.
-7. Manually run the `Deploy GitHub Pages` workflow in GitHub Actions to build `dist/` and deploy it to GitHub Pages.
+6. Commit and push the change to `master`.
+7. `.github/workflows/deploy-pages.yml` automatically builds `dist/` and deploys it to GitHub Pages on push to `master` (and can also be triggered manually anytime via `workflow_dispatch` in GitHub Actions).
 
 If you only need a standalone HTML file, you can also export static HTML and upload the generated `index.html` directly.
 
@@ -183,7 +185,7 @@ Related files:
 - Register new right-side modules through the widget registry.
 - Keep the profile as an independent area instead of mixing it into the widget system.
 - Keep the default showcase page populated with every registered widget type and covered by non-overlap layout tests.
-- Keep sample data generic with placeholders such as `Username`, `Location`, and example URLs.
+- Keep build-time assets static-safe with no embedded secrets or inline `data:` blobs in `data/pages/username.json`.
 - Do not reintroduce a backend, Docker, or file-mode storage layer unless there is a clear requirement.
 
 ## License

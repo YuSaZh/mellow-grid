@@ -53,9 +53,11 @@ export function EditorCanvas() {
   const [activeInteractionId, setActiveInteractionId] = useState<string | null>(null);
   const [dragGhost, setDragGhost] = useState<DragGhostState | null>(null);
   const [previewLayout, setPreviewLayout] = useState<GridLayoutItem[] | null>(null);
+  const [hasInteracted, setHasInteracted] = useState(false);
   const interactionRef = useRef<InteractionState | null>(null);
   const layout = previewLayout ?? config.layout;
   const addModuleLayout = useMemo(() => findAddModuleLayout(layout), [layout]);
+  const suppressEntrance = Boolean(activeInteractionId || previewLayout || hasInteracted);
 
   function commitInteraction(event: PointerEvent<HTMLDivElement>) {
     const interaction = interactionRef.current;
@@ -113,6 +115,7 @@ export function EditorCanvas() {
         return;
       }
 
+      setHasInteracted(true);
       setDragGhost({
         height: interaction.ghostHeight,
         item: interaction.baseItem,
@@ -128,6 +131,7 @@ export function EditorCanvas() {
       return;
     }
 
+    setHasInteracted(true);
     const nextW = interaction.baseItem.w + Math.round(deltaX / (metrics.columnWidth + metrics.gap));
     const nextH = interaction.baseItem.h + getVerticalLayoutUnits(deltaY, metrics.rowHeight, metrics.gap);
     setPreviewLayout(updateBentoLayoutItem(interaction.baseLayout, interaction.id, { w: nextW, h: nextH }));
@@ -166,16 +170,7 @@ export function EditorCanvas() {
 
   return (
     <section className="relative min-w-0 flex-1">
-      <style>{`
-        @keyframes mgEditorItemIn {
-          0% { opacity: 0; transform: translateY(14px) scale(0.985); }
-          100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        .mg-editor-grid-item {
-          animation: mgEditorItemIn 0.45s cubic-bezier(0.165, 0.84, 0.44, 1) both;
-        }
-
+      <style data-editor-only="true">{`
         .mg-editor-grid-item > *:first-child {
           will-change: transform;
         }
@@ -195,13 +190,26 @@ export function EditorCanvas() {
           inset: 0;
           pointer-events: none;
           border: 2px dashed rgba(63, 163, 235, 0.72);
-          border-radius: 38px;
+          border-radius: var(--mg-radius, 32px);
           background: rgba(63, 163, 235, 0.05);
         }
       `}</style>
-      <div onPointerCancel={cancelInteraction} onPointerMove={updateInteraction} onPointerUp={commitInteraction}>
+      <div
+        className={suppressEntrance ? "mg-no-entrance" : undefined}
+        onPointerCancel={cancelInteraction}
+        onPointerMove={updateInteraction}
+        onPointerUp={commitInteraction}
+      >
         <BentoGrid
-          getItemClassName={(_item, widget) => `relative touch-none mg-editor-grid-item ${dragGhost?.widget.id === widget.id ? "mg-editor-placeholder" : ""}`}
+          getItemClassName={(_item, widget) =>
+            [
+              "relative touch-none mg-editor-grid-item",
+              suppressEntrance ? "mg-no-entrance" : "",
+              dragGhost?.widget.id === widget.id ? "mg-editor-placeholder" : "",
+            ]
+              .filter(Boolean)
+              .join(" ")
+          }
           getItemOverlay={(item, widget) => (
             <EditorGridOverlay
               item={item}
@@ -212,7 +220,7 @@ export function EditorCanvas() {
           )}
           layout={layout}
           widgets={config.widgets}
-          afterItems={<AddModuleSlot layout={addModuleLayout} />}
+          afterItems={<AddModuleSlot layout={addModuleLayout} suppressEntrance={suppressEntrance} />}
         />
       </div>
       {dragGhost ? <EditorDragGhost ghost={dragGhost} /> : null}
@@ -220,7 +228,7 @@ export function EditorCanvas() {
   );
 }
 
-function AddModuleSlot({ layout }: { layout: GridLayoutItem }) {
+function AddModuleSlot({ layout, suppressEntrance }: { layout: GridLayoutItem; suppressEntrance: boolean }) {
   const slotRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(false);
 
@@ -259,17 +267,21 @@ function AddModuleSlot({ layout }: { layout: GridLayoutItem }) {
   }
 
   return (
-    <div className={`${bentoGridStyles.item} relative overflow-visible mg-editor-grid-item`} ref={slotRef} style={getBentoGridItemStyle(layout)}>
+    <div
+      className={`${bentoGridStyles.item} mg-card-enter mg-editor-grid-item relative overflow-visible ${suppressEntrance ? "mg-no-entrance" : ""}`}
+      ref={slotRef}
+      style={getBentoGridItemStyle(layout)}
+    >
       <button
         aria-expanded={open}
-        className="mg-no-drag grid h-full min-h-44 w-full place-items-center rounded-[38px] border-2 border-dashed border-[#3FA3EB]/40 bg-white/[0.48] p-5 text-center transition hover:-translate-y-1 hover:border-[#3FA3EB]/80 hover:bg-white/[0.82] focus:outline-none focus:ring-4 focus:ring-[#3FA3EB]/[0.16]"
+        className="mg-no-drag grid h-full min-h-44 w-full place-items-center rounded-[var(--mg-radius,32px)] border-2 border-dashed border-[#3FA3EB]/40 bg-white/[0.58] p-5 text-center backdrop-blur-sm transition hover:-translate-y-1 hover:border-[#3FA3EB]/80 hover:bg-white/[0.86] focus:outline-none focus:ring-4 focus:ring-[#3FA3EB]/[0.16]"
         onClick={togglePanel}
         onKeyDown={handleKeyDown}
         type="button"
       >
         <span className="grid gap-3">
-          <span className="mx-auto grid size-14 place-items-center rounded-full bg-[#121214] text-3xl font-black leading-none text-white shadow-[0_18px_48px_rgba(15,17,25,0.20)]">+</span>
-          <span className="text-sm font-black uppercase tracking-[0.18em] text-[#121214]">添加模块</span>
+          <span className="mx-auto grid size-14 place-items-center rounded-full bg-[#141518] text-3xl font-black leading-none text-white shadow-[0_18px_48px_rgba(15,17,25,0.20)]">+</span>
+          <span className="text-sm font-black uppercase tracking-[0.18em] text-[#141518]">添加模块</span>
           <span className="text-xs font-medium leading-5 text-zinc-400">点击添加到网格</span>
         </span>
       </button>
@@ -299,7 +311,7 @@ function EditorGridOverlay({ item, selected, startInteraction, widget }: { item:
   return (
     <div
       aria-label={`选择 ${definition.name} 模块`}
-      className={`group absolute inset-0 z-20 rounded-[38px] touch-none outline-none transition ${selected ? "shadow-[0_25px_50px_rgba(63,163,235,0.15)]" : ""}`}
+      className={`group absolute inset-0 z-20 rounded-[var(--mg-radius,32px)] touch-none outline-none transition ${selected ? "shadow-[0_25px_50px_rgba(63,163,235,0.15)]" : ""}`}
       data-editor-widget-id={widget.id}
       onKeyDown={handleKeyDown}
       onPointerDown={(event) => startInteraction(event, item, widget, "move")}
@@ -308,7 +320,7 @@ function EditorGridOverlay({ item, selected, startInteraction, widget }: { item:
     >
       <span
         aria-hidden="true"
-        className={`pointer-events-none absolute -inset-1 rounded-[42px] border-2 transition duration-200 ${selected ? "border-[#3FA3EB] opacity-100 shadow-[0_0_0_1.5px_rgba(63,163,235,0.25),0_18px_42px_rgba(63,163,235,0.16)]" : "border-[#3FA3EB]/35 opacity-0 group-hover:opacity-100 group-focus:opacity-100"}`}
+        className={`pointer-events-none absolute -inset-1 rounded-[calc(var(--mg-radius,32px)+4px)] border-2 transition duration-200 ${selected ? "border-[#3FA3EB] opacity-100 shadow-[0_0_0_1.5px_rgba(63,163,235,0.25),0_18px_42px_rgba(63,163,235,0.16)]" : "border-[#3FA3EB]/35 opacity-0 group-hover:opacity-100 group-focus:opacity-100"}`}
       />
       <div
         aria-label="拖拽调整模块大小"
@@ -338,7 +350,7 @@ function EditorDragGhost({ ghost }: { ghost: DragGhostState }) {
 
   return (
     <div
-      className="pointer-events-none fixed z-[3000] rounded-[38px] opacity-[0.92] shadow-[0_30px_65px_rgba(0,0,0,0.28),0_10px_20px_rgba(0,0,0,0.15)]"
+      className="pointer-events-none fixed z-[3000] rounded-[var(--mg-radius,32px)] opacity-[0.92] shadow-[0_30px_65px_rgba(0,0,0,0.28),0_10px_20px_rgba(0,0,0,0.15)]"
       style={{
         height: ghost.height,
         left: ghost.left,
@@ -347,7 +359,10 @@ function EditorDragGhost({ ghost }: { ghost: DragGhostState }) {
         width: ghost.width,
       }}
     >
-      <div className="h-full w-full overflow-hidden rounded-[38px] [clip-path:inset(0_round_38px)]">
+      <div
+        className="h-full w-full overflow-hidden rounded-[var(--mg-radius,32px)]"
+        style={{ clipPath: "inset(0 round var(--mg-radius, 32px))" }}
+      >
         <Widget context={{ layout: ghost.item, variant: getWidgetRenderVariant(ghost.item) }} props={ghost.widget.props} />
       </div>
     </div>
@@ -383,7 +398,6 @@ function distance(event: PointerEvent<HTMLDivElement>, interaction: InteractionS
 export function getVerticalLayoutUnits(pixelDelta: number, rowHeight: number, gap: number) {
   return Math.round(pixelDelta / (rowHeight + gap)) * BENTO_MIN_ITEM_HEIGHT;
 }
-
 
 export function findAddModuleLayout(layout: GridLayoutItem[]): GridLayoutItem {
   const occupied = layout.map(clampBentoLayoutItem);

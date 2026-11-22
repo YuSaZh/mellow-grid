@@ -1,158 +1,57 @@
 {
-  "username": "username",
-  "title": "Username - Link Tree",
-  "description": "A static 3D bento personal homepage inspired by soft social link cards.",
+  "username": "YuSaZh",
+  "title": "YuSaZh — MellowGrid",
+  "description": "A refined, static-first Bento personal homepage built with MellowGrid.",
   "profile": {
-    "name": "Username",
-    "bio": "Short bio for your personal homepage.",
-    "location": "Location",
+    "name": "YuSaZh",
+    "bio": "Crafting lightweight tools, video utilities & tactile Bento web experiences.",
+    "location": "Tokyo, Japan",
     "avatarUrl": "default-avatar.svg",
     "contacts": [
       {
-        "label": "Email",
-        "href": "mailto:email@example.com"
+        "label": "GitHub",
+        "href": "https://github.com/YuSaZh"
       },
       {
-        "label": "Website",
-        "href": "https://example.com"
+        "label": "Open Editor",
+        "href": "editor/"
       }
     ]
   },
   "theme": {
-    "background": "#ffffff",
-    "foreground": "#000000",
-    "card": "#121313",
-    "accent": "#ade0ff",
+    "background": "#F5F6F8",
+    "foreground": "#141518",
+    "card": "#17181B",
+    "accent": "#3FA3EB",
     "radius": "round",
     "shadow": "soft"
   },
-  "updatedAt": "2026-07-05T05:20:50.019Z",
+  "updatedAt": "2026-11-22T03:50:00.000Z",
   "layout": [
     {
-      "i": "social-twitter",
+      "i": "rich-map",
       "x": 0,
-      "y": 2,
-      "w": 1,
-      "h": 1,
+      "y": 0,
+      "w": 2,
+      "h": 2,
       "minW": 1,
       "minH": 1,
-      "maxW": 2,
-      "maxH": 2
+      "maxW": 4
     },
     {
-      "i": "social-pinterest",
-      "x": 3,
-      "y": 1,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-coffee",
-      "x": 0,
-      "y": 3.5,
+      "i": "rich-github-activity",
+      "x": 2,
+      "y": 0,
       "w": 2,
       "h": 1,
       "minW": 1,
       "minH": 1,
-      "maxW": 2,
-      "maxH": 2
+      "maxW": 4
     },
     {
-      "i": "social-figma",
-      "x": 3,
-      "y": 3.5,
-      "w": 1,
-      "h": 2,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-discord",
-      "x": 3,
-      "y": 2,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-linkedin",
-      "x": 2,
-      "y": 2,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-gumroad",
-      "x": 2,
-      "y": 3.5,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-dribbble",
-      "x": 2,
-      "y": 4.5,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-stack",
-      "x": 0,
-      "y": 5.5,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-instagram",
+      "i": "project-mellow-grid",
       "x": 2,
       "y": 1,
-      "w": 1,
-      "h": 1,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "social-reddit",
-      "x": 1,
-      "y": 8.5,
-      "w": 1,
-      "h": 2,
-      "minW": 1,
-      "minH": 1,
-      "maxW": 2,
-      "maxH": 2
-    },
-    {
-      "i": "link-mph6dsk9",
-      "x": 1,
-      "y": 2,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -162,8 +61,39 @@
     },
     {
       "i": "project-bdsubmerge",
-      "x": 1,
-      "y": 5.5,
+      "x": 3,
+      "y": 1,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "text-mph6esod",
+      "x": 0,
+      "y": 2,
+      "w": 2,
+      "h": 1,
+      "minW": 1,
+      "minH": 1
+    },
+    {
+      "i": "link-mph6dsk9",
+      "x": 2,
+      "y": 2,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "project-chatgpt-toolkit",
+      "x": 3,
+      "y": 2,
       "w": 1,
       "h": 1,
       "minW": 1,
@@ -183,20 +113,11 @@
       "maxH": 0.5
     },
     {
-      "i": "text-mph6esod",
+      "i": "rich-media",
       "x": 0,
-      "y": 4.5,
+      "y": 3.5,
       "w": 2,
-      "h": 1,
-      "minW": 1,
-      "minH": 1
-    },
-    {
-      "i": "rich-github-activity",
-      "x": 2,
-      "y": 0,
-      "w": 2,
-      "h": 1,
+      "h": 2,
       "minW": 1,
       "minH": 1,
       "maxW": 4
@@ -204,295 +125,105 @@
     {
       "i": "rich-music",
       "x": 2,
+      "y": 3.5,
+      "w": 2,
+      "h": 2,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 4
+    },
+    {
+      "i": "divider-connect",
+      "x": 0,
       "y": 5.5,
-      "w": 2,
-      "h": 2,
+      "w": 4,
+      "h": 0.5,
       "minW": 1,
-      "minH": 1,
-      "maxW": 4
+      "minH": 0.5,
+      "maxW": 4,
+      "maxH": 0.5
     },
     {
-      "i": "rich-map",
+      "i": "project-imagine",
       "x": 0,
-      "y": 0,
+      "y": 6,
       "w": 2,
-      "h": 2,
+      "h": 1,
       "minW": 1,
       "minH": 1,
-      "maxW": 4
+      "maxW": 2,
+      "maxH": 2
     },
     {
-      "i": "rich-media",
-      "x": 0,
-      "y": 6.5,
-      "w": 2,
-      "h": 2,
+      "i": "social-twitter",
+      "x": 2,
+      "y": 6,
+      "w": 1,
+      "h": 1,
       "minW": 1,
       "minH": 1,
-      "maxW": 4
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-instagram",
+      "x": 3,
+      "y": 6,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-dribbble",
+      "x": 0,
+      "y": 7,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-discord",
+      "x": 1,
+      "y": 7,
+      "w": 1,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
+    },
+    {
+      "i": "social-coffee",
+      "x": 2,
+      "y": 7,
+      "w": 2,
+      "h": 1,
+      "minW": 1,
+      "minH": 1,
+      "maxW": 2,
+      "maxH": 2
     }
   ],
   "widgets": [
     {
-      "id": "social-twitter",
-      "type": "link",
+      "id": "rich-map",
+      "type": "map",
       "props": {
-        "title": "Twitter",
-        "href": "https://twitter.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "x"
-        },
-        "color": "#f5f5f5",
-        "background": {
-          "type": "gradient",
-          "from": "#2f2f2f",
-          "to": "#101112",
-          "angle": 180
-        }
-      }
-    },
-    {
-      "id": "social-pinterest",
-      "type": "link",
-      "props": {
-        "title": "Pinterest",
-        "href": "https://pinterest.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "pinterest"
-        },
-        "color": "#E60023",
-        "background": {
-          "type": "solid",
-          "value": "#ffe8ee"
-        }
-      }
-    },
-    {
-      "id": "social-coffee",
-      "type": "link",
-      "props": {
-        "title": "Buy me a Coffee",
-        "href": "https://example.com",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "coffee"
-        },
-        "color": "#8b5b05",
-        "background": {
-          "type": "gradient",
-          "from": "#ffe181",
-          "to": "#f5b63d",
-          "angle": 180
-        }
-      }
-    },
-    {
-      "id": "social-figma",
-      "type": "link",
-      "props": {
-        "title": "Figma",
-        "href": "https://figma.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "figma"
-        },
-        "color": "#7b38d8",
-        "background": {
-          "type": "gradient",
-          "from": "#fce3fe",
-          "to": "#bd83e5",
-          "angle": 180
-        }
-      }
-    },
-    {
-      "id": "social-discord",
-      "type": "link",
-      "props": {
-        "title": "Discord",
-        "href": "https://discord.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "discord"
-        },
-        "color": "#5865F2",
-        "background": {
-          "type": "solid",
-          "value": "#dde2ff"
-        }
-      }
-    },
-    {
-      "id": "social-dribbble",
-      "type": "link",
-      "props": {
-        "title": "Dribbble",
-        "href": "https://dribbble.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "dribbble"
-        },
-        "color": "#EA4C89",
-        "background": {
-          "type": "gradient",
-          "from": "#ff95d3",
-          "to": "#ef64bd",
-          "angle": 180
-        }
-      }
-    },
-    {
-      "id": "social-linkedin",
-      "type": "link",
-      "props": {
-        "title": "LinkedIn",
-        "href": "https://www.linkedin.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "linkedin"
-        },
-        "color": "#0A66C2",
-        "background": {
-          "type": "solid",
-          "value": "#dff0ff"
-        }
-      }
-    },
-    {
-      "id": "social-gumroad",
-      "type": "link",
-      "props": {
-        "title": "Gumroad",
-        "href": "https://gumroad.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "gumroad"
-        },
-        "color": "#ff90e8",
-        "background": {
-          "type": "solid",
-          "value": "#232323"
-        }
-      }
-    },
-    {
-      "id": "social-stack",
-      "type": "link",
-      "props": {
-        "title": "Stack",
-        "href": "https://stackoverflow.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "stack"
-        },
-        "color": "#f48024",
-        "background": {
-          "type": "solid",
-          "value": "#fff1df"
-        }
-      }
-    },
-    {
-      "id": "social-instagram",
-      "type": "link",
-      "props": {
-        "title": "Instagram",
-        "href": "https://instagram.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "instagram"
-        },
-        "color": "#e1306c",
-        "background": {
-          "type": "gradient",
-          "from": "#9F2CAC",
-          "to": "#F4A751",
-          "angle": 135
-        }
-      }
-    },
-    {
-      "id": "social-reddit",
-      "type": "link",
-      "props": {
-        "title": "Reddit",
-        "href": "https://reddit.com/",
-        "description": "@username",
-        "logo": {
-          "type": "builtin",
-          "key": "reddit"
-        },
-        "color": "#ff4500",
-        "background": {
-          "type": "solid",
-          "value": "#ffe4d8"
-        }
-      }
-    },
-    {
-      "id": "link-mph6dsk9",
-      "type": "link",
-      "props": {
-        "title": "Bili CDN",
-        "href": "https://github.com/YuSaZh/bilibili-cdn-router",
-        "description": "mpv fallback router",
-        "logo": {
-          "type": "builtin",
-          "key": "github"
-        },
-        "color": "#F0F6FC",
-        "background": {
-          "type": "theme"
-        }
-      }
-    },
-    {
-      "id": "project-bdsubmerge",
-      "type": "link",
-      "props": {
-        "title": "BDSubMerge",
-        "href": "https://github.com/YuSaZh/BDSubMerge",
-        "description": "Blu-ray subtitle tool",
-        "logo": {
-          "type": "builtin",
-          "key": "github"
-        },
-        "color": "#F0F6FC",
-        "background": {
-          "type": "theme"
-        }
-      }
-    },
-    {
-      "id": "divider-mph6ejam",
-      "type": "divider",
-      "props": {
-        "eyebrow": "",
-        "title": "About Me"
-      }
-    },
-    {
-      "id": "text-mph6esod",
-      "type": "text",
-      "props": {
-        "background": {
-          "type": "theme"
-        },
-        "eyebrow": "Snapshot",
-        "title": "Simple, rounded, customizable.",
-        "body": "A soft Bento module for notes, quotes, or introductions."
+        "title": "Tokyo",
+        "location": "Shibuya, Tokyo",
+        "label": "Location",
+        "note": "",
+        "latitude": 35.6595,
+        "longitude": 139.7005,
+        "zoom": 15,
+        "href": "https://www.openstreetmap.org/?mlat=35.6595&mlon=139.7005#map=15/35.6595/139.7005",
+        "embedUrl": ""
       }
     },
     {
@@ -500,10 +231,10 @@
       "type": "github-activity",
       "props": {
         "title": "GitHub",
-        "username": "octocat",
-        "profileUrl": "https://github.com/octocat",
+        "username": "YuSaZh",
+        "profileUrl": "https://github.com/YuSaZh",
         "summary": "",
-        "href": "https://github.com/octocat",
+        "href": "https://github.com/YuSaZh",
         "days": [
           0,
           1,
@@ -541,7 +272,116 @@
           4,
           1
         ],
-        "activityImageUrl": "https://www.dailygreen.xyz/octocat"
+        "activityImageUrl": "https://www.dailygreen.xyz/YuSaZh"
+      }
+    },
+    {
+      "id": "project-mellow-grid",
+      "type": "link",
+      "props": {
+        "title": "MellowGrid",
+        "href": "https://github.com/YuSaZh/mellow-grid",
+        "description": "Visual Bento editor",
+        "logo": {
+          "type": "builtin",
+          "key": "github"
+        },
+        "color": "#F5F7FA",
+        "background": {
+          "type": "gradient",
+          "from": "#26282E",
+          "to": "#141518",
+          "angle": 155
+        }
+      }
+    },
+    {
+      "id": "project-bdsubmerge",
+      "type": "link",
+      "props": {
+        "title": "BDSubMerge",
+        "href": "https://github.com/YuSaZh/BDSubMerge",
+        "description": "Blu-ray subtitle tool",
+        "logo": {
+          "type": "builtin",
+          "key": "github"
+        },
+        "color": "#E2E8F0",
+        "background": {
+          "type": "gradient",
+          "from": "#242B3D",
+          "to": "#141824",
+          "angle": 155
+        }
+      }
+    },
+    {
+      "id": "text-mph6esod",
+      "type": "text",
+      "props": {
+        "background": {
+          "type": "solid",
+          "value": "#FFFFFF"
+        },
+        "eyebrow": "MellowGrid",
+        "title": "Static-first, tactile, zero runtime.",
+        "body": "Built with Astro static output and a visual React Bento editor. Edit in browser, export JSON or single-file HTML."
+      }
+    },
+    {
+      "id": "link-mph6dsk9",
+      "type": "link",
+      "props": {
+        "title": "Bili CDN",
+        "href": "https://github.com/YuSaZh/bilibili-cdn-router",
+        "description": "mpv fallback router",
+        "logo": {
+          "type": "builtin",
+          "key": "github"
+        },
+        "color": "#0284C7",
+        "background": {
+          "type": "solid",
+          "value": "#EBF6FF"
+        }
+      }
+    },
+    {
+      "id": "project-chatgpt-toolkit",
+      "type": "link",
+      "props": {
+        "title": "ChatGPT Toolkit",
+        "href": "https://github.com/YuSaZh/ChatGPT-Toolkit",
+        "description": "Pro usage counter",
+        "logo": {
+          "type": "builtin",
+          "key": "github"
+        },
+        "color": "#0F9D6E",
+        "background": {
+          "type": "solid",
+          "value": "#E9F9F1"
+        }
+      }
+    },
+    {
+      "id": "divider-mph6ejam",
+      "type": "divider",
+      "props": {
+        "eyebrow": "Showcase",
+        "title": "Studio & Media"
+      }
+    },
+    {
+      "id": "rich-media",
+      "type": "media",
+      "props": {
+        "title": "Studio reel",
+        "caption": "Visual notes, interfaces & motion craft.",
+        "mediaType": "image",
+        "embedUrl": "",
+        "href": "https://github.com/YuSaZh/mellow-grid",
+        "imageUrl": "default-media.svg"
       }
     },
     {
@@ -556,30 +396,129 @@
       }
     },
     {
-      "id": "rich-map",
-      "type": "map",
+      "id": "divider-connect",
+      "type": "divider",
       "props": {
-        "title": "Tokyo",
-        "location": "Shibuya, Tokyo",
-        "label": "Location",
-        "note": "",
-        "latitude": 35.6595,
-        "longitude": 139.7005,
-        "zoom": 15,
-        "href": "https://www.openstreetmap.org/?mlat=35.6595&mlon=139.7005#map=15/35.6595/139.7005",
-        "embedUrl": ""
+        "eyebrow": "Elsewhere",
+        "title": "Projects & Links"
       }
     },
     {
-      "id": "rich-media",
-      "type": "media",
+      "id": "project-imagine",
+      "type": "link",
       "props": {
-        "title": "Studio reel",
-        "caption": "Recent visual notes and motion experiments.",
-        "mediaType": "image",
-        "embedUrl": "",
-        "href": "https://youtube.com/",
-        "imageUrl": "default-media.svg"
+        "title": "Imagine.",
+        "href": "https://github.com/YuSaZh/Imagine.",
+        "description": "Self-hosted AI media workspace",
+        "logo": {
+          "type": "builtin",
+          "key": "github"
+        },
+        "color": "#DDD6FE",
+        "background": {
+          "type": "gradient",
+          "from": "#2D2542",
+          "to": "#181524",
+          "angle": 145
+        }
+      }
+    },
+    {
+      "id": "social-twitter",
+      "type": "link",
+      "props": {
+        "title": "Twitter",
+        "href": "https://x.com/",
+        "description": "@YuSaZh",
+        "logo": {
+          "type": "builtin",
+          "key": "x"
+        },
+        "color": "#F5F5F5",
+        "background": {
+          "type": "gradient",
+          "from": "#26272B",
+          "to": "#111215",
+          "angle": 160
+        }
+      }
+    },
+    {
+      "id": "social-instagram",
+      "type": "link",
+      "props": {
+        "title": "Instagram",
+        "href": "https://instagram.com/",
+        "description": "Visual journal",
+        "logo": {
+          "type": "builtin",
+          "key": "instagram"
+        },
+        "color": "#FFFFFF",
+        "background": {
+          "type": "gradient",
+          "from": "#9F2CAC",
+          "to": "#F26552",
+          "angle": 135
+        }
+      }
+    },
+    {
+      "id": "social-dribbble",
+      "type": "link",
+      "props": {
+        "title": "Dribbble",
+        "href": "https://dribbble.com/",
+        "description": "UI explorations",
+        "logo": {
+          "type": "builtin",
+          "key": "dribbble"
+        },
+        "color": "#FFFFFF",
+        "background": {
+          "type": "gradient",
+          "from": "#F25C9B",
+          "to": "#D43377",
+          "angle": 145
+        }
+      }
+    },
+    {
+      "id": "social-discord",
+      "type": "link",
+      "props": {
+        "title": "Discord",
+        "href": "https://discord.com/",
+        "description": "Community",
+        "logo": {
+          "type": "builtin",
+          "key": "discord"
+        },
+        "color": "#5865F2",
+        "background": {
+          "type": "solid",
+          "value": "#ECEEFF"
+        }
+      }
+    },
+    {
+      "id": "social-coffee",
+      "type": "link",
+      "props": {
+        "title": "Buy me a Coffee",
+        "href": "https://github.com/YuSaZh/mellow-grid",
+        "description": "Support open-source tools",
+        "logo": {
+          "type": "builtin",
+          "key": "coffee"
+        },
+        "color": "#6E4402",
+        "background": {
+          "type": "gradient",
+          "from": "#FFE699",
+          "to": "#F7BA45",
+          "angle": 145
+        }
       }
     }
   ]

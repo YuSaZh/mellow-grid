@@ -26,22 +26,23 @@ export function MapWidget({ context, props }: { context?: WidgetRenderContext; p
       ariaLabel={`${title}: ${location}`}
       background={{ type: "solid", value: "#F8FBF9" }}
       className="text-left"
-      href={!renderTileMap ? href : undefined}
-      interactive={!renderTileMap}
-      showLinkIndicator={!renderTileMap && Boolean(href)}
+      href={href}
+      interactive
+      showLinkIndicator={Boolean(href)}
     >
       <div className="relative z-10 flex h-full min-h-0 flex-col overflow-hidden">
-        {renderTileMap && coordinates ? (
-          <TileMap coordinates={coordinates} title={title} />
-        ) : (
-          <StaticMapPattern />
-        )}
+        <StaticMapPattern />
+        {renderTileMap && coordinates ? <TileMap coordinates={coordinates} title={title} /> : null}
         {coordinates ? <MapMarker compact={compact} /> : null}
-        <div className={`pointer-events-none absolute inset-x-0 bottom-0 ${compact ? "h-14" : "h-20"} bg-[linear-gradient(180deg,transparent,rgba(255,255,255,0.42))]`} />
+        <div className={`pointer-events-none absolute inset-x-0 bottom-0 ${compact ? "h-14" : "h-20"} bg-[linear-gradient(180deg,transparent,rgba(248,250,252,0.48))]`} />
         <div className={`relative z-10 mt-auto ${compact ? "p-3" : "p-4"}`}>
-          <div className={`inline-grid max-w-full rounded-[1.15rem] border border-white/65 bg-white/72 shadow-[0_12px_30px_rgba(20,45,65,0.12)] backdrop-blur-[8px] ${compact ? "gap-0.5 px-2.5 py-2" : "gap-1 px-3.5 py-2"}`}>
-            <h2 className={`truncate font-black leading-none text-[#151515] ${compact ? "text-[0.76rem]" : "text-[0.88rem]"}`}>{title}</h2>
-            <p className={`truncate font-extrabold leading-none text-black/52 ${compact ? "text-[0.58rem]" : "text-[0.68rem]"}`}>{location}</p>
+          <div
+            className={`inline-grid max-w-full rounded-[1.15rem] border border-white/80 bg-white/82 shadow-[0_10px_28px_rgba(15,23,42,0.12)] backdrop-blur-md ${
+              compact ? "gap-0.5 px-2.5 py-2" : "gap-1 px-3.5 py-2.5"
+            }`}
+          >
+            <h2 className={`truncate font-extrabold leading-none tracking-[-0.02em] text-[#141518] ${compact ? "text-[0.76rem]" : "text-[0.9rem]"}`}>{title}</h2>
+            <p className={`truncate font-semibold leading-none text-[#141518]/58 ${compact ? "text-[0.58rem]" : "text-[0.7rem]"}`}>{location}</p>
           </div>
         </div>
       </div>
@@ -70,18 +71,40 @@ export const mapWidget = {
 
 function StaticMapPattern() {
   return (
-    <div className="absolute inset-0 bg-[#F5F8F4]">
-      <div className="absolute left-[-10%] top-[24%] h-[18%] w-[118%] rotate-[-10deg] rounded-full bg-[#D7E4DC]" />
-      <div className="absolute left-[30%] top-[-8%] h-[116%] w-[14%] rotate-[28deg] rounded-full bg-[#E2EAD8]" />
-      <div className="absolute left-[8%] top-[58%] h-[9%] w-[92%] rotate-[13deg] rounded-full bg-white/80" />
+    <div aria-hidden="true" className="absolute inset-0 bg-[#F2F5F8]" data-map-backdrop="true">
+      <div className="absolute left-[-12%] top-[24%] h-[16%] w-[122%] rotate-[-10deg] rounded-full bg-[#E3E9F0]" />
+      <div className="absolute left-[32%] top-[-10%] h-[120%] w-[12%] rotate-[26deg] rounded-full bg-[#DFE7E5]" />
+      <div className="absolute left-[6%] top-[60%] h-[7%] w-[94%] rotate-[12deg] rounded-full bg-white/85" />
     </div>
   );
 }
 
 function MapMarker({ compact }: { compact?: boolean }) {
   return (
-    <div className={`map-marker pointer-events-none absolute left-1/2 top-1/2 z-10 grid ${compact ? "size-6 shadow-[0_0_0_6px_rgba(20,121,255,0.16),0_12px_24px_rgba(20,121,255,0.28)]" : "size-8 shadow-[0_0_0_8px_rgba(20,121,255,0.18),0_16px_34px_rgba(20,121,255,0.34)]"} -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full bg-[#1479FF]`}>
-      <span className={`${compact ? "size-2" : "size-2.5"} rounded-full bg-white`} />
+    <div
+      className={`map-marker pointer-events-none absolute left-1/2 top-1/2 z-10 grid ${
+        compact ? "size-6" : "size-8"
+      } -translate-x-1/2 -translate-y-1/2 place-items-center`}
+    >
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 rounded-full bg-[#1479FF]/35"
+        style={{ animation: "mgMapPulse 2.6s ease-out infinite" }}
+      />
+      <span
+        aria-hidden="true"
+        className="absolute inset-0 rounded-full bg-[#1479FF]/25"
+        style={{ animation: "mgMapPulse 2.6s ease-out 1.3s infinite" }}
+      />
+      <span
+        className={`relative grid size-full place-items-center rounded-full border-2 border-white bg-[#1479FF] ${
+          compact
+            ? "shadow-[0_0_0_4px_rgba(20,121,255,0.18),0_10px_20px_rgba(20,121,255,0.32)]"
+            : "shadow-[0_0_0_5px_rgba(20,121,255,0.18),0_14px_28px_rgba(20,121,255,0.36)]"
+        }`}
+      >
+        <span className={`${compact ? "size-1.5" : "size-2"} rounded-full bg-white`} />
+      </span>
     </div>
   );
 }
@@ -115,19 +138,31 @@ function TileMap({ coordinates, title }: { coordinates: MapCoordinates; title: s
   const tileSet = getMapTileSet(coordinates);
 
   return (
-    <div className="absolute inset-0 bg-[#F6FAF6]">
-      <div className="absolute inset-[-32%] grid grid-cols-3 grid-rows-3 opacity-95 saturate-[0.72] contrast-[1.08]" style={{ transform: `translate(${tileSet.offsetX}, ${tileSet.offsetY}) scale(1.08)` }}>
-        {tileSet.tiles.map((tile) => (
-          <img alt="" className="map-tile size-full object-cover" key={tile.src} loading="lazy" referrerPolicy="no-referrer" src={tile.src} title={`${title} map tile`} />
+    <div className="absolute inset-0 transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.05]">
+      <div
+        className="absolute inset-[-32%] grid grid-cols-3 grid-rows-3 opacity-95 contrast-[1.04]"
+        style={{ transform: `translate(${tileSet.offsetX}, ${tileSet.offsetY}) scale(1.08)` }}
+      >
+        {tileSet.tiles.map((tile, index) => (
+          <img
+            alt=""
+            className="map-tile size-full object-cover"
+            key={`${tile.x}-${tile.y}-${index}`}
+            loading="lazy"
+            referrerPolicy="no-referrer"
+            src={tile.src}
+            title={`${title} map tile`}
+          />
         ))}
       </div>
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_36%,rgba(255,255,255,0.1))]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.05),transparent_36%,rgba(255,255,255,0.12))]" />
     </div>
   );
 }
 
 function getMapTileSet({ latitude, longitude, zoom }: MapCoordinates) {
   const tileZoom = clampNumber(Math.min(zoom, 16), 2, 16);
+  const maxIndex = 2 ** tileZoom;
   const center = getTileCoordinate(latitude, longitude, tileZoom);
   const originX = Math.floor(center.x) - 1;
   const originY = Math.floor(center.y) - 1;
@@ -145,7 +180,16 @@ function getMapTileSet({ latitude, longitude, zoom }: MapCoordinates) {
     { x: originX, y: originY + 2 },
     { x: originX + 1, y: originY + 2 },
     { x: originX + 2, y: originY + 2 },
-  ].map((tile) => ({ ...tile, src: `https://a.basemaps.cartocdn.com/light_nolabels/${tileZoom}/${tile.x}/${tile.y}.png` }));
+  ].map((tile) => {
+    const x = ((tile.x % maxIndex) + maxIndex) % maxIndex;
+    const y = clampNumber(tile.y, 0, maxIndex - 1);
+
+    return {
+      x,
+      y,
+      src: `https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/${tileZoom}/${y}/${x}`,
+    };
+  });
 
   return { offsetX, offsetY, tiles };
 }

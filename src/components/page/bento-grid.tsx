@@ -14,7 +14,14 @@ type BentoGridProps = {
 
 export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout, widgets }: BentoGridProps) {
   const widgetsById = new Map(widgets.map((widget) => [widget.id, widget]));
-  const gridLayout = layout.filter((item) => widgetsById.has(item.i));
+  const renderedEntries = sortBentoLayout(layout)
+    .map((item) => {
+      const widget = widgetsById.get(item.i);
+      const definition = widget ? getWidgetDefinition(widget.type) : undefined;
+
+      return widget && definition ? { item, widget, definition } : null;
+    })
+    .filter((entry): entry is NonNullable<typeof entry> => entry !== null);
 
   return (
     <section
@@ -30,28 +37,26 @@ export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout
         } as CSSProperties
       }
     >
-      {gridLayout.map((layoutItem) => {
-        const item = clampBentoLayoutItem(layoutItem);
-        const widget = widgetsById.get(item.i);
-        const definition = widget ? getWidgetDefinition(widget.type) : undefined;
-
-        if (!widget || !definition) {
-          return null;
-        }
-
+      {renderedEntries.map(({ item, widget, definition }, index) => {
         const Widget = definition.Component;
         const className = getItemClassName?.(item, widget);
         const variant = getWidgetRenderVariant(item);
+        const isWide = item.w >= 2;
+        const isLarge = item.w >= 2 && item.h >= 2;
 
         return (
           <div
             key={item.i}
-            className={className ? `${styles.item} ${className}` : styles.item}
+            className={[styles.item, "mg-card-enter", className].filter(Boolean).join(" ")}
+            data-bento-h={item.h}
+            data-bento-w={item.w}
+            data-large={isLarge ? "true" : undefined}
+            data-wide={isWide ? "true" : undefined}
+            data-widget-type={widget.type}
             style={
               {
-                "--bento-grid-column": `${item.x + 1} / span ${item.w}`,
-                "--bento-grid-row": getBentoGridRow(item),
-                "--bento-item-aspect-ratio": getBentoGridItemAspectRatio(item),
+                ...getBentoGridItemStyle(item),
+                "--mg-stagger": index,
               } as CSSProperties
             }
           >
@@ -63,6 +68,13 @@ export function BentoGrid({ afterItems, getItemClassName, getItemOverlay, layout
       {afterItems}
     </section>
   );
+}
+
+export function sortBentoLayout(layout: GridLayoutItem[]): GridLayoutItem[] {
+  return layout
+    .map((item, index) => ({ item: clampBentoLayoutItem(item), index }))
+    .sort((a, b) => a.item.y - b.item.y || a.item.x - b.item.x || a.index - b.index)
+    .map(({ item }) => item);
 }
 
 export function getWidgetRenderVariant(item: GridLayoutItem): WidgetRenderVariant {

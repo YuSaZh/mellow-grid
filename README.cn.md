@@ -13,6 +13,8 @@
 </p>
 
 <p align="center">
+  <strong><a href="https://yusazh.github.io/mellow-grid/">在线演示</a></strong> ·
+  <strong><a href="https://yusazh.github.io/mellow-grid/editor/">在线编辑器</a></strong> ·
   <a href="README.cn.md">简体中文</a> · <a href="README.md">English</a>
 </p>
 
@@ -23,7 +25,7 @@
   <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind_CSS-4-38BDF8?logo=tailwindcss&logoColor=white">
   <img alt="Zustand" src="https://img.shields.io/badge/Zustand-state-443E38">
   <img alt="Static output" src="https://img.shields.io/badge/output-static-2EA44F">
-  <img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub_Pages-manual_deploy-222222?logo=github&logoColor=white">
+  <a href="https://yusazh.github.io/mellow-grid/"><img alt="GitHub Pages" src="https://img.shields.io/badge/GitHub_Pages-live_demo-222222?logo=github&logoColor=white"></a>
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-green"></a>
 </p>
 
@@ -96,8 +98,8 @@ npm run dev
 
 默认开发地址：
 
-- 主页：<http://localhost:4321/>
-- 编辑器：<http://localhost:4321/editor>
+- 主页：<http://localhost:4321/mellow-grid/>
+- 编辑器：<http://localhost:4321/mellow-grid/editor/>
 
 ## 常用脚本
 
@@ -112,16 +114,16 @@ npm test        # 运行 Vitest
 ## 项目结构
 
 ```txt
-src/pages/index.astro          静态主页路由
-src/pages/editor.astro         React editor island 路由
-src/app/editor/                编辑器 UI、状态和 inspector
-src/components/page/           主页和编辑器预览共用渲染组件
-src/lib/page-config/           页面配置类型、默认值和规范化逻辑
-src/lib/page-export/           静态 HTML 导出逻辑
-src/lib/widgets/registry.ts    Widget 注册表
-src/widgets/                   Widget 实现
-data/pages/username.json       构建时主页配置源
-.github/workflows/deploy-pages.yml  手动触发的 GitHub Pages 部署 workflow
+src/pages/index.astro               静态主页路由
+src/pages/editor.astro              React editor island 路由
+src/app/editor/                     编辑器 UI、状态和 inspector
+src/components/page/                主页和编辑器预览共用渲染组件
+src/lib/page-config/                页面配置类型、默认值和规范化逻辑
+src/lib/page-export/                静态 HTML 导出逻辑
+src/lib/widgets/registry.ts         Widget 注册表
+src/widgets/                        Widget 实现
+data/pages/username.json            构建时主页配置源
+.github/workflows/deploy-pages.yml  GitHub Pages 部署 workflow（推送 master 自动部署，也支持手动 workflow_dispatch 触发）
 ```
 
 `dist/` 和 `.astro/` 是生成目录，已经加入 `.gitignore`。需要时运行 `npm run build` 重新生成即可。
@@ -140,13 +142,13 @@ dist/index.html
 
 推荐发布步骤：
 
-1. 打开 `/editor`。
+1. 打开 `/mellow-grid/editor/`（或直接体验 [在线编辑器](https://yusazh.github.io/mellow-grid/editor/)）。
 2. 调整 profile、链接卡片、文字卡片、分栏符、活动、音乐、地图和媒体 widget。
 3. 点击保存，把草稿写入浏览器 `sessionStorage`；即使会话存储被浏览器拦截，编辑器也不会崩溃。
 4. 点击导出 JSON，下载得到 `username.json`。
 5. 用导出的文件替换仓库里的 `data/pages/username.json`。
-6. 提交并推送变更。
-7. 在 GitHub Actions 中手动运行 `Deploy GitHub Pages` workflow，构建 `dist/` 并部署到 GitHub Pages。
+6. 提交并推送变更到 `master` 分支。
+7. `.github/workflows/deploy-pages.yml` 会在推送到 `master` 时自动构建 `dist/` 并部署到 GitHub Pages，也支持随时在 GitHub Actions 中通过 `workflow_dispatch` 手动触发部署。
 
 如果只想单独发布一个 HTML 文件，也可以导出静态 HTML 并直接上传生成的 `index.html`。
 
@@ -183,7 +185,7 @@ dist/index.html
 - 新增右侧模块优先走 widget registry。
 - Profile 作为独立资料区，不混入右侧 widget 系统。
 - 默认 showcase 页面应覆盖所有已注册 widget 类型，并通过布局不重叠测试保护。
-- 示例数据使用 `Username`、`Location`、example URL 等占位信息。
+- 保持构建时静态资源安全，`data/pages/username.json` 中不嵌入敏感凭据或内联 `data:` 资源。
 - 除非出现明确需求，否则不重新引入后端、Docker 或 file-mode 存储层。
 
 ## 许可证

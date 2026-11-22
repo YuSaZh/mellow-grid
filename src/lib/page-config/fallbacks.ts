@@ -1,10 +1,10 @@
 import type { PageProfile, PageTheme } from "./types";
 
 export const defaultTheme: PageTheme = {
-  background: "#ffffff",
-  foreground: "#000000",
-  card: "#121313",
-  accent: "#ade0ff",
+  background: "#F5F6F8",
+  foreground: "#141518",
+  card: "#17181B",
+  accent: "#3FA3EB",
   radius: "round",
   shadow: "soft",
 };

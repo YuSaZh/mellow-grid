@@ -1,9 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { defaultPageConfig } from "../page-config/defaults";
 import type { PageConfig } from "../page-config/types";
-import { renderStaticPageHtml } from "./export-html";
+import { collectDocumentStyles, renderStaticPageHtml } from "./export-html";
 
 describe("renderStaticPageHtml", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
   it("renders a standalone HTML document with profile, bento cards, and no editor chrome", () => {
     const html = renderStaticPageHtml(defaultPageConfig);
 
@@ -19,12 +23,16 @@ describe("renderStaticPageHtml", () => {
 
     for (const widget of defaultPageConfig.widgets) {
       if ("title" in widget.props && typeof widget.props.title === "string") {
-        expect(html).toContain(widget.props.title);
+        expect(html).toContain(escapeHtmlText(widget.props.title));
       }
     }
 
     expect(html).toContain("grid-row:7 / span 1");
-    expect(html).not.toContain("type=\"module\"");
+    expect(html).toContain("--mg-bg:");
+    expect(html).toContain("--mg-fg:");
+    expect(html).toContain("--mg-radius:");
+    expect(html).toContain("prefers-reduced-motion:reduce");
+    expect(html).not.toContain('type="module"');
     expect(html).not.toContain("/_astro/");
   });
 
@@ -74,7 +82,7 @@ describe("renderStaticPageHtml", () => {
     expect(html).not.toContain(">GI<");
     expect(html).toContain("--bento-grid-column:");
     expect(html).toContain("--bento-grid-row:");
-    expect(html).not.toContain("style=\"grid-column:");
+    expect(html).not.toContain('style="grid-column:');
   });
 
   it("uses the profile name as the document title", () => {
@@ -106,14 +114,42 @@ describe("renderStaticPageHtml", () => {
     expect(html).toContain("Night Drive");
     expect(html).toContain("open.spotify.com/embed/playlist/example");
     expect(html).toContain("Tokyo");
-    expect(html).toContain("basemaps.cartocdn.com/light_nolabels");
+    expect(html).toContain("server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/");
     expect(html).toContain("map-marker");
     expect(html).not.toContain("tile.openstreetmap.org");
     expect(html).not.toContain("export/embed.html");
     expect(html).toContain("Studio reel");
     expect(html).toContain("www.youtube.com/embed/example");
   });
+
+  it("skips editor-only inline style sheets when collecting document styles", () => {
+    vi.stubGlobal("window", { location: { origin: "https://yusazh.github.io" } });
+    vi.stubGlobal("document", {
+      styleSheets: [
+        {
+          href: null,
+          ownerNode: { getAttribute: (name: string) => (name === "data-editor-only" ? "true" : null) },
+          cssRules: [{ cssText: ".mg-editor-placeholder { border: 2px dashed red; }" }],
+        },
+        {
+          href: "https://yusazh.github.io/mellow-grid/_astro/defaults.css",
+          ownerNode: { getAttribute: () => null },
+          cssRules: [{ cssText: ".mg-page-ambient { background-color: #f5f6f8; }" }],
+        },
+      ],
+      querySelectorAll: () => [],
+    });
+
+    const collected = collectDocumentStyles();
+
+    expect(collected).toContain(".mg-page-ambient");
+    expect(collected).not.toContain(".mg-editor-placeholder");
+  });
 });
+
+function escapeHtmlText(value: string) {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
 
 function createExportFixture(): PageConfig {
   return {

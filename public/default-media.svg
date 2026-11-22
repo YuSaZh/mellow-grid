@@ -1,18 +1,122 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Default media preview">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="Studio reel abstract editorial artwork">
   <defs>
-    <linearGradient id="media-bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2b2c2e"/>
-      <stop offset="1" stop-color="#3fa3eb"/>
+    <linearGradient id="md-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0D111A" />
+      <stop offset="48%" stop-color="#151C2C" />
+      <stop offset="100%" stop-color="#0F1522" />
     </linearGradient>
-    <linearGradient id="media-card" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.34"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0.08"/>
+    <radialGradient id="md-orb-teal" cx="72%" cy="26%" r="44%">
+      <stop offset="0%" stop-color="#38BDF8" stop-opacity="0.55" />
+      <stop offset="45%" stop-color="#2DD4BF" stop-opacity="0.22" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="md-orb-amber" cx="26%" cy="32%" r="38%">
+      <stop offset="0%" stop-color="#FBBF24" stop-opacity="0.40" />
+      <stop offset="50%" stop-color="#F97316" stop-opacity="0.14" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="md-orb-indigo" cx="68%" cy="66%" r="42%">
+      <stop offset="0%" stop-color="#818CF8" stop-opacity="0.34" />
+      <stop offset="55%" stop-color="#4F46E5" stop-opacity="0.12" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="md-plane-back" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.11" />
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0.04" />
+    </linearGradient>
+    <linearGradient id="md-plane-front" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.19" />
+      <stop offset="55%" stop-color="#E0F2FE" stop-opacity="0.07" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.03" />
+    </linearGradient>
+    <linearGradient id="md-glass-stroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.46" />
+      <stop offset="45%" stop-color="#BAE6FD" stop-opacity="0.16" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.06" />
+    </linearGradient>
+    <linearGradient id="md-sphere" x1="0.15" y1="0.1" x2="0.88" y2="0.92">
+      <stop offset="0%" stop-color="#FEF3C7" />
+      <stop offset="32%" stop-color="#FDBA74" />
+      <stop offset="68%" stop-color="#38BDF8" />
+      <stop offset="100%" stop-color="#312E81" />
+    </linearGradient>
+    <linearGradient id="md-disc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1E293B" stop-opacity="0.82" />
+      <stop offset="100%" stop-color="#0F172A" stop-opacity="0.52" />
+    </linearGradient>
+    <linearGradient id="md-curve" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FDE68A" stop-opacity="0.92" />
+      <stop offset="52%" stop-color="#7DD3FC" stop-opacity="0.96" />
+      <stop offset="100%" stop-color="#C4B5FD" stop-opacity="0.85" />
+    </linearGradient>
+    <linearGradient id="md-vignette" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0B0E16" stop-opacity="0" />
+      <stop offset="58%" stop-color="#0B0E16" stop-opacity="0.08" />
+      <stop offset="100%" stop-color="#090C13" stop-opacity="0.62" />
     </linearGradient>
   </defs>
-  <rect width="800" height="800" fill="url(#media-bg)"/>
-  <circle cx="590" cy="210" r="110" fill="#b9f778" opacity="0.88"/>
-  <rect x="104" y="120" width="592" height="496" rx="56" fill="url(#media-card)" stroke="#ffffff" stroke-opacity="0.18" stroke-width="4"/>
-  <path d="M158 564 310 390l118 114 72-82 146 154H158z" fill="#ffffff" opacity="0.74"/>
-  <circle cx="238" cy="262" r="54" fill="#ffffff" opacity="0.54"/>
-  <rect x="158" y="642" width="320" height="28" rx="14" fill="#ffffff" opacity="0.34"/>
+
+  <rect width="800" height="800" fill="url(#md-bg)" />
+  <rect width="800" height="800" fill="url(#md-orb-teal)" />
+  <rect width="800" height="800" fill="url(#md-orb-amber)" />
+  <rect width="800" height="800" fill="url(#md-orb-indigo)" />
+
+  <g stroke="#FFFFFF" stroke-opacity="0.055" stroke-width="1">
+    <line x1="80" y1="0" x2="80" y2="800" />
+    <line x1="160" y1="0" x2="160" y2="800" />
+    <line x1="240" y1="0" x2="240" y2="800" />
+    <line x1="320" y1="0" x2="320" y2="800" />
+    <line x1="400" y1="0" x2="400" y2="800" />
+    <line x1="480" y1="0" x2="480" y2="800" />
+    <line x1="560" y1="0" x2="560" y2="800" />
+    <line x1="640" y1="0" x2="640" y2="800" />
+    <line x1="720" y1="0" x2="720" y2="800" />
+    <line x1="0" y1="80" x2="800" y2="80" />
+    <line x1="0" y1="160" x2="800" y2="160" />
+    <line x1="0" y1="240" x2="800" y2="240" />
+    <line x1="0" y1="320" x2="800" y2="320" />
+    <line x1="0" y1="400" x2="800" y2="400" />
+    <line x1="0" y1="480" x2="800" y2="480" />
+    <line x1="0" y1="560" x2="800" y2="560" />
+    <line x1="0" y1="640" x2="800" y2="640" />
+    <line x1="0" y1="720" x2="800" y2="720" />
+  </g>
+
+  <g stroke="#FFFFFF" stroke-opacity="0.20" stroke-width="1.25" stroke-linecap="round">
+    <path d="M154 160 h12 M160 154 v12" />
+    <path d="M634 160 h12 M640 154 v12" />
+    <path d="M154 480 h12 M160 474 v12" />
+    <path d="M634 480 h12 M640 474 v12" />
+  </g>
+
+  <g transform="rotate(-7 400 320)">
+    <rect x="132" y="132" width="536" height="364" rx="48" fill="url(#md-plane-back)" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="1.5" />
+  </g>
+
+  <circle cx="536" cy="242" r="102" fill="url(#md-sphere)" />
+  <circle cx="504" cy="206" r="38" fill="#FFFFFF" fill-opacity="0.28" />
+  <circle cx="536" cy="242" r="101.25" fill="none" stroke="#FFFFFF" stroke-opacity="0.34" stroke-width="1.5" />
+
+  <rect x="172" y="146" width="456" height="328" rx="44" fill="url(#md-plane-front)" stroke="url(#md-glass-stroke)" stroke-width="1.75" />
+
+  <circle cx="316" cy="316" r="114" fill="url(#md-disc)" stroke="#FFFFFF" stroke-opacity="0.22" stroke-width="1.5" />
+  <circle cx="316" cy="316" r="82" fill="none" stroke="#FFFFFF" stroke-opacity="0.14" stroke-width="1.25" />
+  <circle cx="316" cy="316" r="50" fill="none" stroke="#7DD3FC" stroke-opacity="0.34" stroke-width="1.5" stroke-dasharray="6 8" />
+  <circle cx="316" cy="316" r="16" fill="#F8FAFC" fill-opacity="0.90" />
+
+  <path d="M214 396 C288 392 332 232 426 248 C496 260 518 352 586 332" fill="none" stroke="url(#md-curve)" stroke-width="4" stroke-linecap="round" />
+  <line x1="364" y1="238" x2="486" y2="258" stroke="#FFFFFF" stroke-opacity="0.26" stroke-width="1.25" stroke-dasharray="4 4" />
+  <circle cx="426" cy="248" r="8" fill="#FFFFFF" />
+  <circle cx="426" cy="248" r="16" fill="none" stroke="#7DD3FC" stroke-opacity="0.55" stroke-width="1.5" />
+  <circle cx="586" cy="332" r="5.5" fill="#C4B5FD" />
+  <circle cx="214" cy="396" r="5.5" fill="#FDE68A" />
+
+  <rect x="210" y="182" width="108" height="10" rx="5" fill="#FFFFFF" fill-opacity="0.26" />
+  <rect x="210" y="202" width="66" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.14" />
+
+  <rect x="478" y="392" width="112" height="44" rx="22" fill="#0F172A" fill-opacity="0.46" stroke="#FFFFFF" stroke-opacity="0.20" stroke-width="1.25" />
+  <circle cx="502" cy="414" r="6" fill="#2DD4BF" />
+  <rect x="518" y="410.5" width="52" height="7" rx="3.5" fill="#FFFFFF" fill-opacity="0.52" />
+
+  <rect width="800" height="800" fill="url(#md-vignette)" />
 </svg>

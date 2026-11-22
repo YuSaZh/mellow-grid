@@ -1,6 +1,7 @@
 "use client";
 
 import type { ChangeEvent } from "react";
+import { normalizeBaseUrl } from "@/lib/urls/asset-url";
 import { useEditorStore } from "../store";
 
 export function EditorToolbar() {
@@ -9,6 +10,7 @@ export function EditorToolbar() {
   const importConfig = useEditorStore((state) => state.importConfig);
   const saveDraft = useEditorStore((state) => state.saveDraft);
   const status = useEditorStore((state) => state.status);
+  const previewHref = normalizeBaseUrl();
 
   async function handleImport(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -23,7 +25,7 @@ export function EditorToolbar() {
 
   return (
     <header className="pointer-events-none fixed inset-x-0 bottom-4 z-[1000] px-4 sm:bottom-8">
-      <style>{`
+      <style data-editor-only="true">{`
         @keyframes mgPulseDot {
           0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(10, 207, 131, 0.7); }
           70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(10, 207, 131, 0); }
@@ -37,7 +39,11 @@ export function EditorToolbar() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-2 text-[0.85rem] font-semibold">
-          <a className="grid min-h-10 place-items-center rounded-full bg-white px-5 font-bold transition hover:-translate-y-0.5 hover:bg-[#f1f1f5] focus:outline-none focus:ring-4 focus:ring-white/20" href="/" style={{ backgroundColor: "#ffffff", color: "#121214" }}>
+          <a
+            className="grid min-h-10 place-items-center rounded-full bg-white px-5 font-bold transition hover:-translate-y-0.5 hover:bg-[#f1f1f5] focus:outline-none focus:ring-4 focus:ring-white/20"
+            href={previewHref}
+            style={{ backgroundColor: "#ffffff", color: "#121214" }}
+          >
             预览效果
           </a>
           <label className="grid min-h-10 cursor-pointer place-items-center rounded-full bg-transparent px-5 text-white transition hover:-translate-y-0.5 hover:bg-white/[0.15] focus-within:ring-4 focus-within:ring-white/20">

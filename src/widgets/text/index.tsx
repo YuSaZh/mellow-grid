@@ -1,4 +1,5 @@
 import { WidgetShell, type WidgetBackground } from "@/components/widgets/widget-shell";
+import type { WidgetRenderContext } from "@/lib/page-config/types";
 
 export type TextWidgetProps = {
   background?: WidgetBackground;
@@ -7,14 +8,37 @@ export type TextWidgetProps = {
   body: string;
 };
 
-export function TextWidget({ props }: { props: TextWidgetProps }) {
+export function TextWidget({ context, props }: { context?: WidgetRenderContext; props: TextWidgetProps }) {
+  const compact = context?.variant === "compact";
+
   return (
     <WidgetShell background={props.background} interactive>
-      <div className="relative z-10 flex h-full flex-col justify-start p-6 text-left">
-        <div>
-          {props.eyebrow ? <p className="text-[12px] font-bold uppercase tracking-[0.12em] text-current opacity-60">{props.eyebrow}</p> : null}
-          <h2 className="mt-1 text-[18px] font-semibold leading-tight text-current">{props.title}</h2>
-          <p className="mt-2 text-[12px] leading-4 text-current opacity-80">{props.body}</p>
+      <div className={`relative z-10 flex h-full min-h-0 flex-col justify-between gap-3 text-left ${compact ? "p-5" : "p-6"}`}>
+        {props.eyebrow ? (
+          <p className="inline-flex w-fit max-w-full items-center truncate rounded-full border border-current/15 bg-current/[0.06] px-2.5 py-1 text-[0.68rem] font-bold uppercase leading-none tracking-[0.16em] text-current opacity-75">
+            {props.eyebrow}
+          </p>
+        ) : (
+          <span aria-hidden="true" className="h-1 w-8 rounded-full bg-current opacity-20" />
+        )}
+
+        <div className="grid min-w-0 gap-1.5">
+          <h2
+            className={`[word-break:break-word] font-extrabold leading-[1.2] tracking-[-0.03em] text-current ${
+              compact ? "text-[1.06rem]" : "text-[1.2rem] sm:text-[1.28rem]"
+            }`}
+          >
+            {props.title}
+          </h2>
+          {props.body ? (
+            <p
+              className={`[word-break:break-word] font-medium leading-[1.55] text-current opacity-75 ${
+                compact ? "line-clamp-3 text-[0.8rem]" : "text-[0.86rem] sm:text-[0.88rem]"
+              }`}
+            >
+              {props.body}
+            </p>
+          ) : null}
         </div>
       </div>
     </WidgetShell>

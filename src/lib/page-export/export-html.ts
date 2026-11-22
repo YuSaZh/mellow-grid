@@ -43,6 +43,10 @@ export function collectDocumentStyles() {
 
   for (const sheet of Array.from(document.styleSheets)) {
     try {
+      if (isEditorOnlyNode(sheet.ownerNode)) {
+        continue;
+      }
+
       if (sheet.href && new URL(sheet.href).origin !== window.location.origin) {
         continue;
       }
@@ -61,6 +65,10 @@ export function collectDocumentStyles() {
 
   if (!styleChunks.length) {
     for (const style of Array.from(document.querySelectorAll("style"))) {
+      if (isEditorOnlyNode(style)) {
+        continue;
+      }
+
       if (style.textContent) {
         styleChunks.push(style.textContent);
       }
@@ -70,8 +78,20 @@ export function collectDocumentStyles() {
   return Array.from(new Set(styleChunks)).join("\n");
 }
 
+function isEditorOnlyNode(node: unknown) {
+  return Boolean(
+    node &&
+      typeof node === "object" &&
+      "getAttribute" in node &&
+      typeof (node as { getAttribute?: unknown }).getAttribute === "function" &&
+      (node as { getAttribute: (name: string) => string | null }).getAttribute("data-editor-only") === "true",
+  );
+}
+
 function getStandaloneBaseCss(config: PageConfig) {
-  return `*{box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body{margin:0;min-height:100vh;font-family:'Plus Jakarta Sans',Inter,ui-sans-serif,system-ui,sans-serif;background:${config.theme.background};color:${config.theme.foreground}}`;
+  const radius = config.theme.radius === "soft" ? "22px" : config.theme.radius === "pill" ? "38px" : "32px";
+
+  return `:root{--mg-bg:${config.theme.background};--mg-fg:${config.theme.foreground};--mg-card:${config.theme.card};--mg-accent:${config.theme.accent};--mg-radius:${radius}}*{box-sizing:border-box;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}body{margin:0;min-height:100vh;font-family:'Plus Jakarta Sans',Inter,ui-sans-serif,system-ui,sans-serif;background:var(--mg-bg,${config.theme.background});color:var(--mg-fg,${config.theme.foreground})}@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;scroll-behavior:auto!important}}`;
 }
 
 export { getStandaloneBaseCss };

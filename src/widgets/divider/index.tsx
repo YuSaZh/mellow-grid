@@ -9,11 +9,21 @@ export function DividerWidget({ context, props }: { context?: WidgetRenderContex
   const compact = context?.variant === "compact";
 
   return (
-    <section className="relative z-10 flex h-full min-h-0 items-end text-left text-[#111113]">
-      <div className="w-full pb-2">
-        {props.eyebrow ? <p className="text-[0.68rem] font-black uppercase tracking-[0.18em] text-[#9b9ba4]">{props.eyebrow}</p> : null}
-        <h2 className={`${compact ? "text-[1.25rem]" : "text-[1.7rem]"} font-extrabold leading-none tracking-[-0.05em]`}>{props.title}</h2>
+    <section
+      className="relative z-10 flex h-full min-h-0 items-end gap-4 pb-1.5 text-left"
+      style={{ color: "var(--mg-fg, #141518)" }}
+    >
+      <div className="min-w-0 max-w-full shrink-0">
+        {props.eyebrow ? (
+          <p className="mb-1 text-[0.66rem] font-extrabold uppercase tracking-[0.18em] text-current opacity-45">
+            {props.eyebrow}
+          </p>
+        ) : null}
+        <h2 className={`${compact ? "text-[1.25rem]" : "text-[1.45rem]"} font-extrabold leading-none tracking-[-0.04em] text-current`}>
+          {props.title}
+        </h2>
       </div>
+      {!compact ? <span aria-hidden="true" className="mb-[0.35rem] h-px flex-1 bg-gradient-to-r from-black/12 to-transparent" /> : null}
     </section>
   );
 }

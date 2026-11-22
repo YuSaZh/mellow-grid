@@ -20,29 +20,91 @@ type WidgetShellProps = PropsWithChildren<{
 
 const DEFAULT_CARD_BACKGROUND = "linear-gradient(135deg,#2B2C2E 0%,#17181A 100%)";
 
-export function WidgetShell({ ariaLabel, background, children, className = "", href, interactive, showLinkIndicator, style, topRightSlot }: WidgetShellProps) {
+export function WidgetShell({
+  ariaLabel,
+  background,
+  children,
+  className = "",
+  href,
+  interactive,
+  showLinkIndicator,
+  style,
+  topRightSlot,
+}: WidgetShellProps) {
   const safeHref = sanitizeHref(href);
   const backgroundStyle = getWidgetBackgroundStyle(background);
   const lightCard = isLightBackground(backgroundStyle.background);
-  const hoverShadowClassName = lightCard
-    ? "hover:shadow-[0_22px_45px_rgba(0,0,0,0.06),inset_2px_2px_1.5px_rgba(255,255,255,0.95),inset_-2.5px_-2.5px_4px_rgba(0,0,0,0.04)]"
-    : "hover:shadow-[0_22px_45px_rgba(0,0,0,0.09),inset_2px_2px_1.5px_rgba(255,255,255,0.45),inset_-2px_-2px_3px_rgba(0,0,0,0.08)]";
+  const isInteractive = Boolean(interactive || safeHref);
+
+  const borderClassName = lightCard ? "border-black/[0.07]" : "border-white/[0.12]";
+  const interactiveClassName = isInteractive
+    ? [
+        "outline-none hover:-translate-y-[5px] hover:scale-[1.012] active:scale-[0.99]",
+        lightCard
+          ? "hover:border-black/[0.12] focus-visible:ring-4 focus-visible:ring-slate-900/15"
+          : "hover:border-white/[0.22] focus-visible:ring-4 focus-visible:ring-white/30",
+      ].join(" ")
+    : "";
+
   const shellClassName = [
-    "group relative block h-full overflow-hidden rounded-[38px] border border-white/[0.08] shadow-[0_12px_30px_rgba(0,0,0,0.05),inset_1.5px_1.5px_1px_rgba(255,255,255,0.4),inset_-2px_-2px_3px_rgba(0,0,0,0.1)] transition duration-[450ms] ease-[cubic-bezier(0.165,0.84,0.44,1)] [perspective:1000px] [transform-style:preserve-3d]",
-    lightCard ? "border-white/50 shadow-[0_12px_30px_rgba(0,0,0,0.03),inset_1.8px_1.8px_1px_rgba(255,255,255,0.9),inset_-2px_-2px_4px_rgba(0,0,0,0.05)]" : "",
-    interactive || safeHref ? `outline-none hover:-translate-y-2 hover:scale-[1.015] ${hoverShadowClassName} focus-visible:ring-4 focus-visible:ring-white/25` : "",
+    "mg-widget-card group relative block h-full overflow-hidden rounded-[var(--mg-radius,32px)] border [perspective:1000px]",
+    borderClassName,
+    interactiveClassName,
     className,
   ]
     .filter(Boolean)
     .join(" ");
-  const shellStyle = { color: lightCard ? "#1a1a1a" : "#ffffff", ...backgroundStyle, ...style };
+
+  const shellStyle: CSSProperties = {
+    color: lightCard ? "#1a1a1a" : "#ffffff",
+    ...backgroundStyle,
+    ...style,
+  };
+
+  const indicatorClassName = lightCard
+    ? "border-black/[0.06] bg-black/[0.05] text-black/70 group-hover:bg-black/[0.09] group-hover:text-black"
+    : "border-white/[0.16] bg-white/[0.14] text-white group-hover:bg-white/[0.24]";
+
   const content = (
     <>
-      <div className="pointer-events-none absolute inset-px rounded-[37px] border border-white/[0.24] [mask-image:linear-gradient(180deg,#000_0%,transparent_100%)]" />
-      <div className="pointer-events-none absolute inset-0 rounded-[38px] bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.22),transparent_32%)] opacity-70 mix-blend-screen" />
+      <div
+        aria-hidden="true"
+        className={
+          lightCard
+            ? "pointer-events-none absolute inset-px border border-white/80 [mask-image:linear-gradient(180deg,#000_0%,transparent_68%)]"
+            : "pointer-events-none absolute inset-px border border-white/[0.22] [mask-image:linear-gradient(180deg,#000_0%,transparent_72%)]"
+        }
+        style={{ borderRadius: "calc(var(--mg-radius, 32px) - 1px)" }}
+      />
+      <div
+        aria-hidden="true"
+        className={
+          lightCard
+            ? "pointer-events-none absolute inset-0 rounded-[var(--mg-radius,32px)] bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.5),transparent_38%)] opacity-60"
+            : "pointer-events-none absolute inset-0 rounded-[var(--mg-radius,32px)] bg-[radial-gradient(circle_at_18%_12%,rgba(255,255,255,0.20),transparent_38%)] opacity-75 mix-blend-screen"
+        }
+      />
+      {isInteractive ? <div aria-hidden="true" className="mg-widget-sheen" /> : null}
       {(showLinkIndicator && safeHref) || topRightSlot ? (
-        <div className="pointer-events-none absolute right-4 top-4 z-20 grid size-5 place-items-center rounded-full border-2 border-white/20 bg-black/20 opacity-0 backdrop-blur-[7px] transition group-hover:opacity-100 group-focus-visible:opacity-100">
-          {topRightSlot ?? <span className="text-[10px] font-black text-white">↗</span>}
+        <div
+          className={`pointer-events-none absolute right-[18px] top-[18px] z-20 grid size-8 place-items-center rounded-full border opacity-65 backdrop-blur-md transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:opacity-100 group-focus-visible:opacity-100 ${indicatorClassName}`}
+        >
+          {topRightSlot ?? (
+            <svg
+              aria-hidden="true"
+              className="size-3.5 transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:translate-x-[1.5px] group-hover:-translate-y-[1.5px] group-focus-visible:translate-x-[1.5px] group-focus-visible:-translate-y-[1.5px]"
+              fill="none"
+              viewBox="0 0 16 16"
+            >
+              <path
+                d="M5.25 10.75 10.75 5.25M6 5.25h4.75V10"
+                stroke="currentColor"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="1.75"
+              />
+            </svg>
+          )}
         </div>
       ) : null}
       {children}
@@ -51,14 +113,27 @@ export function WidgetShell({ ariaLabel, background, children, className = "", h
 
   if (safeHref) {
     return (
-      <a aria-label={ariaLabel} className={shellClassName} href={safeHref} style={shellStyle}>
+      <a
+        aria-label={ariaLabel}
+        className={shellClassName}
+        data-card-interactive={isInteractive ? "true" : "false"}
+        data-card-surface={lightCard ? "light" : "dark"}
+        href={safeHref}
+        style={shellStyle}
+      >
         {content}
       </a>
     );
   }
 
   return (
-    <section aria-label={ariaLabel} className={shellClassName} style={shellStyle}>
+    <section
+      aria-label={ariaLabel}
+      className={shellClassName}
+      data-card-interactive={isInteractive ? "true" : "false"}
+      data-card-surface={lightCard ? "light" : "dark"}
+      style={shellStyle}
+    >
       {content}
     </section>
   );
@@ -87,17 +162,34 @@ function isLightBackground(background: CSSProperties["background"]) {
     return false;
   }
 
-  const hex = background.match(/#([0-9a-f]{6}|[0-9a-f]{3})\b/i)?.[1];
+  const hexStops = Array.from(background.matchAll(/#([0-9a-f]{6}|[0-9a-f]{3})\b/gi), (match) => match[1]);
 
-  if (!hex) {
+  if (!hexStops.length) {
     return false;
   }
 
+  if (hexStops.length === 1) {
+    return getHexLuminance(hexStops[0]) > 0.62;
+  }
+
+  const firstLum = getHexLuminance(hexStops[0]);
+  const lastLum = getHexLuminance(hexStops[hexStops.length - 1]);
+
+  if (hexStops.length === 2) {
+    return firstLum * 0.4 + lastLum * 0.6 > 0.62;
+  }
+
+  const middleStops = hexStops.slice(1, -1);
+  const middleAvg = middleStops.reduce((sum, hex) => sum + getHexLuminance(hex), 0) / middleStops.length;
+
+  return firstLum * 0.3 + middleAvg * 0.15 + lastLum * 0.55 > 0.62;
+}
+
+function getHexLuminance(hex: string) {
   const normalized = hex.length === 3 ? hex.split("").map((value) => value + value).join("") : hex;
   const red = Number.parseInt(normalized.slice(0, 2), 16);
   const green = Number.parseInt(normalized.slice(2, 4), 16);
   const blue = Number.parseInt(normalized.slice(4, 6), 16);
-  const luminance = (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255;
 
-  return luminance > 0.62;
+  return (0.2126 * red + 0.7152 * green + 0.0722 * blue) / 255;
 }

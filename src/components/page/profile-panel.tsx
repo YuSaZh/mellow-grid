@@ -1,34 +1,58 @@
 import type { PageProfile } from "@/lib/page-config/types";
+import { resolveAssetUrl } from "@/lib/urls/asset-url";
 import { sanitizeHref } from "@/lib/urls/safe-href";
 
 export function ProfilePanel({ props }: { props: PageProfile }) {
+  const avatarSrc = resolveAvatarUrl(props.avatarUrl);
+
   return (
-    <section className="max-w-[340px] text-inherit">
-      <div className="relative mx-auto size-[140px] overflow-hidden rounded-full border border-[#d8d8de] bg-white p-[2px] shadow-[0_14px_34px_rgba(20,16,10,0.10),inset_1px_1px_0_rgba(255,255,255,0.85),inset_-1px_-1px_2px_rgba(20,16,10,0.06)] transition hover:scale-[1.03] xl:mx-0">
-        {props.avatarUrl ? (
-          <span aria-label={`${props.name} avatar`} className="block size-full rounded-full bg-cover bg-center" role="img" style={{ backgroundImage: `url(${props.avatarUrl})` }} />
-        ) : (
-          <GlitchAvatar />
-        )}
-        <span aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.72),inset_0_4px_12px_rgba(20,16,10,0.10)]" />
+    <section className="mg-fade-up max-w-[340px] text-inherit">
+      <div className="group/avatar relative mx-auto size-[140px] rounded-full bg-white p-[3px] shadow-[0_1px_2px_rgba(15,23,42,0.06),0_18px_40px_-14px_rgba(15,23,42,0.22)] ring-1 ring-black/[0.07] transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-[1.035] hover:shadow-[0_4px_10px_rgba(15,23,42,0.08),0_24px_48px_-14px_rgba(63,163,235,0.28)] xl:mx-0">
+        <div className="relative size-full overflow-hidden rounded-full bg-[#15171c]">
+          {avatarSrc ? (
+            <img
+              alt={`${props.name} avatar`}
+              className="block size-full rounded-full object-cover transition duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover/avatar:scale-[1.04]"
+              src={avatarSrc}
+            />
+          ) : (
+            <GlitchAvatar />
+          )}
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 rounded-full shadow-[inset_0_0_0_1px_rgba(255,255,255,0.55),inset_0_4px_12px_rgba(15,23,42,0.08)]"
+          />
+        </div>
       </div>
 
-      <h1 className="mt-9 text-[2.5rem] font-extrabold leading-[1.05] tracking-[-0.04em] text-[#111113]">{props.name}</h1>
-      {props.location ? <p className="mt-4 text-[0.83rem] font-extrabold uppercase tracking-[0.16em] text-[#9b9ba4]">{props.location}</p> : null}
-      {props.bio ? <p className="mt-3 text-[1.05rem] font-normal leading-[1.6] text-[#5d5d65]">{props.bio}</p> : null}
+      <h1 className="mt-8 text-[clamp(2.15rem,3vw,2.65rem)] font-extrabold leading-[1.06] tracking-[-0.045em] text-current">{props.name}</h1>
+
+      {props.location ? (
+        <div className="mt-4 flex justify-center xl:justify-start">
+          <p className="inline-flex items-center gap-2 rounded-full border border-black/[0.06] bg-white/85 px-3.5 py-1.5 text-[0.76rem] font-bold tracking-[0.06em] text-[#5a5e6a] shadow-[0_2px_10px_-4px_rgba(15,23,42,0.08)] backdrop-blur-md">
+            <span aria-hidden="true" className="mg-status-dot shrink-0" />
+            <span>{props.location}</span>
+          </p>
+        </div>
+      ) : null}
+
+      {props.bio ? <p className="mx-auto mt-4 max-w-[30ch] text-[1.02rem] font-normal leading-[1.65] text-current opacity-75 xl:mx-0">{props.bio}</p> : null}
 
       {props.contacts?.length ? (
-        <div className="mt-6 flex flex-wrap items-center gap-3">
-          {props.contacts.map((contact) => {
-            const href = sanitizeHref(contact.href);
-            const className = "rounded-full bg-zinc-100 px-5 py-3 text-sm font-bold uppercase tracking-[-0.02em] text-zinc-700 shadow-[0_10px_28px_rgba(20,16,10,0.08)] transition hover:-translate-y-0.5 hover:bg-zinc-200";
+        <div className="mt-7 flex flex-wrap items-center justify-center gap-3 xl:justify-start">
+          {props.contacts.map((contact, index) => {
+            const href = resolveContactHref(contact.href);
+            const className =
+              index === 0
+                ? "inline-flex items-center gap-1.5 rounded-full bg-[#141518] px-5 py-2.5 text-[0.84rem] font-bold tracking-[-0.01em] text-white shadow-[0_1px_2px_rgba(15,23,42,0.12),0_10px_24px_-10px_rgba(15,23,42,0.45)] transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:bg-[#23252b] hover:shadow-[0_14px_28px_-10px_rgba(15,23,42,0.52)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#3FA3EB]/30"
+                : "inline-flex items-center gap-1.5 rounded-full border border-black/[0.08] bg-white/90 px-5 py-2.5 text-[0.84rem] font-bold tracking-[-0.01em] text-[#141518] shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_20px_-10px_rgba(15,23,42,0.14)] backdrop-blur-md transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:-translate-y-0.5 hover:border-black/[0.14] hover:bg-white hover:shadow-[0_12px_26px_-10px_rgba(15,23,42,0.18)] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-[#3FA3EB]/25";
 
             return href ? (
-              <a className={className} href={href} key={`${contact.label}-${contact.href}`}>
+              <a className={className} href={href} key={`${contact.label}-${contact.href}-${index}`}>
                 {contact.label}
               </a>
             ) : (
-              <span className={className} key={`${contact.label}-${contact.href}`}>
+              <span className={className} key={`${contact.label}-${contact.href}-${index}`}>
                 {contact.label}
               </span>
             );
@@ -37,6 +61,42 @@ export function ProfilePanel({ props }: { props: PageProfile }) {
       ) : null}
     </section>
   );
+}
+
+function resolveAvatarUrl(avatarUrl?: string) {
+  if (!avatarUrl) {
+    return "";
+  }
+
+  const trimmed = avatarUrl.trim();
+
+  if (!trimmed || trimmed.startsWith("//")) {
+    return "";
+  }
+
+  if (/^(?:https?:\/\/|data:image\/|blob:)/i.test(trimmed)) {
+    return trimmed;
+  }
+
+  if (/^[a-z][a-z\d+.-]*:/i.test(trimmed)) {
+    return "";
+  }
+
+  return resolveAssetUrl(trimmed);
+}
+
+function resolveContactHref(rawHref?: string) {
+  const safe = sanitizeHref(rawHref);
+
+  if (!safe) {
+    return "";
+  }
+
+  if (safe.startsWith("?")) {
+    return safe;
+  }
+
+  return resolveAssetUrl(safe);
 }
 
 function GlitchAvatar() {
